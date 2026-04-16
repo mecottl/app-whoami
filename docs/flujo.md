@@ -1,4 +1,6 @@
-Quiero crear una aplicación web llamada (nombre por definir) con el siguiente stack:
+Prompt General:
+
+Quiero crear una aplicación web llamada WhoAmI Studio con el siguiente stack:
 
 Frontend:
 
@@ -343,3 +345,6 @@ Este proyecto no es:
 Es:
 
 ✅ “demostrar arquitectura, decisiones y escalabilidad”
+
+Tu prompt:
+
