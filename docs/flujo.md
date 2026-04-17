@@ -1,3 +1,11 @@
+WhoAmI Studio es una aplicación web que permite a los usuarios crear tarjetas visuales personalizadas (“profile cards”) que representan su identidad, gustos y estilo personal, listas para compartirse en redes sociales.
+
+La plataforma combina datos personales (como nombre, edad y descripción) con contenido cultural relevante —como películas, música o intereses— para generar composiciones visuales atractivas en formatos optimizados (por ejemplo, 1080x1920 tipo story).
+
+Cada usuario puede crear múltiples perfiles, experimentar con distintos estilos (dark, neon, minimal, etc.) y organizar sus favoritos en rankings visuales. Todo esto se construye a través de un editor interactivo con preview en tiempo real y exportación a imagen (PNG).
+
+A nivel técnico, WhoAmI Studio está diseñado como una aplicación fullstack moderna, con un backend robusto que gestiona autenticación, lógica de negocio e integración con APIs externas, y un frontend enfocado en experiencia visual y edición dinámica.
+
 Prompt General:
 
 Quiero crear una aplicación web llamada WhoAmI Studio con el siguiente stack:

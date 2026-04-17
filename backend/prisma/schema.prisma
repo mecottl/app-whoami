@@ -53,6 +53,7 @@ model Favorite{
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@unique([profileId, type, order])
+  @@unique([profileId, type, externalId])
 }
 
 enum Template {
