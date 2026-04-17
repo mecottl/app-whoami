@@ -1,8 +1,8 @@
-WhoAmI Studio es una aplicación web que permite a los usuarios crear tarjetas visuales personalizadas (“profile cards”) que representan su identidad, gustos y estilo personal, listas para compartirse en redes sociales.
+WhoAmI Studio es una aplicación web que permite a los usuarios crear tarjetas visuales personalizadas (“cards”) que representan su identidad, gustos y estilo personal, listas para compartirse en redes sociales.
 
 La plataforma combina datos personales (como nombre, edad y descripción) con contenido cultural relevante —como películas, música o intereses— para generar composiciones visuales atractivas en formatos optimizados (por ejemplo, 1080x1920 tipo story).
 
-Cada usuario puede crear múltiples perfiles, experimentar con distintos estilos (dark, neon, minimal, etc.) y organizar sus favoritos en rankings visuales. Todo esto se construye a través de un editor interactivo con preview en tiempo real y exportación a imagen (PNG).
+Cada usuario puede crear múltiples cards, experimentar con distintos estilos (dark, neon, minimal, etc.) y organizar sus favoritos en rankings visuales. Todo esto se construye a través de un editor interactivo con preview en tiempo real y exportación a imagen (PNG).
 
 A nivel técnico, WhoAmI Studio está diseñado como una aplicación fullstack moderna, con un backend robusto que gestiona autenticación, lógica de negocio e integración con APIs externas, y un frontend enfocado en experiencia visual y edición dinámica.
 
@@ -25,7 +25,7 @@ Base de datos:
 * PostgreSQL
 
 Objetivo de la app:
-Crear tarjetas visuales personalizadas (“profile cards”) que representen a un usuario, incluyendo su identidad y gustos, y que puedan exportarse como imagen (PNG) para compartir en redes sociales.
+Crear tarjetas visuales personalizadas (“cards”) que representen a un usuario, incluyendo su identidad y gustos, y que puedan exportarse como imagen (PNG) para compartir en redes sociales.
 
 Funcionalidades principales (MVP):
 
@@ -33,13 +33,13 @@ Autenticación:
 
 * Registro y login con JWT
 
-Perfiles:
+Cards:
 
-* Crear, editar, eliminar perfiles
-* Cada usuario puede tener múltiples perfiles (historial de cartas)
-* Los perfiles son privados (no hay vista pública)
+* Crear, editar, eliminar cards
+* Cada usuario puede tener múltiples cards (historial de cartas)
+* Las cards son privadas (no hay vista pública)
 
-Campos del perfil:
+Campos de la card:
 
 * Nombre
 * Fecha de nacimiento (calcular edad)
@@ -73,7 +73,7 @@ Estructura esperada:
 
 Backend (NestJS):
 
-* módulos: auth, profile, external
+* módulos: auth, cards, external
 * uso de DTOs, services y controllers
 * conexión con PostgreSQL vía Prisma
 
@@ -135,7 +135,7 @@ bun install
 * Diseñar schema Prisma:
 
   * User
-  * Profile
+  * Card
   * Favorite
 
 ```bash
@@ -172,18 +172,18 @@ POST /auth/login
 
 ---
 
-# 👤 FASE 3 — Profiles (CRUD completo)
+# 👤 FASE 3 — Cards (CRUD completo)
 
 👉 Primera feature real
 
 Implementa:
 
 ```
-POST   /profiles
-GET    /profiles
-GET    /profiles/:id
-PATCH  /profiles/:id
-DELETE /profiles/:id
+POST   /cards
+GET    /cards
+GET    /cards/:id
+PATCH  /cards/:id
+DELETE /cards/:id
 ```
 
 IMPORTANTE:
@@ -201,7 +201,7 @@ IMPORTANTE:
 
 Agrega relación:
 
-* Profile → Favorites
+* Card → Favorites
 
 Tipos:
 
@@ -274,7 +274,7 @@ Implementa:
 
 # 📊 FASE 8 — Dashboard
 
-* Lista de perfiles
+* Lista de cards
 * Crear / editar / eliminar
 * Navegación a editor
 
@@ -296,7 +296,7 @@ Implementa:
 
 * Buscar películas / álbumes
 * Seleccionar favoritos
-* Guardar en profile
+* Guardar en card
 
 ---
 
@@ -321,7 +321,7 @@ Implementa:
 
 1. DB (Prisma)
 2. Auth
-3. Profiles CRUD
+3. Cards CRUD
 4. Favorites
 5. External APIs
 6. Hardening backend

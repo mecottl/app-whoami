@@ -3,9 +3,10 @@ import { AuthModule } from './auth/auth.module.js';
 import { TestController } from './test/test.controller.js';
 import { CardsModule } from './cards/cards.module.js';
 import { FavoritesModule } from './favorites/favorites.module.js';
+import { ExternalModule } from './external/external.module.js';
 
 @Module({
-  imports: [AuthModule, CardsModule, FavoritesModule],
+  imports: [AuthModule, CardsModule, FavoritesModule, ExternalModule],
   controllers: [TestController]
 })
 export class AppModule {}

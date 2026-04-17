@@ -21,7 +21,7 @@ El backend ya cuenta con un sistema de autenticación funcional y correctamente 
 Modelos implementados:
 
 - `User`
-- `Profile`
+- `Card`
 - `Favorite`
 
 ✔ Migraciones aplicadas  
@@ -66,11 +66,11 @@ Implementado:
 
 ---
 
-# 🚀 Siguiente fase: FASE 3 — Profiles (CRUD + Ownership)
+# 🚀 Siguiente fase: FASE 3 — Cards (CRUD + Ownership)
 
 ## 🎯 Objetivo
 
-Implementar el sistema de perfiles ligado al usuario autenticado.
+Implementar el sistema de cards ligado al usuario autenticado.
 
 ---
 
@@ -78,30 +78,30 @@ Implementar el sistema de perfiles ligado al usuario autenticado.
 
 ### Endpoints
 
-- `POST   /profiles`
-- `GET    /profiles`
-- `GET    /profiles/:id`
-- `PATCH  /profiles/:id`
-- `DELETE /profiles/:id`
+- `POST   /cards`
+- `GET    /cards`
+- `GET    /cards/:id`
+- `PATCH  /cards/:id`
+- `DELETE /cards/:id`
 
 ---
 
 ## 🔐 Reglas clave
 
 - Todas las rutas deben usar `JwtAuthGuard`
-- Cada perfil debe pertenecer a un usuario (`userId`)
+- Cada card debe pertenecer a un usuario (`userId`)
 - Un usuario SOLO puede:
-  - ver sus perfiles
-  - editar sus perfiles
-  - eliminar sus perfiles
+  - ver sus cards
+  - editar sus cards
+  - eliminar sus cards
 
-❌ No debe poder acceder a perfiles de otros usuarios
+❌ No debe poder acceder a cards de otros usuarios
 
 ---
 
 ## 🧠 Lógica crítica
 
-### Crear perfil
+### Crear card
 
 ```ts
 userId = req.user.userId

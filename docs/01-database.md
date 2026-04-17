@@ -21,11 +21,11 @@ La fase de base de datos ha sido completada correctamente utilizando un stack mo
 ### 🗄️ Modelado de datos
 - Entidades principales:
   - `User`
-  - `Profile`
+  - `Card`
   - `Favorite`
 - Relaciones:
-  - 1:N → User → Profile
-  - 1:N → Profile → Favorite
+  - 1:N → User → Card
+  - 1:N → Card → Favorite
 - Uso de enums para:
   - `Template`
   - `Layout`
@@ -78,7 +78,7 @@ Crear estructura:
 src/
 ├── prisma/
 ├── auth/
-├── profile/
+├── cards/
 ├── common/
 
 ---

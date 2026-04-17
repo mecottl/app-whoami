@@ -20,4 +20,5 @@ export class CreateFavoriteDto {
   @Min(1)
   @Max(3)
   order!: number
+  
 }

@@ -1,8 +1,8 @@
 # 📊 WhoAmI — Estado del Proyecto
 
-## ✅ Estado actual: FASE 3 COMPLETADA (Profiles Module)
+## ✅ Estado actual: FASE 3 COMPLETADA (Cards Module)
 
-El backend ya cuenta con un módulo de perfiles completamente funcional, construido sobre NestJS, Prisma y autenticación JWT.
+El backend ya cuenta con un módulo de cards completamente funcional, construido sobre NestJS, Prisma y autenticación JWT.
 
 ---
 
@@ -26,15 +26,15 @@ El backend ya cuenta con un módulo de perfiles completamente funcional, constru
 
 ---
 
-## 🧩 Profiles Module (Fase 3)
+## 🧩 Cards Module (Fase 3)
 
 ### Funcionalidad implementada
 
-- Crear perfil (`POST /profiles`)
-- Obtener perfiles del usuario (`GET /profiles`)
-- Obtener perfil por ID (`GET /profiles/:id`)
-- Actualizar perfil (`PATCH /profiles/:id`)
-- Eliminar perfil (`DELETE /profiles/:id`)
+- Crear card (`POST /cards`)
+- Obtener cards del usuario (`GET /cards`)
+- Obtener card por ID (`GET /cards/:id`)
+- Actualizar card (`PATCH /cards/:id`)
+- Eliminar card (`DELETE /cards/:id`)
 
 ---
 
@@ -89,9 +89,9 @@ Implementar cliente en Angular:
 
 - Login / Register
 - Manejo de token (auth state)
-- Listado de profiles
-- Crear / editar profiles
-- UI base de profile cards
+- Listado de cards
+- Crear / editar cards
+- UI base de cards
 
 ---
 
@@ -99,7 +99,7 @@ Implementar cliente en Angular:
 
 Extender dominio con:
 
-- Favorites (`/profiles/:id/favorites`)
+- Favorites (`/cards/:id/favorites`)
 - Integración con APIs externas (movies, music, etc.)
 
 ---
@@ -110,7 +110,7 @@ El proyecto ha completado correctamente:
 
 - Fase 1: Base de datos
 - Fase 2: Autenticación
-- Fase 3: Profiles
+- Fase 3: Cards
 
 👉 Está listo para ser consumido por frontend sin bloqueos.
 
