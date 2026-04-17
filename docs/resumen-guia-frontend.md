@@ -29,10 +29,13 @@ La idea del producto es mezclar identidad personal con gustos culturales para ge
 - Bun como runtime y gestor de paquetes
 - APIs externas: TMDB y Deezer
 
-### Frontend previsto
+### Frontend actual
 
 - Angular
 - CSS vanilla
+- Angular 21 con Standalone API
+- enrutamiento con `loadComponent`
+- estructura por `core`, `shared` y `features`
 
 ## 3. Modelo de datos actual
 
@@ -197,6 +200,57 @@ Con esto, la prioridad actual pasa a ser frontend.
 
 Dado que Auth, Cards, Favorites y External APIs ya existen, la siguiente etapa prioritaria es el frontend.
 
+### Base frontend ya construida en fases 7 y 8
+
+Actualmente el frontend ya no esta en cero. Ya existe una base funcional conectada al backend con:
+
+- landing publica
+- login funcional
+- register funcional
+- dashboard de usuario
+- vista para crear cards
+- `AuthGuard`
+- `ApiService` con header Bearer
+- `AuthService` y `CardsService`
+- componentes standalone cargados con lazy routes
+
+### Estructura recomendada a futuro
+
+Para que el proyecto escale sin mezclar responsabilidades, la organizacion recomendada queda asi:
+
+```text
+src/app/
+  core/
+    guards/
+    services/
+  shared/
+    models/
+    ui/
+  features/
+    home/
+      pages/
+    auth/
+      data-access/
+      pages/
+    cards/
+      data-access/
+      pages/
+      components/
+    favorites/
+      data-access/
+      pages/
+      components/
+    external-search/
+      data-access/
+      components/
+```
+
+Regla practica:
+
+- `core`: piezas globales y transversales
+- `shared`: modelos y UI reutilizable sin logica de dominio
+- `features`: cada dominio con sus paginas, componentes y acceso a datos
+
 ### Objetivo inmediato
 
 Construir el frontend sobre un backend ya funcional, conectando autenticacion, cards, favoritos y busqueda externa real.
@@ -226,6 +280,7 @@ Construir el frontend sobre un backend ya funcional, conectando autenticacion, c
 
 ### Pantallas
 
+- landing
 - login
 - register
 - dashboard
@@ -241,6 +296,16 @@ Construir el frontend sobre un backend ya funcional, conectando autenticacion, c
 - external search
 - selector de template
 - selector de layout
+
+### Pantallas/modulos ya preparados como base
+
+- `LandingPage`
+- `LoginPage`
+- `RegisterPage`
+- `DashboardPage`
+- `CreateCardPage`
+
+Cada una con su propio archivo `ts`, `html` y `css`, listas para crecer hacia componentes internos mas pequenos.
 
 ### Estado minimo a manejar
 
@@ -306,12 +371,13 @@ Quiero que me ayudes a avanzar desde este contexto sin asumir que el backend est
 
 WhoAmI Studio ya no esta en fase de arranque. La base del backend esta construida y el proyecto ya tiene dominio, autenticacion, CRUD principal e integraciones externas.
 
-La prioridad correcta ahora es construir frontend sobre esa base, teniendo presente que:
+La prioridad correcta ahora es iterar el frontend sobre esa base, teniendo presente que:
 
 - Cards ya esta listo para consumirse
 - Auth ya esta listo para consumirse
 - Favorites ya puede integrarse
 - External APIs ya esta listo para consumirse
 - exportacion sigue siendo una fase posterior
+- el frontend ya tiene una arquitectura base mas clara por features y paginas principales creadas
 
 Este archivo debe usarse como referencia principal para los siguientes prompts.

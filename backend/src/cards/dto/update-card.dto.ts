@@ -21,4 +21,7 @@ export class UpdateCardDto {
   @IsOptional()
   @IsEnum(Layout)
   layout?: Layout
+
+  @IsOptional()
+  favoriteColor?: string
 }
