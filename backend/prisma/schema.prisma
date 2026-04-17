@@ -20,10 +20,10 @@ model User {
   password String
   createdAt DateTime @default(now())
 
-  profiles Profile[]
+  cards Card[]
 }
 
-model Profile {
+model Card {
   id String @id @default(uuid())
   name String
   birthDate DateTime
@@ -49,11 +49,11 @@ model Favorite{
   type FavoriteType
   order Int
 
-  profileId String
-  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  cardId String
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
-  @@unique([profileId, type, order])
-  @@unique([profileId, type, externalId])
+  @@unique([cardId, type, order])
+  @@unique([cardId, type, externalId])
 }
 
 enum Template {

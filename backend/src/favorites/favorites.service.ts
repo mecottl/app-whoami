@@ -4,12 +4,12 @@ import { prisma } from '../../lib/prisma.js'
 @Injectable()
 export class FavoritesService {
 
-    async create(profileId: string, data: any) {
+    async create(cardId: string, data: any) {
         const { title, imageUrl, externalId, type, order } = data
 
         const count = await prisma.favorite.count({
             where: {
-                profileId,
+                cardId,
                 type,
             }
         })
@@ -23,7 +23,7 @@ export class FavoritesService {
 
         const exists = await prisma.favorite.findFirst({
             where: {
-                profileId,
+                cardId,
                 type,
                 order,
             }
@@ -38,15 +38,15 @@ export class FavoritesService {
                 externalId,
                 type,
                 order,
-                profileId,
+                cardId,
             }
         })
     }
 
-    async findByProfile(profileId: string) {
+    async findByCard(cardId: string) {
         return prisma.favorite.findMany({
             where: {
-                profileId,
+                cardId,
             },
             orderBy: [
                 { type: 'asc' },
@@ -72,7 +72,7 @@ export class FavoritesService {
 
         const exists = await prisma.favorite.findFirst({
             where: {
-                profileId: favorite.profileId,
+                cardId: favorite.cardId,
                 type: favorite.type,
                 order
             }

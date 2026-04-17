@@ -1,7 +1,7 @@
 import { IsOptional, IsString, IsDateString, IsEnum } from 'class-validator'
 import { Template, Layout } from '../../../generated/prisma/enums.js'
 
-export class UpdateProfileDto {
+export class UpdateCardDto {
   @IsOptional()
   @IsString()
   name?: string

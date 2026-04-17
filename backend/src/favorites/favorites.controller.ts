@@ -4,23 +4,23 @@ import { CreateFavoriteDto } from './dto/create-favorite.dto.js'
 import { UpdateOrderDto } from './dto/update-favorite.dto.js'
 
 
-@Controller('profiles/:profileId/favorites')
+@Controller('cards/:cardId/favorites')
 export class FavoritesController {
     constructor(private readonly favoritesService: FavoritesService) { }
 
     @Post()
     create(
-        @Param('profileId') profileId: string,
+        @Param('cardId') cardId: string,
         @Body() dto: CreateFavoriteDto
     ) {
-        return this.favoritesService.create(profileId, dto)
+        return this.favoritesService.create(cardId, dto)
     }
 
     @Get()
-    findByProfile(
-        @Param('profileId') profileId: string
+    findByCard(
+        @Param('cardId') cardId: string
     ) {
-        return this.favoritesService.findByProfile(profileId)
+        return this.favoritesService.findByCard(cardId)
     }
 
     @Patch(':id/order')

@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { prisma } from "../../lib/prisma.js"
-import { CreateProfileDto } from "./dto/create-profile.dto.js";
-import { UpdateProfileDto } from "./dto/update-profile.dto.js";
+import { CreateCardDto } from "./dto/create-card.dto.js";
+import { UpdateCardDto } from "./dto/update-card.dto.js";
 import { Template, Layout } from "../../generated/prisma/enums.js";
 import { NotFoundException } from '@nestjs/common'
 
 @Injectable()
-export class ProfilesService {
-    create(userId: string, dto: CreateProfileDto) {
-        return prisma.profile.create({
+export class CardsService {
+    create(userId: string, dto: CreateCardDto) {
+        return prisma.card.create({
             data: {
                 ...dto,
                 birthDate: new Date(dto.birthDate), 
@@ -20,23 +20,23 @@ export class ProfilesService {
     }
 
     findAll(userId: string) {
-        return prisma.profile.findMany({
+        return prisma.card.findMany({
             where: { userId }
         })
     }
 
     async findOne(userId: string, id: string) {
-        const profile = await prisma.profile.findFirst({
+        const card = await prisma.card.findFirst({
             where: { userId, id}
         })
-        if (!profile) {
-            throw new NotFoundException('Profile not found')
+        if (!card) {
+            throw new NotFoundException('Card not found')
         }
-        return profile
+        return card
     }
 
-    async update(userId: string, id: string, dto: UpdateProfileDto) {
-        return await prisma.profile.update({
+    async update(userId: string, id: string, dto: UpdateCardDto) {
+        return await prisma.card.update({
             where: {id, userId},
             data: {
                 ...dto,
@@ -48,7 +48,7 @@ export class ProfilesService {
     }
 
     async remove(userId: string, id: string) {
-        return await prisma.profile.delete({
+        return await prisma.card.delete({
             where: { id, userId}
         })
     }
