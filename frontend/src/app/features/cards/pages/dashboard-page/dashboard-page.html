@@ -1,0 +1,40 @@
+<section class="dashboard-page">
+  <header class="dashboard-header">
+    <div>
+      <p class="eyebrow">Dashboard</p>
+      <h1>Tus cards</h1>
+      <p class="dashboard-copy">Administra tus versiones de identidad visual desde un solo lugar.</p>
+    </div>
+
+    <div class="dashboard-actions">
+      <a routerLink="/create-card" class="btn btn-primary">Nueva card</a>
+      <button type="button" class="btn btn-secondary" (click)="logout()">Cerrar sesion</button>
+    </div>
+  </header>
+
+  @if (cards().length === 0) {
+  <article class="empty-state">
+    <h2>Aun no tienes cards</h2>
+    <p>Crea la primera para empezar a conectar favoritos, layouts y templates.</p>
+    <a routerLink="/create-card" class="btn btn-primary">Crear mi primera card</a>
+  </article>
+  } @else {
+  <div class="cards-grid">
+    @for (card of cards(); track card.id) {
+    <article class="card-tile">
+      <div class="card-tile__meta">
+        <span>{{ card.layout }}</span>
+        <span>{{ card.template }}</span>
+      </div>
+
+      <h2>{{ card.name }}</h2>
+      <p>{{ card.description }}</p>
+      <small>{{ card.birthDate | date: 'longDate' }}</small>
+      <button [routerLink]="['/cards', card.id]">
+        Editar
+      </button>
+    </article>
+    }
+  </div>
+  }
+</section>

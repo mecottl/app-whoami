@@ -1,0 +1,95 @@
+<!-- src/app/features/cards/pages/card-editor-page/card-editor.page.html -->
+<h1>Card Editor</h1>
+
+@if (loading()) {
+  <div>Loading...</div>
+}
+
+@if (card()) {
+  <div>
+    <h2>{{ card().name }}</h2>
+    <p>{{ card().description }}</p>
+  </div>
+}
+
+@if (card()) {
+  <div>
+    <label>
+      Name:
+      <input
+        type="text"
+        [value]="card().name"
+        (input)="updateField('name', $event)"
+      />
+    </label>
+
+    <label>
+      Description:
+      <input
+        type="text"
+        [value]="card().description"
+        (input)="updateField('description', $event)"
+      />
+    </label>
+
+    <button (click)="save()">Guardar</button>
+  </div>
+}
+
+<h3>Favorites</h3>
+
+@if (favorites().length === 0) {
+  <p>No hay favoritos aún</p>
+}
+
+@@for (type of favoriteTypes; track type) {
+  <div>
+    <h3>{{ type }}</h3>
+
+    <div class="slots">
+      @for (slot of [1,2,3]; track slot) {
+        <div class="slot">
+          @if (groupedFavorites()[type]?.find(f => f.order === slot)) {
+            <div>
+              <img
+                [src]="groupedFavorites()[type].find(f => f.order === slot).imageUrl"
+                width="80"
+              />
+              <p>#{{ slot }}</p>
+            </div>
+          } @else {
+            <div class="empty">
+              <p>#{{ slot }}</p>
+              <span>Empty</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<h3>Buscar</h3>
+
+<select (change)="searchType.set($any($event.target).value)">
+  @for (type of favoriteTypes; track $index) {
+    <option [value]="type">{{ type }}</option>
+  }
+</select>
+
+<input
+  type="text"
+  (input)="searchQuery.set($any($event.target).value)"
+  placeholder="Buscar..."
+/>
+
+<button (click)="search()">Buscar</button>
+
+
+@for (item of searchResults(); track $index) {
+  <div>
+    <img [src]="item.imageUrl" width="50" />
+    <span>{{ item.title }}</span>
+    <button (click)="addFavorite(item)">Agregar</button>
+  </div>
+}

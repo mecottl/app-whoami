@@ -1,0 +1,30 @@
+<section class="auth-page">
+  <article class="auth-card">
+    <p class="eyebrow">Registro</p>
+    <h1>Crea tu cuenta</h1>
+    <p class="auth-copy">Empieza con una base lista para cards, dashboard y futuras vistas visuales.</p>
+
+    <form class="auth-form" (ngSubmit)="onSubmit()">
+      <label>
+        <span>Email</span>
+        <input [(ngModel)]="email" name="email" type="email" placeholder="tu@email.com" required>
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input [(ngModel)]="password" name="password" type="password" placeholder="Minimo 8 caracteres" required>
+      </label>
+
+      @if (error) {
+        <p class="form-error">{{ error }}</p>
+      }
+
+      <button type="submit" class="btn btn-primary">Crear cuenta</button>
+    </form>
+
+    <p class="auth-link">
+      ¿Ya tienes cuenta?
+      <a routerLink="/login">Inicia sesion</a>
+    </p>
+  </article>
+</section>

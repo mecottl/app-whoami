@@ -1,0 +1,51 @@
+<section class="create-card-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Cards</p>
+      <h1>Nueva card</h1>
+      <p class="page-copy">Define la base de identidad que despues podra crecer con favoritos y preview visual.</p>
+    </div>
+
+    <a routerLink="/dashboard" class="btn btn-secondary">Volver al dashboard</a>
+  </header>
+
+  <form class="card-form" (ngSubmit)="onSubmit()">
+    <label>
+      <span>Nombre</span>
+      <input [(ngModel)]="name" name="name" placeholder="Ej. Gerar Studio" required>
+    </label>
+
+    <label>
+      <span>Descripcion</span>
+      <textarea [(ngModel)]="description" name="description" placeholder="Una version breve de esta identidad" rows="4" required></textarea>
+    </label>
+
+    <label>
+      <span>Fecha de nacimiento</span>
+      <input [(ngModel)]="birthDate" name="birthDate" type="date" required>
+    </label>
+
+    <div class="card-form__row">
+      <label>
+        <span>Layout</span>
+        <select [(ngModel)]="layout" name="layout">
+          <option value="VERTICAL">Vertical</option>
+          <option value="HORIZONTAL">Horizontal</option>
+          <option value="SQUARE">Square</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Template</span>
+        <select [(ngModel)]="template" name="template">
+          <option value="NEON">Neon</option>
+          <option value="DARK">Dark</option>
+          <option value="LIGHT">Light</option>
+          <option value="MINIMAL">Minimal</option>
+        </select>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar card</button>
+  </form>
+</section>
