@@ -1,4 +1,3 @@
-<!-- src/app/features/cards/pages/card-editor-page/card-editor.page.html -->
 <h1>Card Editor</h1>
 
 @if (loading()) {
@@ -6,16 +5,14 @@
 }
 
 @if (card()) {
-  <div>
-    <h2>{{ card().name }}</h2>
-    <p>{{ card().description }}</p>
-  </div>
-}
 
-@if (card()) {
+  <h2>{{ card().name }}</h2>
+
+  <!-- 🔥 FORMULARIO COMPLETO -->
   <div>
+
     <label>
-      Name:
+      Nombre:
       <input
         type="text"
         [value]="card().name"
@@ -24,7 +21,7 @@
     </label>
 
     <label>
-      Description:
+      Descripción:
       <input
         type="text"
         [value]="card().description"
@@ -32,64 +29,72 @@
       />
     </label>
 
+    <label>
+      Edad:
+      <input
+        type="number"
+        [value]="card().age"
+        (input)="updateField('age', $event)"
+      />
+    </label>
+
+    <label>
+      Color favorito:
+      <input
+        type="color"
+        [value]="card().favoriteColor"
+        (input)="updateField('favoriteColor', $event)"
+      />
+    </label>
+
+    <label>
+      Layout:
+      <select
+        [value]="card().layout"
+        (change)="updateField('layout', $event)"
+      >
+        <option value="grid">Grid</option>
+        <option value="list">List</option>
+      </select>
+    </label>
+
+    <label>
+      Template:
+      <select
+        [value]="card().template"
+        (change)="updateField('template', $event)"
+      >
+        <option value="default">Default</option>
+        <option value="modern">Modern</option>
+      </select>
+    </label>
+
     <button (click)="save()">Guardar</button>
+
   </div>
 }
 
-<h3>Favorites</h3>
+<hr />
 
-@if (favorites().length === 0) {
-  <p>No hay favoritos aún</p>
-}
+<h3>Agregar categoría</h3>
 
-@@for (type of favoriteTypes; track type) {
-  <div>
-    <h3>{{ type }}</h3>
-
-    <div class="slots">
-      @for (slot of [1,2,3]; track slot) {
-        <div class="slot">
-          @if (groupedFavorites()[type]?.find(f => f.order === slot)) {
-            <div>
-              <img
-                [src]="groupedFavorites()[type].find(f => f.order === slot).imageUrl"
-                width="80"
-              />
-              <p>#{{ slot }}</p>
-            </div>
-          } @else {
-            <div class="empty">
-              <p>#{{ slot }}</p>
-              <span>Empty</span>
-            </div>
-          }
-        </div>
-      }
-    </div>
-  </div>
-}
-
-<h3>Buscar</h3>
-
-<select (change)="searchType.set($any($event.target).value)">
+<select
+  [value]="selectedCategoryToAdd()"
+  (change)="selectedCategoryToAdd.set($any($event.target).value)"
+>
   @for (type of favoriteTypes; track $index) {
     <option [value]="type">{{ type }}</option>
   }
 </select>
 
-<input
-  type="text"
-  (input)="searchQuery.set($any($event.target).value)"
-  placeholder="Buscar..."
-/>
+<button (click)="addCategory()">Agregar</button>
 
-<button (click)="search()">Buscar</button>
+<hr />
 
-
-@for (item of searchResults(); track $index) {
-  <div>
-    <img [src]="item.imageUrl" width="50" />
-    <span>{{ item.title }}</span>
-    <button (click)="addFavorite(item)">Agregar</button>
-  </div>
+@for (type of activeCategories(); track type) {
+  <app-card-editor-favorites
+    [type]="type"
+    [cardId]="id!"
+    (remove)="removeCategory(type)"
+  />
 }

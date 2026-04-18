@@ -1,0 +1,33 @@
+<h3>{{ type }}</h3>
+
+<button (click)="remove.emit()">Eliminar categoría</button>
+
+<div class="slots">
+  @for (slot of getSlots(); let i = $index; track i) {
+    <div class="slot">
+
+      @if (slot) {
+        <img [src]="slot.imageUrl" width="80" />
+        <p>#{{ slot.order }}</p>
+        <button (click)="removeFavorite(slot.id)">X</button>
+      } @else {
+        <button (click)="selectSlot(i + 1)">+</button>
+      }
+
+    </div>
+  }
+</div>
+
+<input
+  [value]="searchQuery()"
+  (input)="searchQuery.set($any($event.target).value)"
+/>
+
+<button (click)="search()">Buscar</button>
+
+@for (item of searchResults(); track $index) {
+  <div>
+    <span>{{ item.title }}</span>
+    <button (click)="addFavorite(item)">Agregar</button>
+  </div>
+}

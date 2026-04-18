@@ -1,29 +1,27 @@
-import { Component, OnInit, computed, signal } from '@angular/core'
+// src/app/features/cards/pages/card-editor-page/card-editor-page.ts
+
+import { Component, OnInit, signal } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CardsService } from '../../data-access/cards.service'
-import { FAVORITE_TYPES } from '../../../../shared/constants/favorite-types'
+import { FAVORITE_TYPES, FavoriteType } from '../../../../shared/constants/favorite-types'
+import { CardEditorFavoritesComponent } from '../../components/card-editor-favorites/card-editor-favorites'
 
 @Component({
   selector: 'app-card-editor',
   standalone: true,
-  templateUrl: './card-editor-page.html',
-  styleUrl: './card-editor-page.css'
+  imports: [CardEditorFavoritesComponent],
+  templateUrl: './card-editor-page.html'
 })
 export class CardEditorPage implements OnInit {
   id: string | null = null
 
   card = signal<any>(null)
   loading = signal(true)
-  favorites = signal<any[]>([])
-  searchResults = signal<any[]>([])
-  searchQuery = signal('')
-  searchType = signal<'MOVIE' | 'MUSIC'>(FAVORITE_TYPES.MOVIE)
-  favoriteTypes = Object.values(FAVORITE_TYPES)
 
-  private searchHandlers = {
-    MOVIE: (query: string) => this.cardsService.searchMovies(query),
-    MUSIC: (query: string) => this.cardsService.searchAlbums(query)
-  }
+  activeCategories = signal<FavoriteType[]>([])
+  selectedCategoryToAdd = signal<FavoriteType>(FAVORITE_TYPES.MOVIE)
+
+  favoriteTypes = Object.values(FAVORITE_TYPES)
 
   constructor(
     private route: ActivatedRoute,
@@ -32,22 +30,12 @@ export class CardEditorPage implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')
-
     if (!this.id) return
 
     this.cardsService.getCardById(this.id).subscribe({
       next: (data) => {
         this.card.set(data)
         this.loading.set(false)
-      },
-      error: () => {
-        this.loading.set(false)
-      }
-    })
-
-    this.cardsService.getFavorites(this.id).subscribe({
-      next: (res) => {
-        this.favorites.set(res as any)
       }
     })
   }
@@ -64,93 +52,28 @@ export class CardEditorPage implements OnInit {
   save() {
     if (!this.id || !this.card()) return
 
-    const { name, description, favoriteColor, layout, template } = this.card()
-
-    const payload = {
-      name,
-      description,
-      favoriteColor,
-      layout,
-      template
-    }
+    const payload = this.card()
 
     this.cardsService.updateCard(this.id, payload).subscribe({
       next: (res) => {
         this.card.set(res)
         console.log('guardado')
-      },
-      error: (err) => {
-        console.log(err)
       }
     })
   }
 
-  search() {
-    const q = this.searchQuery()
-    const type = this.searchType()
+  addCategory() {
+    const type = this.selectedCategoryToAdd()
 
-    if (!q) return
+    if (this.activeCategories().includes(type)) return
+    if (this.activeCategories().length >= 3) return
 
-    const handler = this.searchHandlers[type]
-
-    if (!handler) {
-      console.log('No handler for type:', type)
-      return
-    }
-
-    handler(q).subscribe((res) => {
-      this.searchResults.set(res)
-    })
+    this.activeCategories.set([...this.activeCategories(), type])
   }
 
-  addFavorite(item: any) {
-    if (!this.id) return
-
-    const type = this.searchType()
-    const current = this.favorites().filter((favorite) => favorite.type === type)
-    const order = [1, 2, 3].find(
-      (slot) => !current.some((favorite) => favorite.order === slot)
+  removeCategory(type: FavoriteType) {
+    this.activeCategories.set(
+      this.activeCategories().filter(t => t !== type)
     )
-
-    if (!order) {
-      console.log('maximo 3 favoritos por tipo')
-      return
-    }
-
-    const payload = {
-      title: item.title,
-      imageUrl: item.imageUrl,
-      externalId: String(item.id),
-      type,
-      order
-    }
-
-    this.cardsService.addFavorite(this.id, payload).subscribe((res) => {
-      this.favorites.set([...this.favorites(), res])
-    })
   }
-
-  removeFavorite(favoriteId: string) {
-    if (!this.id) return
-
-    this.cardsService.deleteFavorite(this.id, favoriteId).subscribe(() => {
-      this.favorites.set(
-        this.favorites().filter((favorite) => favorite.id !== favoriteId)
-      )
-    })
-  }
-
-  groupedFavorites = computed(() => {
-    const groups: Record<string, any[]> = {}
-
-    for (const favorite of this.favorites()) {
-      if (!groups[favorite.type]) {
-        groups[favorite.type] = []
-      }
-
-      groups[favorite.type].push(favorite)
-    }
-
-    return groups
-  })
 }

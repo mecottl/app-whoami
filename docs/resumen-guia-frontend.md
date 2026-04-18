@@ -1,383 +1,424 @@
-# WhoAmI Studio - Resumen Maestro del Proyecto
+# 📊 Reporte de Progreso — Card Builder App
 
-Este documento resume el estado actual de la aplicacion para reutilizarlo en futuros prompts con otras IAs. La idea es tener una guia unica, clara y actualizada del producto, del backend ya construido y de lo que falta para continuar con la siguiente fase real del proyecto.
+## 🧭 Contexto General
 
-## 1. Que es WhoAmI Studio
+Durante esta sesión se trabajó en la transición del proyecto desde una base funcional (CRUD + backend) hacia un **MVP interactivo con integración externa y lógica de dominio real**.
 
-WhoAmI Studio es una aplicacion web para crear tarjetas visuales personalizadas tipo "card" que representen la identidad de una persona.
+El enfoque no fue solo implementar features, sino **estructurar correctamente el flujo completo de datos y estado**.
 
-Cada usuario puede:
+---
 
-- registrarse e iniciar sesion
-- crear varias cards
-- definir datos personales y esteticos de la card
-- organizar favoritos por categoria en formato Top 3
-- preparar informacion lista para una futura vista previa visual y exportacion como imagen
+# 🏗️ Arquitectura General Alcanzada
 
-La idea del producto es mezclar identidad personal con gustos culturales para generar una pieza visual compartible, por ejemplo estilo story vertical.
+## Flujo completo implementado
 
-## 2. Stack del proyecto
-
-### Backend
-
-- NestJS
-- TypeScript
-- Prisma
-- PostgreSQL
-- JWT + Passport
-- class-validator
-- Bun como runtime y gestor de paquetes
-- APIs externas: TMDB y Deezer
-
-### Frontend actual
-
-- Angular
-- CSS vanilla
-- Angular 21 con Standalone API
-- enrutamiento con `loadComponent`
-- estructura por `core`, `shared` y `features`
-
-## 3. Modelo de datos actual
-
-Segun la documentacion y el schema actual, las entidades principales son:
-
-### User
-
-- `id`
-- `email`
-- `name`
-- `password`
-- `createdAt`
-
-Relacion:
-
-- un usuario tiene muchas cards
-
-### Card
-
-- `id`
-- `name`
-- `birthDate`
-- `description`
-- `favoriteColor`
-- `template`
-- `layout`
-- `createAt`
-- `userId`
-
-Relacion:
-
-- una card pertenece a un usuario
-- una card tiene muchos favoritos
-
-### Favorite
-
-- `id`
-- `title`
-- `imageUrl`
-- `externalId`
-- `type`
-- `order`
-- `cardId`
-
-Restricciones importantes:
-
-- no se puede repetir `order` dentro del mismo `cardId + type`
-- no se puede repetir `externalId` dentro del mismo `cardId + type`
-
-### Enums actuales
-
-`Template`
-
-- `DARK`
-- `LIGHT`
-- `NEON`
-- `MINIMAL`
-
-`Layout`
-
-- `VERTICAL`
-- `HORIZONTAL`
-- `SQUARE`
-
-`FavoriteType`
-
-- `MOVIE`
-- `MUSIC`
-- `GAME`
-- `SERIES`
-- `SPORT`
-
-## 4. Estado real del backend
-
-El backend esta bastante avanzado y funcional. A nivel practico, ya existe una base solida para conectar el frontend.
-
-### Ya esta hecho
-
-#### Base de datos y Prisma
-
-- schema definido y migraciones funcionando
-- Prisma Client generado en `backend/generated/prisma`
-- conexion a PostgreSQL ya operativa
-
-#### Autenticacion
-
-- registro de usuario
-- login
-- hash de contrasenas con bcrypt
-- emision de JWT
-- estrategia JWT con Passport
-- guard de autenticacion disponible
-
-#### Cards
-
-- CRUD completo de cards
-- cada card pertenece a un usuario autenticado
-- aislamiento por `userId`
-- validaciones con DTOs
-- uso de enums para configuracion visual
-
-#### Favorites
-
-- crear favoritos dentro de una card
-- listar favoritos de una card
-- eliminar favoritos
-- actualizar orden
-- regla de maximo 3 elementos por categoria
-- control de posiciones 1 a 3
-- control de duplicados por posicion
-- control de duplicados por `externalId`
-
-#### External APIs
-
-- modulo external implementado
-- busqueda de peliculas por TMDB
-- busqueda de albums por Deezer
-- respuestas normalizadas para consumo del frontend
-- backend como proxy para no exponer API keys
-
-## 5. Punto importante sobre seguridad
-
-Aunque la documentacion de fases marca Favorites como completado, el codigo actual muestra que este modulo todavia no esta endurecido al mismo nivel que Cards.
-
-### Estado actual de Favorites
-
-- la logica de negocio principal existe
-- pero conviene revisar proteccion con JWT y ownership de card/favorite
-
-Esto significa que, para documentacion futura, conviene tratar Favorites como:
-
-- funcional a nivel CRUD y reglas de negocio
-- probablemente pendiente de hardening de seguridad antes de considerarlo totalmente cerrado
-
-## 6. Que significa esto para la siguiente fase
-
-El frontend ya puede empezar sin problema en las areas principales del producto porque el backend cubre el flujo base:
-
-- autenticacion
-- gestion de cards
-- lectura y edicion de datos principales
-- busqueda de contenido real desde APIs externas
-- guardado de favoritos a partir de resultados externos
-
-Con esto, la prioridad actual pasa a ser frontend.
-
-## 7. Estado funcional resumido
-
-### Backend listo o casi listo
-
-- Auth: listo
-- Cards: listo
-- Favorites: listo en logica, con posible hardening pendiente
-- External APIs: listo
-
-### Backend no implementado todavia
-
-- exportacion PNG
-- capa de hardening general adicional si se quiere nivel portafolio mas pulido
-
-## 8. Lo que sigue ahora
-
-Dado que Auth, Cards, Favorites y External APIs ya existen, la siguiente etapa prioritaria es el frontend.
-
-### Base frontend ya construida en fases 7 y 8
-
-Actualmente el frontend ya no esta en cero. Ya existe una base funcional conectada al backend con:
-
-- landing publica
-- login funcional
-- register funcional
-- dashboard de usuario
-- vista para crear cards
-- `AuthGuard`
-- `ApiService` con header Bearer
-- `AuthService` y `CardsService`
-- componentes standalone cargados con lazy routes
-
-### Estructura recomendada a futuro
-
-Para que el proyecto escale sin mezclar responsabilidades, la organizacion recomendada queda asi:
-
-```text
-src/app/
-  core/
-    guards/
-    services/
-  shared/
-    models/
-    ui/
-  features/
-    home/
-      pages/
-    auth/
-      data-access/
-      pages/
-    cards/
-      data-access/
-      pages/
-      components/
-    favorites/
-      data-access/
-      pages/
-      components/
-    external-search/
-      data-access/
-      components/
+```
+UI (Angular)
+  ↓
+Signals (estado reactivo)
+  ↓
+Services (CardsService / ApiService)
+  ↓
+Backend (NestJS)
+  ↓
+External APIs (TMDB, Deezer)
 ```
 
-Regla practica:
+---
 
-- `core`: piezas globales y transversales
-- `shared`: modelos y UI reutilizable sin logica de dominio
-- `features`: cada dominio con sus paginas, componentes y acceso a datos
+# 🔧 Backend — Estado Final
 
-### Objetivo inmediato
+## 📦 Módulos implementados
 
-Construir el frontend sobre un backend ya funcional, conectando autenticacion, cards, favoritos y busqueda externa real.
+### 1. Cards
 
-### Orden recomendado
+* CRUD completo
+* DTOs definidos
+* Update parcial (PATCH)
 
-1. autenticacion en Angular
-2. guard de rutas y manejo de token
-3. servicio API centralizado
-4. dashboard de cards
-5. formulario para crear y editar cards
-6. preview card inicial
-7. UI de favoritos
-8. UI de busqueda externa
-9. integracion completa editor + favoritos + external search
-10. exportacion PNG
+### 2. Favorites
 
-### Resultado esperado de esta fase
+* Crear favorito
+* Eliminar favorito
+* Obtener favoritos por card
+* Actualizar orden
 
-- login y register funcionales
-- consumo de endpoints ya existentes
-- cards editables desde UI
-- favoritos conectados a resultados reales de TMDB y Deezer
-- base visual lista para iterar despues
+### 3. Validaciones de negocio
 
-## 9. Alcance sugerido del frontend MVP
+* Máximo **3 favoritos por tipo**
+* Orden válido: `1–3`
+* Orden único por tipo
+* Validación con DTO + lógica adicional
 
-### Pantallas
+### 4. External APIs
 
-- landing
-- login
-- register
-- dashboard
-- editor de card
+* `/external/movies/search` → TMDB
+* `/external/albums/search` → Deezer
+* Providers desacoplados
 
-### Componentes utiles
+---
 
-- formulario de auth
-- lista de cards
-- card form
-- preview card
-- favorites manager
-- external search
-- selector de template
-- selector de layout
+## 🧠 Decisiones clave backend
 
-### Pantallas/modulos ya preparados como base
+* Uso de `enum` para `type`
+* Validación estricta (`whitelist + forbidNonWhitelisted`)
+* Separación por módulos (clean architecture)
+* Control del orden como dominio (no UI)
 
-- `LandingPage`
-- `LoginPage`
-- `RegisterPage`
-- `DashboardPage`
-- `CreateCardPage`
+---
 
-Cada una con su propio archivo `ts`, `html` y `css`, listas para crecer hacia componentes internos mas pequenos.
+# 💻 Frontend — Estado Final
 
-### Estado minimo a manejar
+## 🧱 Base Angular
 
-- usuario autenticado
-- token JWT
-- lista de cards del usuario
-- card activa en edicion
-- favoritos de la card activa
-- resultados de busqueda externa
+* Standalone components ✔
+* Control flow moderno (`@if`, `@for`) ✔
+* Signals ✔
+* Routing dinámico ✔
 
-## 10. Decisiones de producto ya definidas
+---
 
-Estas ideas ya aparecen repetidamente en la documentacion y sirven como base para futuros prompts:
+## 🧠 Migración importante: Signals
 
-- la app no es una red social publica
-- las cards son privadas
-- un usuario puede tener multiples cards
-- el valor principal del producto es visual + identidad + gustos
-- el layout inicial importante es el vertical tipo story
-- el frontend no debe exponer API keys
-- la arquitectura busca calidad de portafolio, no solo un prototipo rapido
+### Antes:
 
-## 11. Riesgos o puntos a vigilar
-
-- Favorites necesita revisar validacion de ownership y proteccion por JWT
-- hay una mezcla entre estado historico y estado actual en los docs antiguos, por eso este archivo debe tomarse como referencia principal
-- exportar PNG sigue siendo una fase futura, no una capacidad ya disponible
-
-## 12. Prompt base reutilizable para futuras IAs
-
-Puedes reutilizar algo como esto:
-
-```text
-Estoy trabajando en una app llamada WhoAmI Studio.
-
-Resumen del producto:
-- Es una aplicacion web para crear cards visuales personalizadas que representan identidad y gustos del usuario.
-- Cada usuario puede registrarse, iniciar sesion y crear multiples cards privadas.
-- Cada card incluye datos personales, configuracion visual y favoritos por categoria en formato Top 3.
-
-Stack:
-- Backend: NestJS + TypeScript + Prisma + PostgreSQL + JWT
-- Frontend: Angular + CSS vanilla
-
-Estado actual:
-- El backend base ya esta construido.
-- Auth esta listo: register, login, JWT.
-- Cards esta listo: CRUD completo con ownership por usuario.
-- Favorites ya existe con reglas de negocio (maximo 3 por categoria, orden 1-3, sin duplicados).
-- External APIs ya existe con busqueda real y respuestas normalizadas.
-- La fase actual ahora es frontend.
-
-Lo que necesito ahora:
-- continuar con el frontend
-- conectar autenticacion, cards, favoritos y external search
-- priorizar arquitectura clara, componentes reutilizables y buena UX
-- evitar rehacer el backend salvo que sea necesario para seguridad
-
-Quiero que me ayudes a avanzar desde este contexto sin asumir que el backend esta vacio.
+```ts
+card: any
+loading: boolean
 ```
 
-## 13. Conclusion
+### Después:
 
-WhoAmI Studio ya no esta en fase de arranque. La base del backend esta construida y el proyecto ya tiene dominio, autenticacion, CRUD principal e integraciones externas.
+```ts
+card = signal<any>(null)
+loading = signal(true)
+```
 
-La prioridad correcta ahora es iterar el frontend sobre esa base, teniendo presente que:
+### Beneficios:
 
-- Cards ya esta listo para consumirse
-- Auth ya esta listo para consumirse
-- Favorites ya puede integrarse
-- External APIs ya esta listo para consumirse
-- exportacion sigue siendo una fase posterior
-- el frontend ya tiene una arquitectura base mas clara por features y paginas principales creadas
+* Eliminación de `ChangeDetectorRef`
+* Reactividad automática
+* Código más predecible
+* Mejor integración con Angular moderno
 
-Este archivo debe usarse como referencia principal para los siguientes prompts.
+---
+
+## 📡 Consumo de APIs
+
+### ApiService
+
+* GET
+* POST
+* PATCH
+* DELETE
+
+Con headers de autorización.
+
+---
+
+## 📦 CardsService
+
+### Funciones implementadas:
+
+* `getCards()`
+* `createCard()`
+* `getCardById()`
+* `updateCard()`
+* `getFavorites()`
+* `addFavorite()`
+* `deleteFavorite()`
+* `searchMovies()`
+* `searchAlbums()`
+
+---
+
+# 🧩 Card Editor — Feature Principal
+
+## ✅ Funcionalidades logradas
+
+### 1. Carga de card
+
+* Lectura por ID
+* Render dinámico
+
+---
+
+### 2. Edición de datos
+
+* Inputs básicos
+* Actualización en tiempo real
+* Persistencia con PATCH
+
+---
+
+### 3. Manejo de favoritos
+
+#### ✔ Obtener favoritos
+
+```ts
+getFavorites(cardId)
+```
+
+#### ✔ Eliminar favorito
+
+* UI reactiva
+* Sync con backend
+
+#### ✔ Agregar favorito
+
+Incluye:
+
+* Validación de máximo 3
+* Cálculo correcto de orden
+* Manejo de huecos (slots libres)
+
+---
+
+## 🔥 Lógica clave implementada
+
+### Problema resuelto: orden incorrecto
+
+Antes:
+
+```ts
+order = current.length + 1 ❌
+```
+
+Después:
+
+```ts
+const order = [1,2,3].find(n => !current.some(f => f.order === n))
+```
+
+👉 Esto convierte la lista en **sistema de slots**
+
+---
+
+# 🔍 Búsqueda externa
+
+## Implementación
+
+* Input de búsqueda
+* Selector de tipo
+* Resultados dinámicos
+* Integración con backend
+
+---
+
+## Refactor importante
+
+### Antes:
+
+```ts
+type === 'movies' ? ...
+```
+
+### Después:
+
+```ts
+const handler = searchHandlers[type]
+```
+
+---
+
+## Map de handlers
+
+```ts
+private searchHandlers = {
+  MOVIE: (q) => this.cardsService.searchMovies(q),
+  MUSIC: (q) => this.cardsService.searchAlbums(q)
+}
+```
+
+👉 Escalable y limpio
+
+---
+
+# 🧠 Manejo de Tipos (Crítico)
+
+## Problema inicial
+
+* `'movie'` vs `'MOVIE'`
+* Strings inconsistentes
+
+---
+
+## Solución
+
+### Centralización:
+
+```ts
+export const FAVORITE_TYPES = {
+  MOVIE: 'MOVIE',
+  MUSIC: 'MUSIC'
+} as const
+```
+
+---
+
+## Beneficios
+
+* Consistencia frontend-backend
+* Escalabilidad
+* Evita bugs de enums
+
+---
+
+# 🧩 Problemas Resueltos
+
+## ⚠️ 1. Change Detection
+
+* Uso incorrecto de Angular moderno
+* Solución: signals
+
+---
+
+## ⚠️ 2. Payload incorrecto
+
+* Envío de entidad completa
+* Solución: DTO limpio
+
+---
+
+## ⚠️ 3. Errores 400
+
+* Campos no permitidos
+* Enum inválido
+
+---
+
+## ⚠️ 4. Error 500
+
+* `externalId = undefined`
+* Solución: map correcto de API externa
+
+---
+
+## ⚠️ 5. Orden duplicado
+
+* Error backend esperado
+* Solución: algoritmo de slots
+
+---
+
+## ⚠️ 6. Duplicated keys Angular
+
+* Track incorrecto
+* Solución: track seguro
+
+---
+
+# 🧠 Conceptos avanzados aplicados
+
+* Estado reactivo con signals
+* Separación de capas
+* DTO vs entidad
+* Mapeo de APIs externas
+* Validaciones de dominio
+* Refactor a configuración (handlers)
+* Arquitectura escalable
+
+---
+
+# 📊 Estado actual del producto
+
+## ✔ MVP funcional completo
+
+Incluye:
+
+* Gestión de cards
+* Edición en tiempo real
+* Favoritos con reglas
+* Integración con APIs reales
+* Estado reactivo moderno
+
+---
+
+## 🧭 Nivel del proyecto
+
+```txt
+CRUD básico ❌
+App con dominio real ✔
+```
+
+---
+
+# 🚀 Próximos pasos
+
+## 1. UI tipo Top 3 (en progreso)
+
+* Slots visuales
+* Separación por tipo
+
+---
+
+## 2. UX avanzada
+
+* Bloqueo de slots
+* Feedback visual
+
+---
+
+## 3. Drag & Drop
+
+* Reordenamiento
+* updateOrder backend
+
+---
+
+## 4. Mejora de búsqueda
+
+* Debounce
+* Loading states
+
+---
+
+## 5. Preview real de card
+
+* Layout final
+* Visualización completa
+
+---
+
+# 🎯 Conclusión
+
+## ✔ Objetivo de la sesión
+
+**Cumplido y superado**
+
+## ✔ Logros clave
+
+* Arquitectura sólida
+* Integración real
+* Lógica de negocio avanzada
+* Base escalable
+
+## 🧠 Insight importante
+
+El proyecto ya no es:
+
+```
+una app CRUD
+```
+
+Ahora es:
+
+```
+un editor de identidad con lógica de dominio
+```
+
+---
+
+# 📌 Estado final
+
+```txt
+Backend: sólido ✔
+Frontend: funcional ✔
+Integración externa: completa ✔
+UX: siguiente fase
+```
+
+---
+
+**Siguiente foco:**
+👉 Transformar funcionalidad en experiencia visual (Top 3 + interacción)

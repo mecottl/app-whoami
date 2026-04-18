@@ -7,3 +7,5 @@ export const FAVORITE_TYPES = {
   GAME: 'GAME'
     
 } as const
+
+export type FavoriteType = typeof FAVORITE_TYPES[keyof typeof FAVORITE_TYPES]
