@@ -1,90 +1,121 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+// src/.../favorites.service.ts
+
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { prisma } from '../../lib/prisma.js'
 
 @Injectable()
 export class FavoritesService {
 
-    async create(cardId: string, data: any) {
-        const { title, imageUrl, externalId, type, order } = data
+  async create(categoryId: string, data: any) {
+    const { title, imageUrl, externalId, order } = data
 
-        const count = await prisma.favorite.count({
-            where: {
-                cardId,
-                type,
-            }
+    if (order < 1 || order > 3) {
+      throw new BadRequestException('El orden debe ser entre 1 y 3')
+    }
+
+    const existing = await prisma.favorite.findFirst({
+      where: { categoryId, externalId }
+    })
+
+    const target = await prisma.favorite.findFirst({
+      where: { categoryId, order }
+    })
+
+    // 🔁 mover item existente
+    if (existing) {
+      if (target && target.id !== existing.id) {
+        await prisma.favorite.delete({
+          where: { id: target.id }
         })
+      }
 
-        if (count >= 3) throw new BadRequestException('Solo puedes tener 3 favoritos por tipo')
+      return prisma.favorite.update({
+        where: { id: existing.id },
+        data: { order }
+      })
+    }
 
+    // 🆕 nuevo item
+    const count = await prisma.favorite.count({
+      where: { categoryId }
+    })
 
-        if (order < 1 || order > 3) {
-            throw new BadRequestException('El orden debe ser entre 1 y 3')
+    if (count >= 3 && !target) {
+      throw new BadRequestException('Solo puedes tener 3 favoritos por categoría')
+    }
+
+    if (target) {
+      await prisma.favorite.delete({
+        where: { id: target.id }
+      })
+    }
+
+    return prisma.favorite.create({
+      data: {
+        title,
+        imageUrl,
+        externalId,
+        order,
+        categoryId
+      }
+    })
+  }
+
+  async findByCategory(categoryId: string) {
+    return prisma.favorite.findMany({
+      where: { categoryId },
+      orderBy: { order: 'asc' }
+    })
+  }
+
+  async findByCard(cardId: string) {
+    return prisma.cardCategory.findMany({
+      where: { cardId },
+      include: {
+        favorites: {
+          orderBy: { order: 'asc' }
         }
+      },
+      orderBy: { order: 'asc' }
+    })
+  }
 
-        const exists = await prisma.favorite.findFirst({
-            where: {
-                cardId,
-                type,
-                order,
-            }
-        })
+  async remove(id: string) {
+    return prisma.favorite.delete({
+      where: { id }
+    })
+  }
 
-        if (exists) throw new BadRequestException('Ya tienes un favorito en ese orden para este tipo')
+  async updateOrder(id: string, order: number) {
+    const favorite = await prisma.favorite.findUnique({
+      where: { id }
+    })
 
-        return prisma.favorite.create({
-            data: {
-                title,
-                imageUrl,
-                externalId,
-                type,
-                order,
-                cardId,
-            }
-        })
+    if (!favorite) {
+      throw new BadRequestException('Favorite not found')
     }
 
-    async findByCard(cardId: string) {
-        return prisma.favorite.findMany({
-            where: {
-                cardId,
-            },
-            orderBy: [
-                { type: 'asc' },
-                { order: 'asc' },
-            ]
-        })
+    if (order < 1 || order > 3) {
+      throw new BadRequestException('El orden debe ser entre 1 y 3')
     }
 
-    async remove(id: string) {
-        return prisma.favorite.delete({
-            where: { id }
-        })
+    const target = await prisma.favorite.findFirst({
+      where: {
+        categoryId: favorite.categoryId,
+        order
+      }
+    })
+
+    if (target) {
+      await prisma.favorite.update({
+        where: { id: target.id },
+        data: { order: favorite.order }
+      })
     }
 
-    async updateOrder(id: string, order: number) {
-        const favorite = await prisma.favorite.findUnique({
-            where: { id }
-        })
-
-        if (!favorite) {
-            throw new BadRequestException('Favorite not found')
-        }
-
-        const exists = await prisma.favorite.findFirst({
-            where: {
-                cardId: favorite.cardId,
-                type: favorite.type,
-                order
-            }
-        })
-
-        if (exists && exists.id !== id) {
-            throw new BadRequestException('Position already taken')
-        }
-
-        return prisma.favorite.update({
-            where: { id },
-            data: { order }
-        })
-    }
+    return prisma.favorite.update({
+      where: { id },
+      data: { order }
+    })
+  }
 }
