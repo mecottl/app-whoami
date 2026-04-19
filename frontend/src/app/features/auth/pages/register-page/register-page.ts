@@ -13,6 +13,7 @@ import { AuthService } from '../../data-access/auth.service'
 export class RegisterPageComponent {
   email = ''
   password = ''
+  name = ''
   success = ''
   error = ''
 
@@ -25,7 +26,11 @@ export class RegisterPageComponent {
     this.success = ''
     this.error = ''
 
-    this.auth.register({ email: this.email, password: this.password }).subscribe({
+    this.auth.register({ 
+      email: this.email, 
+      password: this.password,
+      name: this.name
+    }).subscribe({
       next: () => {
         this.success = 'Cuenta creada. Ahora puedes iniciar sesion.'
         this.router.navigate(['/login'])

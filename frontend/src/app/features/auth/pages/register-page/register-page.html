@@ -5,6 +5,11 @@
     <p class="auth-copy">Empieza con una base lista para cards, dashboard y futuras vistas visuales.</p>
 
     <form class="auth-form" (ngSubmit)="onSubmit()">
+      <label for="">
+        <span>Name</span>
+        <input [(ngModel)]="name" name="name" type="text" placeholder="Tu nombre" required>
+      </label>
+      
       <label>
         <span>Email</span>
         <input [(ngModel)]="email" name="email" type="email" placeholder="tu@email.com" required>

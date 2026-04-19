@@ -1,0 +1,24 @@
+<!-- src/app/features/cards/components/card-preview/card-preview.html -->
+
+<div class="preview">
+
+  <h2>{{ card.name }}</h2>
+  <p>{{ card.description }}</p>
+
+  <div [style.background]="card.favoriteColor" style="width:100px;height:20px;"></div>
+
+  @for (category of categories; track category.id) {
+    <div class="category">
+
+      <h4>{{ category.name }}</h4>
+
+      <div class="favorites">
+        @for (fav of category.favorites; track fav.id) {
+          <img [src]="fav.imageUrl" width="60" />
+        }
+      </div>
+
+    </div>
+  }
+
+</div>

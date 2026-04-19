@@ -13,8 +13,6 @@ export class CreateFavoriteDto {
   @IsString()
   externalId!: string
 
-  @IsEnum(FavoriteType)
-  type!: FavoriteType
 
   @IsInt()
   @Min(1)

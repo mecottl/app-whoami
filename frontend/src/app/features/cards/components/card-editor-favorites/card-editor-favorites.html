@@ -1,10 +1,11 @@
-<h3>{{ type }}</h3>
-
-<button (click)="remove.emit()">Eliminar categoría</button>
+<h3>{{ type }} Favorites</h3>
 
 <div class="slots">
   @for (slot of getSlots(); let i = $index; track i) {
-    <div class="slot">
+    <div
+      class="slot"
+      [style.border]="selectedSlot() === (i + 1) ? '2px solid purple' : '1px solid gray'"
+    >
 
       @if (slot) {
         <img [src]="slot.imageUrl" width="80" />
@@ -27,6 +28,7 @@
 
 @for (item of searchResults(); track $index) {
   <div>
+    <img src="{{ item.imageUrl }}" alt="{{ item.title }}">
     <span>{{ item.title }}</span>
     <button (click)="addFavorite(item)">Agregar</button>
   </div>

@@ -7,8 +7,10 @@
 @if (card()) {
 
   <h2>{{ card().name }}</h2>
+  @if (saving()) {
+  <p>Guardando...</p>
+}
 
-  <!-- 🔥 FORMULARIO COMPLETO -->
   <div>
 
     <label>
@@ -30,15 +32,6 @@
     </label>
 
     <label>
-      Edad:
-      <input
-        type="number"
-        [value]="card().age"
-        (input)="updateField('age', $event)"
-      />
-    </label>
-
-    <label>
       Color favorito:
       <input
         type="color"
@@ -53,8 +46,9 @@
         [value]="card().layout"
         (change)="updateField('layout', $event)"
       >
-        <option value="grid">Grid</option>
-        <option value="list">List</option>
+        <option value="VERTICAL">VERTICAL</option>
+        <option value="HORIZONTAL">HORIZONTAL</option>
+        <option value="SQUARE">SQUARE</option>
       </select>
     </label>
 
@@ -64,8 +58,10 @@
         [value]="card().template"
         (change)="updateField('template', $event)"
       >
-        <option value="default">Default</option>
-        <option value="modern">Modern</option>
+        <option value="DARK">DARK</option>
+        <option value="LIGHT">LIGHT</option>
+        <option value="NEON">NEON</option>
+        <option value="MINIMAL">MINIMAL</option>
       </select>
     </label>
 
@@ -79,10 +75,9 @@
 <h3>Agregar categoría</h3>
 
 <select
-  [value]="selectedCategoryToAdd()"
-  (change)="selectedCategoryToAdd.set($any($event.target).value)"
->
-  @for (type of favoriteTypes; track $index) {
+  [value]="selectedCategoryType()"
+(change)="onCategoryChange($event)">
+  @for (type of favoriteTypes; track type) {
     <option [value]="type">{{ type }}</option>
   }
 </select>
@@ -91,10 +86,26 @@
 
 <hr />
 
-@for (type of activeCategories(); track type) {
-  <app-card-editor-favorites
-    [type]="type"
-    [cardId]="id!"
-    (remove)="removeCategory(type)"
+@if (categories().length === 0) {
+  <p>No hay categorías aún</p>
+}
+
+@for (category of categories(); track category.id) {
+
+  <app-card-editor-category
+    [category]="category"
+    (remove)="removeCategory($event)"
+  />
+
+}
+
+<hr />
+
+<h2>Preview</h2>
+
+@if (card()) {
+  <app-card-preview
+    [card]="card()"
+    [categories]="categories()"
   />
 }

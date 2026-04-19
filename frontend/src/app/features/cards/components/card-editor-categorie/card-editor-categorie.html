@@ -1,0 +1,11 @@
+<app-card-editor-favorites
+  [categoryId]="category.id"
+  [type]="category.type"
+  (updated)="refresh.emit()"
+/>
+
+<app-card-editor-category
+  [category]="category"
+  (remove)="removeCategory($event)"
+  (refresh)="loadCategories()"
+/>

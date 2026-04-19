@@ -1,6 +1,6 @@
 // src/app/features/cards/components/card-editor-favorites/card-editor-favorites.ts
 
-import { Component, Input, Output, EventEmitter, signal, OnInit } from '@angular/core'
+import { Component, Input, signal, OnInit, Output, EventEmitter } from '@angular/core'
 import { CardsService } from '../../data-access/cards.service'
 import { FavoriteType } from '../../../../shared/constants/favorite-types'
 
@@ -9,7 +9,6 @@ type FavoriteItem = {
   title: string
   imageUrl: string
   externalId: string
-  type: FavoriteType
   order: number
 }
 
@@ -25,10 +24,9 @@ type SearchResultItem = {
   templateUrl: './card-editor-favorites.html'
 })
 export class CardEditorFavoritesComponent implements OnInit {
+  @Input() categoryId!: string
   @Input() type!: FavoriteType
-  @Input() cardId!: string
-
-  @Output() remove = new EventEmitter<void>()
+  @Output() updated = new EventEmitter<void>()
 
   favorites = signal<FavoriteItem[]>([])
 
@@ -37,16 +35,16 @@ export class CardEditorFavoritesComponent implements OnInit {
 
   selectedSlot = signal<number | null>(null)
 
-  constructor(private cardsService: CardsService) {}
+  constructor(private cardsService: CardsService) { }
 
   ngOnInit() {
     this.loadFavorites()
   }
 
   loadFavorites() {
-    this.cardsService.getFavorites(this.cardId).subscribe((res) => {
-      const favorites = res as FavoriteItem[]
-      this.favorites.set(favorites.filter((favorite) => favorite.type === this.type))
+    this.cardsService.getFavoritesByCategory(this.categoryId).subscribe({
+      next: (res) => this.favorites.set(res)
+
     })
   }
 
@@ -62,8 +60,8 @@ export class CardEditorFavoritesComponent implements OnInit {
       this.type === 'MOVIE'
         ? this.cardsService.searchMovies(q)
         : this.type === 'MUSIC'
-        ? this.cardsService.searchAlbums(q)
-        : null
+          ? this.cardsService.searchAlbums(q)
+          : null
 
     if (!handler) return
 
@@ -80,25 +78,25 @@ export class CardEditorFavoritesComponent implements OnInit {
       title: item.title,
       imageUrl: item.imageUrl,
       externalId: String(item.id),
-      type: this.type,
       order
     }
 
-    this.cardsService.addFavorite(this.cardId, payload).subscribe((res) => {
-      this.favorites.set([...this.favorites(), res as FavoriteItem])
-      this.selectedSlot.set(null)
-      this.searchQuery.set('')
-      this.searchResults.set([])
+    this.cardsService.addFavorite(this.categoryId, payload).subscribe({
+      next: () => {
+        this.loadFavorites()
+        this.updated.emit()
+        this.selectedSlot.set(null)
+        this.searchQuery.set('')
+        this.searchResults.set([])
+      }
     })
   }
 
   removeFavorite(id: string) {
-    this.cardsService.deleteFavorite(this.cardId, id).subscribe(() => {
-      this.favorites.set(this.favorites().filter(f => f.id !== id))
-
-      // 🔥 si queda vacío → elimina categoría
-      if (this.favorites().length === 0) {
-        this.remove.emit()
+    this.cardsService.deleteFavorite(this.categoryId,id).subscribe({
+      next: () => {
+        this.loadFavorites()
+        this.updated.emit()
       }
     })
   }

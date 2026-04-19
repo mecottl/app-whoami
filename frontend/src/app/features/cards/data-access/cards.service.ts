@@ -1,3 +1,5 @@
+// src/app/features/cards/data-access/cards.service.ts
+
 import { Injectable } from '@angular/core'
 import { ApiService } from '../../../core/services/api.service'
 import { Card, CreateCardPayload } from '../../../shared/models/card.model'
@@ -8,6 +10,7 @@ import { Card, CreateCardPayload } from '../../../shared/models/card.model'
 export class CardsService {
   constructor(private api: ApiService) { }
 
+  // 🧾 Cards
   getCards() {
     return this.api.get<Card[]>('/cards')
   }
@@ -24,18 +27,33 @@ export class CardsService {
     return this.api.patch<Card, Partial<CreateCardPayload>>(`/cards/${id}`, data)
   }
 
-  getFavorites(cardId: string) {
-    return this.api.get(`/cards/${cardId}/favorites`)
+  // 🗂️ Categories
+  getCategories(cardId: string) {
+    return this.api.get<any[]>(`/cards/${cardId}/categories`)
   }
 
-  addFavorite(cardId: string, data: any) {
-    return this.api.post(`/cards/${cardId}/favorites`, data)
+  createCategory(cardId: string, data: any) {
+    return this.api.post(`/cards/${cardId}/categories`, data)
   }
 
-  deleteFavorite(cardId: string, favoriteId: string) {
-    return this.api.delete(`/cards/${cardId}/favorites/${favoriteId}`)
+  deleteCategory(cardId: string, categoryId: string) {
+    return this.api.delete(`/cards/${cardId}/categories/${categoryId}`)
   }
 
+  // ⭐ Favorites (NUEVO)
+  getFavoritesByCategory(categoryId: string) {
+    return this.api.get<any[]>(`/categories/${categoryId}/favorites`)
+  }
+
+  addFavorite(categoryId: string, data: any) {
+    return this.api.post(`/categories/${categoryId}/favorites`, data)
+  }
+
+  deleteFavorite(categoryId: string, favoriteId: string) {
+  return this.api.delete(`/categories/${categoryId}/favorites/${favoriteId}`)
+}
+
+  // 🔍 Search
   searchMovies(query: string) {
     return this.api.get<any[]>(`/external/movies/search?q=${query}`)
   }
@@ -43,5 +61,4 @@ export class CardsService {
   searchAlbums(query: string) {
     return this.api.get<any[]>(`/external/albums/search?q=${query}`)
   }
-
 }
