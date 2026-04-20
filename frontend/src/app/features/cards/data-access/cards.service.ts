@@ -50,8 +50,8 @@ export class CardsService {
   }
 
   deleteFavorite(categoryId: string, favoriteId: string) {
-  return this.api.delete(`/categories/${categoryId}/favorites/${favoriteId}`)
-}
+    return this.api.delete(`/categories/${categoryId}/favorites/${favoriteId}`)
+  }
 
   // 🔍 Search
   searchMovies(query: string) {
@@ -60,5 +60,16 @@ export class CardsService {
 
   searchAlbums(query: string) {
     return this.api.get<any[]>(`/external/albums/search?q=${query}`)
+  }
+
+  updateFavoriteOrder(categoryId: string, id: string, order: number) {
+    return this.api.patch(`/categories/${categoryId}/favorites/${id}/order`, { order })
+  }
+
+  reorderFavorites(categoryId: string, items: { id: string; order: number }[]) {
+    return this.api.patch(
+      `/categories/${categoryId}/favorites/reorder`,
+      { items }
+    )
   }
 }

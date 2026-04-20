@@ -1,22 +1,24 @@
+<!-- src/app/features/cards/components/card-editor-favorites/card-editor-favorites.html -->
+
 <h3>{{ type }} Favorites</h3>
+<div
+  cdkDropList
+  [cdkDropListData]="favorites()"
+  (cdkDropListDropped)="drop($event)"
+  class="favorites-container"
+>
 
-<div class="slots">
-  @for (slot of getSlots(); let i = $index; track i) {
-    <div
-      class="slot"
-      [style.border]="selectedSlot() === (i + 1) ? '2px solid purple' : '1px solid gray'"
-    >
+  <div
+    *ngFor="let fav of favorites(); let i = index"
+    cdkDrag
+    class="favorite-item"
+  >
+    <img [src]="fav.imageUrl" width="80" />
+    <p>#{{ i }}</p>
+    <p>{{ fav.title }}</p>
+    <button (click)="removeFavorite(fav.id)">X</button>
+  </div>
 
-      @if (slot) {
-        <img [src]="slot.imageUrl" width="80" />
-        <p>#{{ slot.order }}</p>
-        <button (click)="removeFavorite(slot.id)">X</button>
-      } @else {
-        <button (click)="selectSlot(i + 1)">+</button>
-      }
-
-    </div>
-  }
 </div>
 
 <input
@@ -26,10 +28,8 @@
 
 <button (click)="search()">Buscar</button>
 
-@for (item of searchResults(); track $index) {
-  <div>
-    <img src="{{ item.imageUrl }}" alt="{{ item.title }}">
-    <span>{{ item.title }}</span>
-    <button (click)="addFavorite(item)">Agregar</button>
-  </div>
-}
+<div *ngFor="let item of searchResults()">
+  <img [src]="item.imageUrl" width="60" />
+  <span>{{ item.title }}</span>
+  <button (click)="addFavorite(item)">Agregar</button>
+</div>

@@ -7,7 +7,7 @@ import { UpdateOrderDto } from './dto/update-favorite.dto.js'
 
 @Controller('categories/:categoryId/favorites')
 export class FavoritesController {
-  constructor(private readonly favoritesService: FavoritesService) {}
+  constructor(private readonly favoritesService: FavoritesService) { }
 
   @Post()
   create(
@@ -35,5 +35,14 @@ export class FavoritesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.favoritesService.remove(id)
+  }
+
+
+  @Patch('reorder')
+  reorder(
+    @Param('categoryId') categoryId: string,
+    @Body() dto: { items: { id: string; order: number }[] }
+  ) {
+    return this.favoritesService.reorder(categoryId, dto.items)
   }
 }

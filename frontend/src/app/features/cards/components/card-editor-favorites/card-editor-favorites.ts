@@ -1,8 +1,8 @@
-// src/app/features/cards/components/card-editor-favorites/card-editor-favorites.ts
-
 import { Component, Input, signal, OnInit, Output, EventEmitter } from '@angular/core'
 import { CardsService } from '../../data-access/cards.service'
 import { FavoriteType } from '../../../../shared/constants/favorite-types'
+import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop'
+import { NgFor } from '@angular/common'
 
 type FavoriteItem = {
   id: string
@@ -21,7 +21,8 @@ type SearchResultItem = {
 @Component({
   selector: 'app-card-editor-favorites',
   standalone: true,
-  templateUrl: './card-editor-favorites.html'
+  templateUrl: './card-editor-favorites.html',
+  imports: [NgFor, DragDropModule]
 })
 export class CardEditorFavoritesComponent implements OnInit {
   @Input() categoryId!: string
@@ -33,8 +34,6 @@ export class CardEditorFavoritesComponent implements OnInit {
   searchQuery = signal('')
   searchResults = signal<SearchResultItem[]>([])
 
-  selectedSlot = signal<number | null>(null)
-
   constructor(private cardsService: CardsService) { }
 
   ngOnInit() {
@@ -43,13 +42,11 @@ export class CardEditorFavoritesComponent implements OnInit {
 
   loadFavorites() {
     this.cardsService.getFavoritesByCategory(this.categoryId).subscribe({
-      next: (res) => this.favorites.set(res)
-
+      next: (res) => {
+        const sorted = [...res].sort((a, b) => a.order - b.order)
+        this.favorites.set(sorted)
+      }
     })
-  }
-
-  selectSlot(slot: number) {
-    this.selectedSlot.set(slot)
   }
 
   search() {
@@ -71,8 +68,7 @@ export class CardEditorFavoritesComponent implements OnInit {
   }
 
   addFavorite(item: SearchResultItem) {
-    const order = this.selectedSlot()
-    if (!order) return
+    const order = this.favorites().length
 
     const payload = {
       title: item.title,
@@ -85,7 +81,6 @@ export class CardEditorFavoritesComponent implements OnInit {
       next: () => {
         this.loadFavorites()
         this.updated.emit()
-        this.selectedSlot.set(null)
         this.searchQuery.set('')
         this.searchResults.set([])
       }
@@ -93,7 +88,7 @@ export class CardEditorFavoritesComponent implements OnInit {
   }
 
   removeFavorite(id: string) {
-    this.cardsService.deleteFavorite(this.categoryId,id).subscribe({
+    this.cardsService.deleteFavorite(this.categoryId, id).subscribe({
       next: () => {
         this.loadFavorites()
         this.updated.emit()
@@ -101,9 +96,20 @@ export class CardEditorFavoritesComponent implements OnInit {
     })
   }
 
-  getSlots() {
-    return [1, 2, 3].map(order =>
-      this.favorites().find(f => f.order === order) || null
-    )
+  drop(event: CdkDragDrop<FavoriteItem[]>) {
+    if (event.previousIndex === event.currentIndex) return
+
+    const list = [...this.favorites()]
+
+    moveItemInArray(list, event.previousIndex, event.currentIndex)
+
+    list.forEach((item, index) => {
+      item.order = index + 1
+    })
+
+    this.favorites.set(list)
+
+    this.cardsService.reorderFavorites(this.categoryId, list)
+      .subscribe()
   }
 }

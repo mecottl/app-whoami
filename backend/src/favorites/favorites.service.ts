@@ -118,4 +118,24 @@ export class FavoritesService {
       data: { order }
     })
   }
+
+  async reorder(categoryId: string, items: { id: string; order: number }[]) {
+    return prisma.$transaction(async (tx) => {
+
+      for (const item of items) {
+        await tx.favorite.update({
+          where: { id: item.id },
+          data: { order: item.order + 100 }
+        })
+      }
+
+      for (const item of items) {
+        await tx.favorite.update({
+          where: { id: item.id },
+          data: { order: item.order }
+        })
+      }
+
+    })
+  }
 }
