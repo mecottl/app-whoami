@@ -68,7 +68,9 @@ export class CardEditorFavoritesComponent implements OnInit {
   }
 
   addFavorite(item: SearchResultItem) {
-    const order = this.favorites().length
+    const order = this.favorites().length + 1
+
+    if (order > 3) return
 
     const payload = {
       title: item.title,

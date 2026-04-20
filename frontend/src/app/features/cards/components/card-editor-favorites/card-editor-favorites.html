@@ -14,7 +14,7 @@
     class="favorite-item"
   >
     <img [src]="fav.imageUrl" width="80" />
-    <p>#{{ i }}</p>
+    <p>#{{ i + 1 }}</p>
     <p>{{ fav.title }}</p>
     <button (click)="removeFavorite(fav.id)">X</button>
   </div>
