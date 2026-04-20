@@ -5,20 +5,18 @@ import { prisma } from '../../lib/prisma.js'
 export class CategoriesService {
 
   async create(cardId: string, data: any) {
-    const { name, type } = data
-
-    const count = await prisma.cardCategory.count({
-      where: { cardId }
+    const last = await prisma.cardCategory.findFirst({
+      where: { cardId },
+      orderBy: { order: 'desc' }
     })
 
-    const order = count + 1
+    const nextOrder = last ? last.order + 1 : 1
 
     return prisma.cardCategory.create({
       data: {
-        name,
-        type,
-        order,
-        cardId
+        ...data,
+        cardId,
+        order: nextOrder
       }
     })
   }

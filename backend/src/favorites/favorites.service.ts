@@ -7,59 +7,52 @@ import { prisma } from '../../lib/prisma.js'
 export class FavoritesService {
 
   async create(categoryId: string, data: any) {
-    const { title, imageUrl, externalId, order } = data
+  const { title, imageUrl, externalId, order } = data
 
-    if (order < 1 || order > 3) {
-      throw new BadRequestException('El orden debe ser entre 1 y 3')
-    }
+  if (order < 1 || order > 3) {
+    throw new BadRequestException('El orden debe ser entre 1 y 3')
+  }
 
-    const existing = await prisma.favorite.findFirst({
-      where: { categoryId, externalId }
+  const existing = await prisma.favorite.findFirst({
+    where: { categoryId, externalId }
+  })
+
+  const target = await prisma.favorite.findFirst({
+    where: { categoryId, order }
+  })
+
+  // 🔁 mover item existente
+  if (existing) {
+    return prisma.favorite.update({
+      where: { id: existing.id },
+      data: { order }
     })
+  }
 
-    const target = await prisma.favorite.findFirst({
-      where: { categoryId, order }
-    })
-
-    // 🔁 mover item existente
-    if (existing) {
-      if (target && target.id !== existing.id) {
-        await prisma.favorite.delete({
-          where: { id: target.id }
-        })
-      }
-
-      return prisma.favorite.update({
-        where: { id: existing.id },
-        data: { order }
-      })
-    }
-
-    // 🆕 nuevo item
-    const count = await prisma.favorite.count({
-      where: { categoryId }
-    })
-
-    if (count >= 3 && !target) {
-      throw new BadRequestException('Solo puedes tener 3 favoritos por categoría')
-    }
-
-    if (target) {
-      await prisma.favorite.delete({
-        where: { id: target.id }
-      })
-    }
-
-    return prisma.favorite.create({
+  // 🔁 reemplazar contenido del slot (SIN delete)
+  if (target) {
+    return prisma.favorite.update({
+      where: { id: target.id },
       data: {
         title,
         imageUrl,
-        externalId,
-        order,
-        categoryId
+        externalId
       }
     })
   }
+
+  // 🆕 crear nuevo
+  return prisma.favorite.create({
+    data: {
+      title,
+      imageUrl,
+      externalId,
+      order,
+      categoryId
+    }
+  })
+}
+
 
   async findByCategory(categoryId: string) {
     return prisma.favorite.findMany({
