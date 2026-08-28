@@ -1,111 +1,134 @@
-<h1>Card Editor</h1>
+<section class="editor">
+  <header class="editor-head">
+    <a routerLink="/dashboard" class="btn btn-ghost btn-sm">← Cards</a>
 
-@if (loading()) {
-  <div>Loading...</div>
-}
+    <div class="save-state" [class.on]="saveState() !== 'idle'">
+      @switch (saveState()) {
+        @case ('saving') { <span>Guardando…</span> }
+        @case ('saved') { <span>✓ Guardado</span> }
+      }
+    </div>
+  </header>
 
-@if (card()) {
+  @if (loading()) {
+    <p class="muted pad">Cargando editor…</p>
+  } @else if (error() && !card()) {
+    <p class="form-error pad">{{ error() }}</p>
+  } @else if (card(); as c) {
 
-  <h2>{{ card().name }}</h2>
-  @if (saving()) {
-  <p>Guardando...</p>
-}
+    <div class="tabs">
+      <button type="button" [class.active]="tab() === 'edit'" (click)="tab.set('edit')">Editar</button>
+      <button type="button" [class.active]="tab() === 'preview'" (click)="tab.set('preview')">Preview</button>
+    </div>
 
-  <div>
+    @if (error()) {
+      <p class="form-error">{{ error() }}</p>
+    }
 
-    <label>
-      Nombre:
-      <input
-        type="text"
-        [value]="card().name"
-        (input)="updateField('name', $event)"
-      />
-    </label>
+    <div class="editor-grid">
+      <!-- ============================ SIDEBAR ============================ -->
+      <aside class="sidebar" [class.tab-hidden]="tab() !== 'edit'">
+        <div class="card panel">
+          <h2 class="panel-title">Datos</h2>
 
-    <label>
-      Descripción:
-      <input
-        type="text"
-        [value]="card().description"
-        (input)="updateField('description', $event)"
-      />
-    </label>
+          <label>
+            <span>Nombre</span>
+            <input type="text" [value]="c.name" (input)="onInput('name', $event)" />
+          </label>
 
-    <label>
-      Color favorito:
-      <input
-        type="color"
-        [value]="card().favoriteColor"
-        (input)="updateField('favoriteColor', $event)"
-      />
-    </label>
+          <label>
+            <span>Descripción <em class="count">{{ (c.description ?? '').length }}/180</em></span>
+            <textarea rows="2" maxlength="180" [value]="c.description ?? ''" (input)="onInput('description', $event)"></textarea>
+          </label>
 
-    <label>
-      Layout:
-      <select
-        [value]="card().layout"
-        (change)="updateField('layout', $event)"
-      >
-        <option value="VERTICAL">VERTICAL</option>
-        <option value="HORIZONTAL">HORIZONTAL</option>
-        <option value="SQUARE">SQUARE</option>
-      </select>
-    </label>
+          <div class="avatar-field">
+            <span class="field-label">Avatar</span>
+            <div class="avatar-row">
+              @if (c.avatarUrl) {
+                <img class="avatar-thumb" [src]="c.avatarUrl" alt="avatar" />
+              } @else {
+                <span class="avatar-thumb avatar-thumb--empty">?</span>
+              }
+              <div class="avatar-buttons">
+                <label class="btn btn-sm file-btn">
+                  {{ avatarBusy() ? 'Procesando…' : (c.avatarUrl ? 'Cambiar' : 'Subir foto') }}
+                  <input type="file" accept="image/*" (change)="onAvatarFile($event)" hidden />
+                </label>
+                @if (c.avatarUrl) {
+                  <button type="button" class="btn btn-sm btn-ghost" (click)="removeAvatar()">Quitar</button>
+                }
+              </div>
+            </div>
+          </div>
 
-    <label>
-      Template:
-      <select
-        [value]="card().template"
-        (change)="updateField('template', $event)"
-      >
-        <option value="DARK">DARK</option>
-        <option value="LIGHT">LIGHT</option>
-        <option value="NEON">NEON</option>
-        <option value="MINIMAL">MINIMAL</option>
-      </select>
-    </label>
+          <div class="row-2">
+            <label>
+              <span>Color</span>
+              <input type="color" [value]="c.favoriteColor || '#4f46e5'" (input)="onInput('favoriteColor', $event)" />
+            </label>
+            <p class="age-note">
+              @if (age() !== null) { {{ age() }} años } @else { — }
+              <small>edad (de tu perfil)</small>
+            </p>
+          </div>
 
-    <button (click)="save()">Guardar</button>
+          <div class="row-2">
+            <label>
+              <span>Layout</span>
+              <select [value]="c.layout" (change)="onInput('layout', $event)">
+                <option value="VERTICAL">Vertical 9:16</option>
+                <option value="SQUARE">Cuadrado 1:1</option>
+                <option value="HORIZONTAL">Horizontal 16:9</option>
+              </select>
+            </label>
+            <label>
+              <span>Template</span>
+              <select [value]="c.template" (change)="onInput('template', $event)">
+                <option value="DARK">Dark</option>
+                <option value="LIGHT">Light</option>
+                <option value="MINIMAL">Minimal</option>
+                <option value="NEON">Neon</option>
+              </select>
+            </label>
+          </div>
+        </div>
 
-  </div>
-}
+        <div class="card panel">
+          <h2 class="panel-title">Categorías</h2>
 
-<hr />
+          @if (availableTypes().length > 0) {
+            <div class="add-category">
+              <select [value]="newCategoryType()" (change)="newCategoryType.set($any($event.target).value)">
+                @for (type of availableTypes(); track type) {
+                  <option [value]="type">{{ label(type) }}</option>
+                }
+              </select>
+              <button type="button" class="btn btn-sm" (click)="addCategory()">Añadir</button>
+            </div>
+          } @else {
+            <p class="muted small">Ya añadiste todas las categorías.</p>
+          }
 
-<h3>Agregar categoría</h3>
+          @if (categories().length === 0) {
+            <p class="muted small">Sin categorías todavía.</p>
+          }
 
-<select
-  [value]="selectedCategoryType()"
-(change)="onCategoryChange($event)">
-  @for (type of favoriteTypes; track type) {
-    <option [value]="type">{{ type }}</option>
+          @for (category of categories(); track category.id) {
+            <app-card-editor-category
+              [category]="category"
+              (remove)="removeCategory($event)"
+              (updated)="loadCategories()"
+            />
+          }
+        </div>
+      </aside>
+
+      <!-- ============================ CANVAS ============================ -->
+      <div class="canvas" [class.tab-hidden]="tab() !== 'preview'">
+        <div class="canvas-inner">
+          <app-card-preview [card]="c" [categories]="categories()" [age]="age()" />
+        </div>
+      </div>
+    </div>
   }
-</select>
-
-<button (click)="addCategory()">Agregar</button>
-
-<hr />
-
-@if (categories().length === 0) {
-  <p>No hay categorías aún</p>
-}
-
-@for (category of categories(); track category.id) {
-
-  <app-card-editor-category
-    [category]="category"
-    (remove)="removeCategory($event)"
-  />
-
-}
-
-<hr />
-
-<h2>Preview</h2>
-
-@if (card()) {
-  <app-card-preview
-    [card]="card()"
-    [categories]="categories()"
-  />
-}
+</section>

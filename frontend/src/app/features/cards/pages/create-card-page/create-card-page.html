@@ -1,51 +1,58 @@
-<section class="create-card-page">
-  <header class="page-header">
+<section class="page create-card">
+  <header class="create-head">
     <div>
-      <p class="eyebrow">Cards</p>
-      <h1>Nueva card</h1>
-      <p class="page-copy">Define la base de identidad que despues podra crecer con favoritos y preview visual.</p>
+      <p class="eyebrow">Nueva card</p>
+      <h1>Empieza por lo básico</h1>
+      <p class="muted">Después le añades favoritos, colores y preview en el editor.</p>
     </div>
-
-    <a routerLink="/dashboard" class="btn btn-secondary">Volver al dashboard</a>
+    <a routerLink="/dashboard" class="btn btn-ghost btn-sm">Cancelar</a>
   </header>
 
-  <form class="card-form" (ngSubmit)="onSubmit()">
+  <form class="card create-form" (ngSubmit)="onSubmit()">
     <label>
       <span>Nombre</span>
-      <input [(ngModel)]="name" name="name" placeholder="Ej. Gerar Studio" required>
+      <input [(ngModel)]="name" name="name" placeholder="Ej. Gerar" required>
     </label>
 
     <label>
-      <span>Descripcion</span>
-      <textarea [(ngModel)]="description" name="description" placeholder="Una version breve de esta identidad" rows="4" required></textarea>
+      <span>Descripción <span class="opt">(opcional)</span></span>
+      <textarea [(ngModel)]="description" name="description" rows="3" maxlength="180" placeholder="Una frase que te describa"></textarea>
     </label>
 
-    <label>
-      <span>Fecha de nacimiento</span>
-      <input [(ngModel)]="birthDate" name="birthDate" type="date" required>
-    </label>
+    @if (needsBirthDate()) {
+      <label>
+        <span>Fecha de nacimiento</span>
+        <input [(ngModel)]="birthDate" name="birthDate" type="date" required>
+      </label>
+    }
 
-    <div class="card-form__row">
+    <div class="form-row">
       <label>
         <span>Layout</span>
         <select [(ngModel)]="layout" name="layout">
-          <option value="VERTICAL">Vertical</option>
-          <option value="HORIZONTAL">Horizontal</option>
-          <option value="SQUARE">Square</option>
+          <option value="VERTICAL">Vertical (9:16)</option>
+          <option value="SQUARE">Cuadrado (1:1)</option>
+          <option value="HORIZONTAL">Horizontal (16:9)</option>
         </select>
       </label>
 
       <label>
         <span>Template</span>
         <select [(ngModel)]="template" name="template">
-          <option value="NEON">Neon</option>
           <option value="DARK">Dark</option>
           <option value="LIGHT">Light</option>
           <option value="MINIMAL">Minimal</option>
+          <option value="NEON">Neon</option>
         </select>
       </label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar card</button>
+    @if (error()) {
+      <p class="form-error">{{ error() }}</p>
+    }
+
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+      {{ loading() ? 'Creando…' : 'Crear y abrir editor' }}
+    </button>
   </form>
 </section>

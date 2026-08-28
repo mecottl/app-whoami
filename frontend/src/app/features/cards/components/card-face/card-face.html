@@ -1,0 +1,48 @@
+@if (card$(); as c) {
+  <article
+    class="wa-card"
+    [class]="themeClass() + ' ' + layoutClass()"
+    [style.font-size.px]="fontSize()"
+    [style.--accent-color]="c.favoriteColor || null"
+  >
+    <header class="wa-head">
+      @if (c.avatarUrl) {
+        <img class="wa-avatar" [src]="img(c.avatarUrl)" [alt]="c.name" crossorigin="anonymous" />
+      } @else {
+        <span class="wa-avatar wa-avatar--initials">{{ initials() }}</span>
+      }
+      <div class="wa-id">
+        <h3 class="wa-name">{{ c.name || 'Sin nombre' }}</h3>
+        @if (age !== null) {
+          <p class="wa-age">{{ age }} años</p>
+        }
+      </div>
+    </header>
+
+    @if (c.description) {
+      <p class="wa-desc">{{ c.description }}</p>
+    }
+
+    <div class="wa-cats" [class.cols-2]="cols() === 2">
+      @for (cat of populated(); track cat.id) {
+        <section class="wa-cat">
+          <h4 class="wa-cat-title">{{ cat.name }}</h4>
+          <ol class="wa-favs">
+            @for (fav of cat.favorites; track fav.id; let i = $index) {
+              <li class="wa-fav">
+                <span class="wa-fav-rank">{{ i + 1 }}</span>
+                @if (fav.imageUrl) {
+                  <img [src]="img(fav.imageUrl)" [alt]="fav.title" crossorigin="anonymous" />
+                }
+                <span class="wa-fav-title">{{ fav.title }}</span>
+              </li>
+            }
+          </ol>
+        </section>
+      }
+      @if (populated().length === 0) {
+        <p class="wa-hint">Añade categorías y favoritos para verlos aquí.</p>
+      }
+    </div>
+  </article>
+}

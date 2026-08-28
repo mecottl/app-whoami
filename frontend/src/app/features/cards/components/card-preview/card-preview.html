@@ -1,24 +1,65 @@
-<!-- src/app/features/cards/components/card-preview/card-preview.html -->
-
-<div class="preview">
-
-  <h2>{{ card.name }}</h2>
-  <p>{{ card.description }}</p>
-
-  <div [style.background]="card.favoriteColor" style="width:100px;height:20px;"></div>
-
-  @for (category of categories; track category.id) {
-    <div class="category">
-
-      <h4>{{ category.name }}</h4>
-
-      <div class="favorites">
-        @for (fav of category.favorites; track fav.id) {
-          <img [src]="fav.imageUrl" width="60" />
-        }
+@if (card$(); as c) {
+  <div class="preview-wrap">
+    <div #slot class="preview-slot">
+      <div
+        class="preview-outer"
+        [style.width.px]="dims().w"
+        [style.height.px]="dims().h"
+      >
+        <div
+          #stage
+          class="stage"
+          [style.width.px]="spec().w"
+          [style.height.px]="spec().h"
+          [style.transform]="'scale(' + fit() + ')'"
+        >
+          <app-card-face [card]="c" [categories]="categories$()" [age]="age" />
+        </div>
       </div>
+    </div>
 
+    <button type="button" class="btn btn-primary btn-block" (click)="openModal()">
+      Ver en grande
+    </button>
+  </div>
+
+  @if (modalOpen()) {
+    <div class="modal-backdrop" (click)="closeModal()">
+      <div class="modal-panel" (click)="$event.stopPropagation()">
+        <div
+          class="modal-stage-frame"
+          [style.width.px]="spec().w * modalFit()"
+          [style.height.px]="spec().h * modalFit()"
+        >
+          <div
+            class="stage"
+            [style.width.px]="spec().w"
+            [style.height.px]="spec().h"
+            [style.transform]="'scale(' + modalFit() + ')'"
+          >
+            <app-card-face [card]="c" [categories]="categories$()" [age]="age" />
+          </div>
+        </div>
+
+        @if (error()) {
+          <p class="form-error">{{ error() }}</p>
+        }
+        @if (shareOk()) {
+          <p class="share-ok">✓ Compartido</p>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="btn" (click)="closeModal()">
+            ← Seguir editando
+          </button>
+          <button type="button" class="btn" [disabled]="busy()" (click)="download()">
+            Descargar
+          </button>
+          <button type="button" class="btn btn-primary" [disabled]="busy()" (click)="share()">
+            {{ busy() ? 'Preparando…' : 'Compartir' }}
+          </button>
+        </div>
+      </div>
     </div>
   }
-
-</div>
+}

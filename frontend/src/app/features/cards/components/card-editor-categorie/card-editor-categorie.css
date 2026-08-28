@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.category {
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.category-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.category-head h3 {
+  font-size: 0.95rem;
+}

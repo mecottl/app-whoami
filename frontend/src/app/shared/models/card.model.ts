@@ -4,8 +4,10 @@ export type CardTemplate = 'DARK' | 'LIGHT' | 'NEON' | 'MINIMAL'
 export interface Card {
   id: string
   name: string
-  description: string
+  description?: string | null
   birthDate: string
+  favoriteColor?: string | null
+  avatarUrl?: string | null
   layout: CardLayout
   template: CardTemplate
   createdAt?: string
@@ -14,8 +16,17 @@ export interface Card {
 
 export interface CreateCardPayload {
   name: string
-  description: string
-  birthDate: string
+  description?: string
   layout: CardLayout
   template: CardTemplate
+  birthDate?: string
+}
+
+export interface UpdateCardPayload {
+  name?: string
+  description?: string
+  layout?: CardLayout
+  template?: CardTemplate
+  favoriteColor?: string
+  avatarUrl?: string
 }

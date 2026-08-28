@@ -1,0 +1,114 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.preview-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 30rem;
+  height: 100%;
+  min-height: 0;
+  margin-inline: auto;
+}
+
+.preview-slot {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.preview-outer {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  background: var(--surface-2);
+}
+
+.stage {
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+.preview-wrap > .btn {
+  flex-shrink: 0;
+}
+
+/* en móvil: alto acotado para que la card + botón quepan sin scroll */
+@media (max-width: 959px) {
+  :host,
+  .preview-wrap {
+    height: auto;
+  }
+  .preview-slot {
+    flex: none;
+    height: 62vh;
+  }
+}
+
+/* --------------------------- modal --------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  animation: fade 120ms ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.modal-panel {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  max-width: 100%;
+}
+
+.modal-stage-frame {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.modal-actions .btn:not(.btn-primary) {
+  background: var(--surface);
+}
+
+.share-ok {
+  margin: 0;
+  color: var(--success);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 520px) {
+  .modal-actions {
+    width: 100%;
+  }
+  .modal-actions .btn {
+    flex: 1;
+  }
+}

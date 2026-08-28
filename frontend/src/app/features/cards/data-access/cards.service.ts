@@ -2,15 +2,36 @@
 
 import { Injectable } from '@angular/core'
 import { ApiService } from '../../../core/services/api.service'
-import { Card, CreateCardPayload } from '../../../shared/models/card.model'
+import { Card, CreateCardPayload, UpdateCardPayload } from '../../../shared/models/card.model'
+import { FavoriteType } from '../../../shared/constants/favorite-types'
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface CardCategory {
+  id: string
+  name: string
+  type: FavoriteType
+  order: number
+  favorites: Favorite[]
+}
+
+export interface Favorite {
+  id: string
+  title: string
+  imageUrl: string
+  externalId: string
+  order: number
+}
+
+export interface SearchResult {
+  id: string
+  title: string
+  imageUrl: string | null
+}
+
+@Injectable({ providedIn: 'root' })
 export class CardsService {
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {}
 
-  // 🧾 Cards
+  // Cards
   getCards() {
     return this.api.get<Card[]>('/cards')
   }
@@ -23,53 +44,54 @@ export class CardsService {
     return this.api.get<Card>(`/cards/${id}`)
   }
 
-  updateCard(id: string, data: Partial<CreateCardPayload>) {
-    return this.api.patch<Card, Partial<CreateCardPayload>>(`/cards/${id}`, data)
+  updateCard(id: string, data: UpdateCardPayload) {
+    return this.api.patch<Card, UpdateCardPayload>(`/cards/${id}`, data)
   }
 
-  // 🗂️ Categories
+  deleteCard(id: string) {
+    return this.api.delete<void>(`/cards/${id}`)
+  }
+
+  // Categories
   getCategories(cardId: string) {
-    return this.api.get<any[]>(`/cards/${cardId}/categories`)
+    return this.api.get<CardCategory[]>(`/cards/${cardId}/categories`)
   }
 
-  createCategory(cardId: string, data: any) {
-    return this.api.post(`/cards/${cardId}/categories`, data)
+  createCategory(cardId: string, data: { name: string; type: FavoriteType }) {
+    return this.api.post<CardCategory, { name: string; type: FavoriteType }>(
+      `/cards/${cardId}/categories`,
+      data
+    )
   }
 
   deleteCategory(cardId: string, categoryId: string) {
-    return this.api.delete(`/cards/${cardId}/categories/${categoryId}`)
+    return this.api.delete<void>(`/cards/${cardId}/categories/${categoryId}`)
   }
 
-  // ⭐ Favorites (NUEVO)
+  // Favorites
   getFavoritesByCategory(categoryId: string) {
-    return this.api.get<any[]>(`/categories/${categoryId}/favorites`)
+    return this.api.get<Favorite[]>(`/categories/${categoryId}/favorites`)
   }
 
-  addFavorite(categoryId: string, data: any) {
-    return this.api.post(`/categories/${categoryId}/favorites`, data)
+  addFavorite(categoryId: string, data: { title: string; imageUrl: string; externalId: string }) {
+    return this.api.post<Favorite, typeof data>(`/categories/${categoryId}/favorites`, data)
   }
 
   deleteFavorite(categoryId: string, favoriteId: string) {
-    return this.api.delete(`/categories/${categoryId}/favorites/${favoriteId}`)
-  }
-
-  // 🔍 Search
-  searchMovies(query: string) {
-    return this.api.get<any[]>(`/external/movies/search?q=${query}`)
-  }
-
-  searchAlbums(query: string) {
-    return this.api.get<any[]>(`/external/albums/search?q=${query}`)
-  }
-
-  updateFavoriteOrder(categoryId: string, id: string, order: number) {
-    return this.api.patch(`/categories/${categoryId}/favorites/${id}/order`, { order })
+    return this.api.delete<void>(`/categories/${categoryId}/favorites/${favoriteId}`)
   }
 
   reorderFavorites(categoryId: string, items: { id: string; order: number }[]) {
-    return this.api.patch(
+    return this.api.patch<void, { items: { id: string; order: number }[] }>(
       `/categories/${categoryId}/favorites/reorder`,
       { items }
+    )
+  }
+
+  // Search
+  search(type: FavoriteType, query: string) {
+    return this.api.get<SearchResult[]>(
+      `/external/search?type=${type}&q=${encodeURIComponent(query)}`
     )
   }
 }

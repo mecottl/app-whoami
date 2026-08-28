@@ -1,32 +1,16 @@
-// src/app/features/cards/components/card-editor-category/card-editor-category.ts
-
-import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { CardEditorFavoritesComponent } from '../card-editor-favorites/card-editor-favorites'
-import { FavoriteType } from '../../../../shared/constants/favorite-types'
+import { CardCategory } from '../../data-access/cards.service'
 
 @Component({
   selector: 'app-card-editor-category',
   standalone: true,
   imports: [CardEditorFavoritesComponent],
-  template: `
-    <div>
-      <h3>{{ category.name }}</h3>
-
-      <button (click)="onRemove()">Eliminar</button>
-
-      <app-card-editor-favorites
-        [categoryId]="category.id"
-        [type]="category.type"
-      />
-    </div>
-  `
+  templateUrl: './card-editor-categorie.html',
+  styleUrl: './card-editor-categorie.css'
 })
 export class CardEditorCategoryComponent {
-  @Input() category!: any
+  @Input({ required: true }) category!: CardCategory
   @Output() remove = new EventEmitter<string>()
-  @Output() refresh = new EventEmitter<void>()
-
-  onRemove() {
-    this.remove.emit(this.category.id)
-  }
+  @Output() updated = new EventEmitter<void>()
 }

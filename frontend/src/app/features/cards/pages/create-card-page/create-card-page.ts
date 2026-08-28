@@ -1,11 +1,9 @@
-import { Component } from '@angular/core'
+import { Component, OnInit, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { CardsService } from '../../data-access/cards.service'
-import {
-  CardLayout,
-  CardTemplate
-} from '../../../../shared/models/card.model'
+import { AuthService } from '../../../auth/data-access/auth.service'
+import { CardLayout, CardTemplate } from '../../../../shared/models/card.model'
 
 @Component({
   selector: 'app-create-card-page',
@@ -14,29 +12,48 @@ import {
   templateUrl: './create-card-page.html',
   styleUrl: './create-card-page.css'
 })
-export class CreateCardPageComponent {
+export class CreateCardPageComponent implements OnInit {
   name = ''
   description = ''
   birthDate = ''
   layout: CardLayout = 'VERTICAL'
-  template: CardTemplate = 'NEON'
+  template: CardTemplate = 'DARK'
+
+  needsBirthDate = signal(false)
+  error = signal('')
+  loading = signal(false)
 
   constructor(
     private cards: CardsService,
+    private auth: AuthService,
     private router: Router
   ) {}
 
+  ngOnInit() {
+    this.auth.me().subscribe({
+      next: (me) => this.needsBirthDate.set(!me?.birthDate)
+    })
+  }
+
   onSubmit() {
+    if (this.loading()) return
+    this.error.set('')
+    this.loading.set(true)
+
     this.cards
       .createCard({
-        name: this.name,
-        description: this.description,
-        birthDate: this.birthDate,
+        name: this.name.trim(),
+        description: this.description.trim() || undefined,
         layout: this.layout,
-        template: this.template
+        template: this.template,
+        birthDate: this.needsBirthDate() ? this.birthDate : undefined
       })
-      .subscribe(() => {
-        this.router.navigate(['/dashboard'])
+      .subscribe({
+        next: (card) => this.router.navigate(['/cards', card.id]),
+        error: () => {
+          this.loading.set(false)
+          this.error.set('No se pudo crear la card. Revisa los campos.')
+        }
       })
   }
 }

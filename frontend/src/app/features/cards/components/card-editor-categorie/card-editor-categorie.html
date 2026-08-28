@@ -1,11 +1,14 @@
-<app-card-editor-favorites
-  [categoryId]="category.id"
-  [type]="category.type"
-  (updated)="refresh.emit()"
-/>
+<div class="category">
+  <div class="category-head">
+    <h3>{{ category.name }}</h3>
+    <button type="button" class="btn btn-sm btn-danger" (click)="remove.emit(category.id)">
+      Quitar
+    </button>
+  </div>
 
-<app-card-editor-category
-  [category]="category"
-  (remove)="removeCategory($event)"
-  (refresh)="loadCategories()"
-/>
+  <app-card-editor-favorites
+    [categoryId]="category.id"
+    [type]="category.type"
+    (updated)="updated.emit()"
+  />
+</div>

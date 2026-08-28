@@ -1,35 +1,62 @@
-<!-- src/app/features/cards/components/card-editor-favorites/card-editor-favorites.html -->
-
-<h3>{{ type }} Favorites</h3>
-<div
-  cdkDropList
-  [cdkDropListData]="favorites()"
-  (cdkDropListDropped)="drop($event)"
-  class="favorites-container"
->
-
-  <div
-    *ngFor="let fav of favorites(); let i = index"
-    cdkDrag
-    class="favorite-item"
+@if (favorites().length > 0) {
+  <ul
+    class="fav-list"
+    cdkDropList
+    [cdkDropListData]="favorites()"
+    (cdkDropListDropped)="drop($event)"
   >
-    <img [src]="fav.imageUrl" width="80" />
-    <p>#{{ i + 1 }}</p>
-    <p>{{ fav.title }}</p>
-    <button (click)="removeFavorite(fav.id)">X</button>
-  </div>
+    @for (fav of favorites(); track fav.id; let i = $index) {
+      <li class="fav-item" cdkDrag>
+        <span class="fav-rank">{{ i + 1 }}</span>
+        @if (fav.imageUrl) {
+          <img class="fav-img" [src]="img(fav.imageUrl)" [alt]="fav.title" />
+        } @else {
+          <span class="fav-img fav-img--empty"></span>
+        }
+        <span class="fav-title">{{ fav.title }}</span>
+        <button type="button" class="fav-remove" (click)="removeFavorite(fav.id)" aria-label="Quitar">✕</button>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="muted small">Sin favoritos. Añade hasta 3.</p>
+}
 
-</div>
+@if (canSearch()) {
+  @if (!full()) {
+    <div class="fav-search">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)"
+        (keyup.enter)="search()"
+        [placeholder]="placeholder()"
+      />
+      <button type="button" class="btn btn-sm" [disabled]="searching()" (click)="search()">
+        {{ searching() ? '…' : 'Buscar' }}
+      </button>
+    </div>
 
-<input
-  [value]="searchQuery()"
-  (input)="searchQuery.set($any($event.target).value)"
-/>
+    @if (searchError()) {
+      <p class="muted small">{{ searchError() }}</p>
+    }
 
-<button (click)="search()">Buscar</button>
-
-<div *ngFor="let item of searchResults()">
-  <img [src]="item.imageUrl" width="60" />
-  <span>{{ item.title }}</span>
-  <button (click)="addFavorite(item)">Agregar</button>
-</div>
+    @if (searchResults().length > 0) {
+      <ul class="result-list">
+        @for (item of searchResults(); track item.id) {
+          <li class="result-item">
+            @if (item.imageUrl) {
+              <img class="result-img" [src]="img(item.imageUrl)" [alt]="item.title" />
+            } @else {
+              <span class="result-img result-img--empty"></span>
+            }
+            <span class="result-title">{{ item.title }}</span>
+            <button type="button" class="btn btn-sm" (click)="addFavorite(item)">Añadir</button>
+          </li>
+        }
+      </ul>
+    }
+  }
+} @else {
+  <p class="muted small">La búsqueda para esta categoría aún no está disponible.</p>
+}

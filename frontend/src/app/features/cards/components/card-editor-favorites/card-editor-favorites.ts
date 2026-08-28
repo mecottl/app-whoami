@@ -1,40 +1,40 @@
-import { Component, Input, signal, OnInit, Output, EventEmitter } from '@angular/core'
-import { CardsService } from '../../data-access/cards.service'
-import { FavoriteType } from '../../../../shared/constants/favorite-types'
+import { Component, Input, OnInit, Output, EventEmitter, signal, computed } from '@angular/core'
+import { CardsService, Favorite, SearchResult } from '../../data-access/cards.service'
+import {
+  FavoriteType,
+  SEARCHABLE_FAVORITE_TYPES,
+  SEARCH_PLACEHOLDERS
+} from '../../../../shared/constants/favorite-types'
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop'
-import { NgFor } from '@angular/common'
-
-type FavoriteItem = {
-  id: string
-  title: string
-  imageUrl: string
-  externalId: string
-  order: number
-}
-
-type SearchResultItem = {
-  id: string | number
-  title: string
-  imageUrl: string
-}
+import { imgProxy } from '../../../../shared/constants/api'
 
 @Component({
   selector: 'app-card-editor-favorites',
   standalone: true,
   templateUrl: './card-editor-favorites.html',
-  imports: [NgFor, DragDropModule]
+  styleUrl: './card-editor-favorites.css',
+  imports: [DragDropModule]
 })
 export class CardEditorFavoritesComponent implements OnInit {
-  @Input() categoryId!: string
-  @Input() type!: FavoriteType
+  @Input({ required: true }) categoryId!: string
+  @Input({ required: true }) type!: FavoriteType
   @Output() updated = new EventEmitter<void>()
 
-  favorites = signal<FavoriteItem[]>([])
-
+  favorites = signal<Favorite[]>([])
   searchQuery = signal('')
-  searchResults = signal<SearchResultItem[]>([])
+  searchResults = signal<SearchResult[]>([])
+  searching = signal(false)
+  searchError = signal('')
 
-  constructor(private cardsService: CardsService) { }
+  canSearch = computed(() => SEARCHABLE_FAVORITE_TYPES.includes(this.type))
+  full = computed(() => this.favorites().length >= 3)
+  placeholder = computed(() => SEARCH_PLACEHOLDERS[this.type] ?? 'Buscar…')
+
+  constructor(private cardsService: CardsService) {}
+
+  img(url: string | null) {
+    return imgProxy(url)
+  }
 
   ngOnInit() {
     this.loadFavorites()
@@ -42,51 +42,48 @@ export class CardEditorFavoritesComponent implements OnInit {
 
   loadFavorites() {
     this.cardsService.getFavoritesByCategory(this.categoryId).subscribe({
-      next: (res) => {
-        const sorted = [...res].sort((a, b) => a.order - b.order)
-        this.favorites.set(sorted)
-      }
+      next: (res) => this.favorites.set([...res].sort((a, b) => a.order - b.order))
     })
   }
 
   search() {
-    const q = this.searchQuery()
-    if (!q) return
+    const q = this.searchQuery().trim()
+    if (!q || !this.canSearch()) return
 
-    const handler =
-      this.type === 'MOVIE'
-        ? this.cardsService.searchMovies(q)
-        : this.type === 'MUSIC'
-          ? this.cardsService.searchAlbums(q)
-          : null
-
-    if (!handler) return
-
-    handler.subscribe((res: SearchResultItem[]) => {
-      this.searchResults.set(res)
+    this.searching.set(true)
+    this.searchError.set('')
+    this.cardsService.search(this.type, q).subscribe({
+      next: (res) => {
+        this.searchResults.set(res)
+        this.searching.set(false)
+      },
+      error: (err) => {
+        this.searching.set(false)
+        this.searchError.set(
+          err?.status === 503
+            ? 'Esta búsqueda no está configurada todavía.'
+            : 'No se pudo buscar.'
+        )
+      }
     })
   }
 
-  addFavorite(item: SearchResultItem) {
-    const order = this.favorites().length + 1
-
-    if (order > 3) return
-
-    const payload = {
-      title: item.title,
-      imageUrl: item.imageUrl,
-      externalId: String(item.id),
-      order
-    }
-
-    this.cardsService.addFavorite(this.categoryId, payload).subscribe({
-      next: () => {
-        this.loadFavorites()
-        this.updated.emit()
-        this.searchQuery.set('')
-        this.searchResults.set([])
-      }
-    })
+  addFavorite(item: SearchResult) {
+    if (this.full()) return
+    this.cardsService
+      .addFavorite(this.categoryId, {
+        title: item.title,
+        imageUrl: item.imageUrl ?? '',
+        externalId: String(item.id)
+      })
+      .subscribe({
+        next: () => {
+          this.loadFavorites()
+          this.updated.emit()
+          this.searchQuery.set('')
+          this.searchResults.set([])
+        }
+      })
   }
 
   removeFavorite(id: string) {
@@ -98,20 +95,22 @@ export class CardEditorFavoritesComponent implements OnInit {
     })
   }
 
-  drop(event: CdkDragDrop<FavoriteItem[]>) {
+  drop(event: CdkDragDrop<Favorite[]>) {
     if (event.previousIndex === event.currentIndex) return
 
     const list = [...this.favorites()]
-
     moveItemInArray(list, event.previousIndex, event.currentIndex)
-
-    list.forEach((item, index) => {
-      item.order = index + 1
-    })
-
+    list.forEach((item, i) => (item.order = i + 1))
     this.favorites.set(list)
 
-    this.cardsService.reorderFavorites(this.categoryId, list)
-      .subscribe()
+    this.cardsService
+      .reorderFavorites(
+        this.categoryId,
+        list.map((f) => ({ id: f.id, order: f.order }))
+      )
+      .subscribe({
+        next: () => this.updated.emit(),
+        error: () => this.loadFavorites()
+      })
   }
 }
