@@ -1,11 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <title>WhoAmI Studio</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Crea cards visuales de identidad con tus gustos y compártelas.">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    // Aplica el tema guardado antes del primer render para evitar parpadeo.
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

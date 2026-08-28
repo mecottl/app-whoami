@@ -1,30 +1,32 @@
 <section class="auth-page">
-  <article class="auth-card">
+  <article class="auth-card card">
     <p class="eyebrow">Acceso</p>
-    <h1>Entra a tu espacio creativo</h1>
-    <p class="auth-copy">Gestiona tus cards, favoritos y futuros templates desde un mismo lugar.</p>
+    <h1>Entra a tu estudio</h1>
+    <p class="auth-copy muted">Gestiona tus cards y favoritos desde un mismo lugar.</p>
 
     <form class="auth-form" (ngSubmit)="onSubmit()">
       <label>
         <span>Email</span>
-        <input [(ngModel)]="email" name="email" type="email" placeholder="tu@email.com" required>
+        <input [(ngModel)]="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required>
       </label>
 
       <label>
-        <span>Password</span>
-        <input [(ngModel)]="password" name="password" type="password" placeholder="********" required>
+        <span>Contraseña</span>
+        <input [(ngModel)]="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
       </label>
 
-      @if (error) {
-        <p class="form-error">{{ error }}</p>
+      @if (error()) {
+        <p class="form-error">{{ error() }}</p>
       }
 
-      <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+        {{ loading() ? 'Entrando…' : 'Iniciar sesión' }}
+      </button>
     </form>
 
     <p class="auth-link">
-      ¿Aun no tienes cuenta?
-      <a routerLink="/register">Registrate</a>
+      ¿Aún no tienes cuenta?
+      <a routerLink="/register">Regístrate</a>
     </p>
   </article>
 </section>

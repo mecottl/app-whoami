@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { AuthService } from '../../data-access/auth.service'
@@ -13,7 +13,8 @@ import { AuthService } from '../../data-access/auth.service'
 export class LoginPageComponent {
   email = ''
   password = ''
-  error = ''
+  error = signal('')
+  loading = signal(false)
 
   constructor(
     private auth: AuthService,
@@ -21,7 +22,9 @@ export class LoginPageComponent {
   ) {}
 
   onSubmit() {
-    this.error = ''
+    if (this.loading()) return
+    this.error.set('')
+    this.loading.set(true)
 
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: (res) => {
@@ -29,7 +32,8 @@ export class LoginPageComponent {
         this.router.navigate(['/dashboard'])
       },
       error: () => {
-        this.error = 'No se pudo iniciar sesion. Revisa tus credenciales.'
+        this.loading.set(false)
+        this.error.set('No se pudo iniciar sesión. Revisa tus credenciales.')
       }
     })
   }

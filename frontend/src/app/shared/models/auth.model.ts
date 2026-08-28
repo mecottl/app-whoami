@@ -7,6 +7,7 @@ export interface RegisterPayload {
   email: string
   password: string
   name: string
+  birthDate: string
 }
 
 export interface AuthResponse {

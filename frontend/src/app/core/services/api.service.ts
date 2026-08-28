@@ -1,36 +1,29 @@
-import { Injectable } from '@angular/core'
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Injectable, inject } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
+import { API_URL } from '../../shared/constants/api'
 
-@Injectable({
-  providedIn: 'root'
-})
+/**
+ * Cliente HTTP fino sobre el backend. El token lo añade `authInterceptor`.
+ */
+@Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000'
-
-  constructor(private http: HttpClient) { }
-
-  private headers() {
-    const token = localStorage.getItem('token')
-    return {
-      headers: new HttpHeaders({
-        Authorization: token ? `Bearer ${token}` : ''
-      })
-    }
-  }
+  private http = inject(HttpClient)
+  private baseUrl = API_URL
 
   get<T>(path: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}${path}`, this.headers())
+    return this.http.get<T>(`${this.baseUrl}${path}`)
   }
 
   post<TResponse, TBody>(path: string, body: TBody): Observable<TResponse> {
-    return this.http.post<TResponse>(`${this.baseUrl}${path}`, body, this.headers())
+    return this.http.post<TResponse>(`${this.baseUrl}${path}`, body)
   }
 
   patch<TResponse, TBody>(path: string, body: TBody): Observable<TResponse> {
-    return this.http.patch<TResponse>(`${this.baseUrl}${path}`, body, this.headers())
+    return this.http.patch<TResponse>(`${this.baseUrl}${path}`, body)
   }
-  delete<T>(path: string) {
-    return this.http.delete<T>(`${this.baseUrl}${path}`, this.headers())
+
+  delete<T>(path: string): Observable<T> {
+    return this.http.delete<T>(`${this.baseUrl}${path}`)
   }
 }
