@@ -1,55 +1,80 @@
-import { Injectable } from "@nestjs/common";
-import { prisma } from "../../lib/prisma.js"
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service.js"
 import { CreateCardDto } from "./dto/create-card.dto.js";
 import { UpdateCardDto } from "./dto/update-card.dto.js";
-import { Template, Layout } from "../../generated/prisma/enums.js";
-import { NotFoundException } from '@nestjs/common'
+import { UsersService } from "../users/users.service.js";
 
 @Injectable()
 export class CardsService {
-    create(userId: string, dto: CreateCardDto) {
-        return prisma.card.create({
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly usersService: UsersService,
+    ) {}
+
+    async create(userId: string, dto: CreateCardDto) {
+        const user = await this.usersService.findById(userId)
+        let birth = user?.birthDate ?? null
+
+        if (dto.birthDate) {
+            birth = new Date(dto.birthDate)
+            // guarda la fecha en el perfil si aún no la tenía
+            if (user && !user.birthDate) {
+                await this.prisma.user.update({
+                    where: { id: userId },
+                    data: { birthDate: birth },
+                })
+            }
+        }
+
+        if (!birth) {
+            throw new BadRequestException('Falta la fecha de nacimiento')
+        }
+
+        return this.prisma.card.create({
             data: {
-                ...dto,
-                birthDate: new Date(dto.birthDate), 
-                template: dto.template as Template,
-                layout: dto.layout as Layout,
-                userId
+                name: dto.name,
+                description: dto.description,
+                birthDate: birth,
+                template: dto.template,
+                layout: dto.layout,
+                userId,
             }
         })
     }
 
     findAll(userId: string) {
-        return prisma.card.findMany({
-            where: { userId }
+        return this.prisma.card.findMany({
+            where: { userId },
+            orderBy: { createdAt: "desc" },
         })
     }
 
     async findOne(userId: string, id: string) {
-        const card = await prisma.card.findFirst({
-            where: { userId, id}
-        })
-        if (!card) {
-            throw new NotFoundException('Card not found')
-        }
+        const card = await this.prisma.card.findFirst({ where: { id, userId } })
+        if (!card) throw new NotFoundException('Card not found')
         return card
     }
 
     async update(userId: string, id: string, dto: UpdateCardDto) {
-        return await prisma.card.update({
-            where: {id, userId},
+        await this.findOne(userId, id)
+
+        return this.prisma.card.update({
+            where: { id },
             data: {
-                ...dto,
+                name: dto.name,
+                description: dto.description,
+                favoriteColor: dto.favoriteColor,
+                avatarUrl: dto.avatarUrl,
+                template: dto.template,
+                layout: dto.layout,
                 birthDate: dto.birthDate ? new Date(dto.birthDate) : undefined,
-                template: dto.template as Template,
-                layout: dto.layout as Layout
-            }
+            },
         })
     }
 
     async remove(userId: string, id: string) {
-        return await prisma.card.delete({
-            where: { id, userId}
-        })
+        await this.findOne(userId, id)
+
+        return this.prisma.card.delete({ where: { id } })
     }
 }

@@ -1,16 +1,19 @@
-import { IsString, IsOptional, IsDateString, IsEnum } from 'class-validator'
+import { IsString, IsOptional, IsDateString, IsEnum, MaxLength } from 'class-validator'
 import { Template, Layout } from "../../../generated/prisma/enums.js"
 
 export class CreateCardDto {
   @IsString()
+  @MaxLength(80)
   name!: string
 
   @IsOptional()
   @IsString()
-  description!: string
+  @MaxLength(180)
+  description?: string
 
+  @IsOptional()
   @IsDateString()
-  birthDate!: string
+  birthDate?: string
 
   @IsEnum(Template)
   template!: Template

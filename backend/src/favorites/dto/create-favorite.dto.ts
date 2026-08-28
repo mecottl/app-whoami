@@ -1,10 +1,8 @@
-import { FavoriteType } from "../../../generated/prisma/enums.js";
-
-import { IsString, IsEnum, IsInt, Min, Max } from 'class-validator'
+import { IsString, MaxLength } from 'class-validator'
 
 export class CreateFavoriteDto {
-
   @IsString()
+  @MaxLength(200)
   title!: string
 
   @IsString()
@@ -12,11 +10,4 @@ export class CreateFavoriteDto {
 
   @IsString()
   externalId!: string
-
-
-  @IsInt()
-  @Min(1)
-  @Max(3)
-  order!: number
-  
 }

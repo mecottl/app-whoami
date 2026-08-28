@@ -1,13 +1,15 @@
-import { IsOptional, IsString, IsDateString, IsEnum } from 'class-validator'
+import { IsOptional, IsString, IsDateString, IsEnum, MaxLength } from 'class-validator'
 import { Template, Layout } from '../../../generated/prisma/enums.js'
 
 export class UpdateCardDto {
   @IsOptional()
   @IsString()
+  @MaxLength(80)
   name?: string
 
   @IsOptional()
   @IsString()
+  @MaxLength(180)
   description?: string
 
   @IsOptional()
@@ -23,5 +25,12 @@ export class UpdateCardDto {
   layout?: Layout
 
   @IsOptional()
+  @IsString()
+  @MaxLength(9)
   favoriteColor?: string
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(700000) // permite una imagen pequeña embebida como data URL
+  avatarUrl?: string
 }

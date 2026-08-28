@@ -1,70 +1,108 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { prisma } from '../../lib/prisma.js'
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { PrismaService } from '../prisma/prisma.service.js'
+import { CreateCategoryDto } from './dto/create-category.dto.js'
 
 @Injectable()
 export class CategoriesService {
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(cardId: string, data: any) {
-    const last = await prisma.cardCategory.findFirst({
+
+  private async assertCardOwner(userId: string, cardId: string) {
+    const card = await this.prisma.card.findUnique({ where: { id: cardId } })
+    if (!card) throw new NotFoundException('Card not found')
+    if (card.userId !== userId) throw new ForbiddenException()
+    return card
+  }
+
+  private async getOwnedCategory(userId: string, categoryId: string) {
+    const category = await this.prisma.cardCategory.findUnique({
+      where: { id: categoryId },
+      include: { card: { select: { userId: true } } },
+    })
+    if (!category) throw new NotFoundException('Category not found')
+    if (category.card.userId !== userId) throw new ForbiddenException()
+    return category
+  }
+
+  async create(userId: string, cardId: string, dto: CreateCategoryDto) {
+    await this.assertCardOwner(userId, cardId)
+
+    const dup = await this.prisma.cardCategory.findFirst({
+      where: { cardId, type: dto.type },
+    })
+    if (dup) {
+      throw new ConflictException('Ya existe una categoría de ese tipo en esta card')
+    }
+
+    const last = await this.prisma.cardCategory.findFirst({
       where: { cardId },
-      orderBy: { order: 'desc' }
+      orderBy: { order: 'desc' },
     })
 
     const nextOrder = last ? last.order + 1 : 1
 
-    return prisma.cardCategory.create({
+    return this.prisma.cardCategory.create({
       data: {
-        ...data,
+        name: dto.name,
+        type: dto.type,
         cardId,
-        order: nextOrder
-      }
+        order: nextOrder,
+      },
     })
   }
 
-  async findByCard(cardId: string) {
-    return prisma.cardCategory.findMany({
+  async findByCard(userId: string, cardId: string) {
+    await this.assertCardOwner(userId, cardId)
+
+    return this.prisma.cardCategory.findMany({
       where: { cardId },
       include: {
         favorites: {
-          orderBy: { order: 'asc' }
-        }
+          orderBy: { order: 'asc' },
+        },
       },
-      orderBy: { order: 'asc' }
+      orderBy: { order: 'asc' },
     })
   }
 
-  async remove(id: string) {
-    return prisma.cardCategory.delete({
-      where: { id }
+  async remove(userId: string, categoryId: string) {
+    await this.getOwnedCategory(userId, categoryId)
+
+    return this.prisma.cardCategory.delete({
+      where: { id: categoryId },
     })
   }
 
-  async updateOrder(id: string, order: number) {
-    const category = await prisma.cardCategory.findUnique({
-      where: { id }
+  async updateOrder(userId: string, categoryId: string, order: number) {
+    const category = await this.getOwnedCategory(userId, categoryId)
+
+    if (order === category.order) return category
+
+    const target = await this.prisma.cardCategory.findFirst({
+      where: { cardId: category.cardId, order },
     })
 
-    if (!category) {
-      throw new BadRequestException('Category not found')
-    }
-
-    const target = await prisma.cardCategory.findFirst({
-      where: {
-        cardId: category.cardId,
-        order
+    return this.prisma.$transaction(async (tx) => {
+      if (target) {
+        await tx.cardCategory.update({
+          where: { id: target.id },
+          data: { order: category.order + 1000 },
+        })
       }
-    })
 
-    if (target) {
-      await prisma.cardCategory.update({
-        where: { id: target.id },
-        data: { order: category.order }
+      const moved = await tx.cardCategory.update({
+        where: { id: categoryId },
+        data: { order },
       })
-    }
 
-    return prisma.cardCategory.update({
-      where: { id },
-      data: { order }
+      if (target) {
+        await tx.cardCategory.update({
+          where: { id: target.id },
+          data: { order: category.order },
+        })
+      }
+
+      return moved
     })
   }
 }

@@ -1,6 +1,8 @@
 dist/
 node_modules/
 .env
+.env.local
+.env.*.local
 [._]*.s[a-v][a-z]
 [._]*.sw[a-p]
 [._]s[a-rt-v][a-z]
@@ -11,3 +13,6 @@ node_modules/
 /generated/prisma
 
 /generated/prisma
+
+# dumps locales de datos de desarrollo
+prisma/_backup/
