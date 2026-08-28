@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { firstValueFrom } from 'rxjs'
+import type { SearchResult } from '../search-result.js'
 
 @Injectable()
 export class TmdbProvider {
@@ -9,14 +10,28 @@ export class TmdbProvider {
 
   constructor(private http: HttpService) {}
 
-  async search(query: string) {
-    const url = `${this.baseUrl}/search/movie?api_key=${this.apiKey}&query=${query}`
+  /** Solo películas (endpoint /search/movie). */
+  searchMovies(query: string) {
+    return this.query('/search/movie', query, (m) => m.title)
+  }
 
+  /** Solo series de TV (endpoint /search/tv). */
+  searchSeries(query: string) {
+    return this.query('/search/tv', query, (m) => m.name)
+  }
+
+  private async query(
+    path: string,
+    query: string,
+    title: (m: any) => string,
+  ): Promise<SearchResult[]> {
+    if (!this.apiKey) return []
+    const url = `${this.baseUrl}${path}?api_key=${this.apiKey}&query=${encodeURIComponent(query)}`
     const res = await firstValueFrom(this.http.get(url))
 
-    return res.data.results.slice(0, 5).map((m: any) => ({
+    return (res.data.results ?? []).slice(0, 8).map((m: any) => ({
       id: m.id.toString(),
-      title: m.title,
+      title: title(m),
       imageUrl: m.poster_path
         ? `https://image.tmdb.org/t/p/w500${m.poster_path}`
         : null,
