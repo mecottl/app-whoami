@@ -3,7 +3,6 @@ import { CardLayout, CardTemplate } from '../models/card.model'
 export const CARD_TEMPLATES: { value: CardTemplate; label: string; hint: string }[] = [
   { value: 'DARK', label: 'Ficha', hint: 'catálogo, monoespaciada' },
   { value: 'LIGHT', label: 'Editorial', hint: 'perfil de revista' },
-  { value: 'SWISS', label: 'Suizo', hint: 'rejilla, sans, sin adornos' },
   { value: 'MINIMAL', label: 'Minimalista', hint: 'nombre grande, aire' },
   { value: 'PRESS', label: 'Periódico', hint: 'portada de diario' },
   { value: 'VINTAGE', label: 'Antiguo', hint: 'documento envejecido' },
@@ -29,7 +28,7 @@ export const TEMPLATE_LABEL: Record<CardTemplate, string> = {
   RETRO: 'Retro',
   PIXEL: 'Pixel art',
   Y2K: 'Y2K',
-  SWISS: 'Suizo',
+  SWISS: 'Editorial',
   GRAFFITI: 'Grafiti'
 }
 

@@ -10,6 +10,8 @@
   --ink: #f2f2f4;
   --ink-soft: rgba(242, 242, 244, 0.62);
   --hair: rgba(242, 242, 244, 0.16);
+  position: relative;
+  isolation: isolate;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -165,8 +167,8 @@
 }
 .layout-vertical .wa-cats {
   flex: 1;
-  justify-content: space-evenly;
-  gap: 1.4em;
+  justify-content: flex-start;
+  gap: 1.6em;
 }
 
 /* --- SQUARE 1:1 : equilibrado --- */
@@ -176,8 +178,8 @@
 }
 .layout-square .wa-cats {
   flex: 1;
-  justify-content: center;
-  gap: 1.4em;
+  justify-content: flex-start;
+  gap: 1.5em;
 }
 
 /* --- HORIZONTAL 16:9 : identidad | listas, todo centrado --- */
@@ -309,69 +311,50 @@
   color: var(--ink-soft);
 }
 
-/* ---------- MINIMALISTA (MINIMAL) · el nombre lo ocupa todo ---------- */
+/* ---------- MINIMALISTA (MINIMAL) · nombre grande, aire, listas normales ---------- */
 .tpl-minimal {
-  background: #ffffff;
+  background: #fbfbfa;
   --ink: #0b0b0b;
   --ink-soft: rgba(11, 11, 11, 0.5);
-  --hair: rgba(11, 11, 11, 0.14);
-}
-.tpl-minimal.layout-vertical,
-.tpl-minimal.layout-square {
-  gap: 1.1em;
+  --hair: rgba(11, 11, 11, 0.16);
 }
 .tpl-minimal .wa-head {
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.55em;
+  gap: 0.6em;
 }
 .tpl-minimal .wa-avatar {
-  width: 2.4em;
-  height: 2.4em;
+  width: 2.6em;
+  height: 2.6em;
 }
 .tpl-minimal .wa-name {
-  font-size: 5em;
+  font-size: 3.4em;
   font-weight: 500;
-  line-height: 0.86;
-  letter-spacing: -0.048em;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
 }
 .tpl-minimal.layout-horizontal .wa-name {
-  font-size: 3.6em;
+  font-size: 2.8em;
 }
 .tpl-minimal.layout-square .wa-name {
-  font-size: 4em;
+  font-size: 3em;
 }
 .tpl-minimal .wa-meta {
-  font-size: 0.6em;
+  font-size: 0.62em;
 }
 .tpl-minimal .wa-desc {
-  font-size: 0.95em;
+  font-size: 0.98em;
   color: var(--ink-soft);
 }
 .tpl-minimal .wa-cats {
-  justify-content: flex-start;
-  gap: 0.9em;
   border-top: 1.5px solid currentColor;
-  padding-top: 0.95em;
+  padding-top: 1.1em;
 }
 .tpl-minimal .wa-cat-title {
   border-bottom: 0;
   padding-bottom: 0;
-  margin-bottom: 0.3em;
-  font-size: 0.6em;
+  margin-bottom: 0.5em;
   color: var(--ink-soft);
-}
-.tpl-minimal .wa-favs {
-  gap: 0.3em;
-}
-.tpl-minimal .wa-fav {
-  font-size: 0.8em;
-  gap: 0.5em;
-}
-.tpl-minimal .wa-fav img {
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 0.08em;
 }
 .tpl-minimal .wa-fav-rank {
   color: var(--ink-soft);
@@ -573,80 +556,106 @@
   filter: saturate(1.25) contrast(1.1);
 }
 
-/* ---------- FUTURISTA (FUTURE) · interfaz / HUD ---------- */
+/* ---------- FUTURISTA (FUTURE) · termografía, resplandor, grano ---------- */
 .tpl-future {
-  background-color: #07090c;
-  background-image: repeating-linear-gradient(
-    0deg,
-    color-mix(in srgb, var(--card-accent) 22%, transparent) 0 1px,
-    transparent 1px 4px
-  );
-  --ink: #e7edf1;
-  --ink-soft: rgba(231, 237, 241, 0.52);
-  --hair: color-mix(in srgb, var(--card-accent) 45%, transparent);
-  outline: 1px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
-  outline-offset: -0.8em;
+  position: relative;
+  --ink: #f3f4f6;
+  --ink-soft: rgba(243, 244, 246, 0.6);
+  --hair: rgba(243, 244, 246, 0.22);
+  --glow: var(--card-accent);
+  background:
+    radial-gradient(70% 55% at 50% 40%,
+      color-mix(in srgb, var(--glow) 90%, #fff) 0%,
+      var(--glow) 14%,
+      color-mix(in srgb, var(--glow) 55%, #05060a) 42%,
+      #05060a 78%),
+    #05060a;
+}
+/* grano fino */
+.tpl-future::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 0.5px, transparent 0.7px);
+  background-size: 3px 3px;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+/* marcas de encuadre en dos esquinas + un par de rayos */
+.tpl-future::after {
+  content: "";
+  position: absolute;
+  inset: 1.1em;
+  z-index: -1;
+  background:
+    linear-gradient(#fff, #fff) left 0 top 0 / 1.4em 1px no-repeat,
+    linear-gradient(#fff, #fff) left 0 top 0 / 1px 1.4em no-repeat,
+    linear-gradient(#fff, #fff) right 0 bottom 0 / 1.4em 1px no-repeat,
+    linear-gradient(#fff, #fff) right 0 bottom 0 / 1px 1.4em no-repeat;
+  opacity: 0.7;
+  pointer-events: none;
 }
 .tpl-future .wa-name {
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 500;
-  font-size: 1.35em;
-  letter-spacing: 0.06em;
+  font-family: "Archivo", "Public Sans", sans-serif;
+  font-weight: 900;
+  font-variation-settings: "wdth" 118;
+  font-size: 2.4em;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
-  color: var(--card-accent);
+  color: #fff;
+  text-shadow:
+    -0.02em 0 0 color-mix(in srgb, var(--glow) 70%, #00e5ff),
+    0.02em 0 0 #ff2a6d;
 }
 .tpl-future .wa-meta {
-  font-family: "JetBrains Mono", monospace;
+  font-family: "Archivo", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 .tpl-future .wa-handle {
-  color: var(--card-accent);
+  color: #fff;
 }
 .tpl-future .wa-avatar {
   border-radius: 0;
-  border: 1px solid var(--card-accent);
-  filter: saturate(0.4) brightness(1.05);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  filter: saturate(2.6) contrast(1.5) hue-rotate(-12deg) brightness(1.05);
 }
 .tpl-future .wa-avatar--initials {
   border-radius: 0;
-  background: transparent;
-  border: 1px solid var(--card-accent);
-  color: var(--card-accent);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1em;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: #fff;
+  font-family: "Archivo", sans-serif;
+  font-weight: 900;
 }
 .tpl-future .wa-desc {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.8em;
-  line-height: 1.55;
+  font-family: "Archivo", sans-serif;
+  font-size: 0.95em;
+  line-height: 1.4;
+  color: #fff;
   -webkit-line-clamp: 3;
 }
 .tpl-future .wa-cat-title {
-  font-family: "JetBrains Mono", monospace;
-  color: var(--card-accent);
-  border-bottom: 1px solid var(--hair);
-}
-.tpl-future .wa-cat-title::before {
-  content: "\25b8\00a0";
+  font-family: "Archivo", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 .tpl-future .wa-fav {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.82em;
-  gap: 0.7em;
+  font-family: "Archivo", sans-serif;
 }
 .tpl-future .wa-fav-rank {
-  color: var(--card-accent);
-}
-.tpl-future .wa-fav-rank::before {
-  content: "[";
-}
-.tpl-future .wa-fav-rank::after {
-  content: "]";
+  color: #fff;
+  opacity: 0.7;
 }
 .tpl-future .wa-fav img {
   border-radius: 0;
-  border: 1px solid var(--hair);
-  width: 2em;
-  height: 2em;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  filter: saturate(2.2) contrast(1.4) hue-rotate(-12deg);
 }
 
 /* ---------- ANTIGUO (VINTAGE) · documento envejecido ---------- */
@@ -717,109 +726,151 @@
   border-radius: 0;
 }
 
-/* ---------- GLASSMORPHISM (GLASS) · cristal esmerilado ---------- */
+/* ---------- GLASSMORPHISM (GLASS) · cristal líquido, luz de color ---------- */
 .tpl-glass {
+  position: relative;
+  --ink: #1b1b24;
+  --ink-soft: rgba(27, 27, 36, 0.62);
+  --hair: rgba(27, 27, 36, 0.14);
+  --g: var(--card-accent);
+  background: #e9e6e2;
+}
+/* charcos de luz de color detrás del cristal */
+.tpl-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background:
-    radial-gradient(120% 90% at 12% 0%, color-mix(in srgb, var(--card-accent) 55%, #0b1020), transparent 60%),
-    radial-gradient(120% 90% at 100% 100%, color-mix(in srgb, var(--card-accent) 40%, #0b1020), transparent 55%),
-    #0b1020;
-  --ink: #f4f6ff;
-  --ink-soft: rgba(244, 246, 255, 0.66);
-  --hair: rgba(255, 255, 255, 0.22);
+    radial-gradient(42% 34% at 80% 14%, color-mix(in srgb, var(--g) 75%, #ff8fc8) 0%, transparent 68%),
+    radial-gradient(48% 42% at 8% 26%, #7c62ffcc 0%, transparent 66%),
+    radial-gradient(52% 44% at 92% 94%, #35e0c8cc 0%, transparent 66%),
+    radial-gradient(44% 38% at 20% 100%, color-mix(in srgb, var(--g) 60%, #ffc861) 0%, transparent 70%);
+  filter: saturate(1.35);
+  pointer-events: none;
 }
 .tpl-glass .wa-avatar,
 .tpl-glass .wa-avatar--initials {
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0.6em 1.4em -0.4em rgba(40, 30, 70, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+.tpl-glass .wa-avatar--initials {
+  color: var(--ink);
+  font-weight: 700;
 }
 .tpl-glass .wa-name {
-  font-weight: 500;
-  font-size: 2.1em;
+  font-weight: 700;
+  font-size: 2.2em;
+  letter-spacing: -0.02em;
 }
 .tpl-glass .wa-desc {
-  color: var(--ink-soft);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 1.2em;
+  padding: 0.75em 1em;
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 1em 2em -0.6em rgba(40, 30, 70, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .tpl-glass .wa-cat {
-  background: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 1.1em;
-  padding: 0.9em 1em;
+  position: relative;
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 1.4em;
+  padding: 0.95em 1.05em;
+  box-shadow:
+    0 1.2em 2.4em -0.8em rgba(40, 30, 70, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+/* borde cromático que "refracta" */
+.tpl-glass .wa-cat::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 210deg, #ff9ecb, #8f7bff, #57e6d0, #ffd27a, #ff9ecb);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.5;
+  pointer-events: none;
 }
 .tpl-glass .wa-cat-title {
+  display: inline-block;
   color: #fff;
-  border-bottom-color: rgba(255, 255, 255, 0.2);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.2em 0.9em;
+  letter-spacing: 0.1em;
+  background: linear-gradient(160deg,
+    color-mix(in srgb, var(--g) 78%, #fff),
+    color-mix(in srgb, var(--g) 42%, #fff));
+  box-shadow: 0 0.35em 0.8em -0.2em color-mix(in srgb, var(--g) 55%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 .tpl-glass .wa-fav img {
-  border-radius: 0.4em;
-  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5em;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 .tpl-glass .wa-fav-rank {
-  color: #fff;
+  color: var(--g);
+  font-weight: 700;
 }
 
-/* ---------- RETRO (RETRO) · verano del 70, papel y arcoíris ---------- */
+/* ---------- RETRO (RETRO) · póster de rock 70s, estallido y semitono ---------- */
 .tpl-retro {
   position: relative;
-  --ink: #4a2f1e;
-  --ink-soft: rgba(74, 47, 30, 0.68);
-  --hair: rgba(74, 47, 30, 0.3);
-  --r1: #c8622b;
-  --r2: #d99a3c;
-  --r3: #3f9a92;
-  background: #f5e6bf;
+  --ink: #3a1f14;
+  --ink-soft: rgba(58, 31, 20, 0.66);
+  --hair: rgba(58, 31, 20, 0.28);
+  --r-red: #cf3b28;
+  --r-blue: #2f6fae;
+  --r-yellow: #edc531;
+  --paper: #e9e2ae;
+  background: var(--paper);
 }
-/* arcoíris concéntrico desde la esquina inferior izquierda (sin desbordar) */
+/* estallido azul dentado detrás del nombre */
 .tpl-retro::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(
-    circle at -1em calc(100% + 1em),
-    transparent 0 8em,
-    var(--r1) 8em 9.5em,
-    transparent 9.5em 10.6em,
-    var(--r2) 10.6em 12.1em,
-    transparent 12.1em 13.2em,
-    var(--r3) 13.2em 14.7em,
-    transparent 14.7em 15.8em,
-    var(--ink) 15.8em 17.3em,
-    transparent 17.3em
-  );
+  background: repeating-conic-gradient(from 4deg at 30% 15%,
+    var(--r-blue) 0deg 9deg, transparent 9deg 19deg);
+  -webkit-mask: radial-gradient(11em 11em at 30% 15%, #000 44%, transparent 62%);
+  mask: radial-gradient(11em 11em at 30% 15%, #000 44%, transparent 62%);
   opacity: 0.92;
   pointer-events: none;
 }
-/* rejilla de círculos dobles, esquina superior derecha */
+/* semitono */
 .tpl-retro::after {
   content: "";
   position: absolute;
-  right: 1.4em;
-  top: 1.4em;
-  width: 5.5em;
-  height: 7em;
+  inset: 0;
   z-index: -1;
-  background: radial-gradient(
-    circle at center,
-    var(--r1) 22%,
-    transparent 24%,
-    transparent 40%,
-    var(--r1) 42%,
-    transparent 46%
-  );
-  background-size: 1.8em 2.3em;
-  opacity: 0.5;
+  background: radial-gradient(rgba(58, 31, 20, 0.55) 1.1px, transparent 1.4px);
+  background-size: 0.72em 0.72em;
+  opacity: 0.22;
   pointer-events: none;
 }
 .tpl-retro .wa-name {
   font-family: "Pacifico", "Fraunces", cursive;
   font-weight: 400;
-  font-size: 2em;
-  line-height: 1.15;
+  font-size: 2.15em;
+  line-height: 1.12;
   letter-spacing: 0;
-  color: var(--ink);
-  text-shadow: 0.05em 0.05em 0 var(--r3);
+  color: var(--r-red);
+  -webkit-text-stroke: 0.03em #7a1f14;
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.06em 0 #7a1f14;
 }
 .tpl-retro .wa-meta,
 .tpl-retro .wa-cat-title,
@@ -828,49 +879,53 @@
   text-transform: uppercase;
 }
 .tpl-retro .wa-handle {
-  color: var(--r1);
-  font-weight: 700;
+  color: var(--r-blue);
+  font-weight: 800;
 }
 .tpl-retro .wa-avatar,
 .tpl-retro .wa-avatar--initials {
-  border-radius: 0.6em;
-  border: 0.18em solid var(--ink);
-  filter: sepia(0.35) saturate(1.2);
+  border-radius: 999px;
+  border: 0.2em solid var(--ink);
+  filter: sepia(0.3) saturate(1.25) contrast(1.05);
 }
 .tpl-retro .wa-avatar--initials {
   font-family: "Pacifico", cursive;
-  background: var(--r2);
-  color: var(--ink);
+  background: var(--r-yellow);
+  color: var(--r-red);
   filter: none;
 }
 .tpl-retro .wa-desc {
   font-family: "Archivo", "Public Sans", sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ink);
 }
 .tpl-retro .wa-cat-title {
-  color: var(--r1);
+  color: var(--r-red);
   border-bottom: 0;
   font-weight: 800;
-  letter-spacing: 0.14em;
-  font-size: 0.78em;
+  letter-spacing: 0.12em;
+  font-size: 0.8em;
+}
+.tpl-retro .wa-cat-title::before {
+  content: "\2605\00a0";
+  color: var(--r-blue);
 }
 .tpl-retro .wa-cat-title::after {
-  content: " \00b7\00b7\00b7\00b7\00b7\00b7";
+  content: " \00b7\00b7\00b7\00b7\00b7";
   letter-spacing: 0.1em;
-  opacity: 0.7;
+  opacity: 0.65;
 }
 .tpl-retro .wa-fav {
   font-weight: 600;
 }
 .tpl-retro .wa-fav-rank {
-  color: var(--r3);
-  font-weight: 800;
+  color: var(--r-blue);
+  font-weight: 900;
 }
 .tpl-retro .wa-fav img {
-  border-radius: 0.35em;
+  border-radius: 0.3em;
   border: 0.12em solid var(--ink);
-  filter: sepia(0.3) saturate(1.15);
+  filter: sepia(0.28) saturate(1.15) contrast(1.05);
 }
 
 /* ---------- PIXEL ART (PIXEL) · arcade, 8-bit ---------- */
@@ -970,209 +1025,120 @@
   height: 2.2em;
 }
 
-/* ---------- Y2K (Y2K) · cromo, holo y estrellas ---------- */
+/* ---------- Y2K (Y2K) · cromo líquido, holo, código de barras ---------- */
 .tpl-y2k {
   position: relative;
-  --ink: #1e2f66;
-  --ink-soft: rgba(30, 47, 102, 0.6);
-  --hair: rgba(30, 47, 102, 0.28);
+  --ink: #26235c;
+  --ink-soft: rgba(38, 35, 92, 0.62);
+  --hair: rgba(38, 35, 92, 0.24);
   background:
-    linear-gradient(150deg, #ff8fd0 0%, #b98ee8 42%, #7fd8f2 100%);
+    linear-gradient(195deg, #c9b6ee 0%, #b7a2e6 45%, #a2c0e6 100%);
 }
-/* estrella / destello detrás del header */
+/* escaneo vertical muy sutil + brillo */
 .tpl-y2k::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: repeating-conic-gradient(
-    from 8deg at 26% 14%,
-    rgba(255, 255, 255, 0.5) 0deg 7deg,
-    transparent 7deg 20deg
-  );
-  -webkit-mask: radial-gradient(9em 9em at 26% 14%, #000 12%, rgba(0, 0, 0, 0.35) 45%, transparent 72%);
-  mask: radial-gradient(9em 9em at 26% 14%, #000 12%, rgba(0, 0, 0, 0.35) 45%, transparent 72%);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 3px),
+    radial-gradient(60% 40% at 85% 6%, rgba(255, 255, 255, 0.5), transparent 70%);
   pointer-events: none;
 }
-/* piso de rejilla en perspectiva + escaneo */
+/* estrella cromada de 4 puntas, esquina inferior derecha */
 .tpl-y2k::after {
   content: "";
   position: absolute;
-  inset: 0;
+  right: 1.4em;
+  bottom: 1.6em;
+  width: 3.8em;
+  height: 3.8em;
   z-index: -1;
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 5px),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.4), transparent 30%);
-  background-position: 0 bottom;
-  background-size: 100% 100%, 100% 8em;
-  background-repeat: no-repeat;
+  background: conic-gradient(from 210deg,
+    #ffffff, #cdd5ef, #7f8bc4, #f0ecff, #9aa4d6, #ffffff, #b7bfe4, #ffffff);
+  clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  filter: drop-shadow(0 0.2em 0.35em rgba(38, 35, 92, 0.4));
+  opacity: 0.92;
   pointer-events: none;
 }
 .tpl-y2k .wa-name {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "Archivo", "Public Sans", sans-serif;
   font-style: italic;
-  font-weight: 700;
-  font-size: 2.6em;
+  font-weight: 900;
+  font-variation-settings: "wdth" 120;
+  font-size: 2.5em;
+  line-height: 0.95;
   letter-spacing: -0.01em;
-  background: linear-gradient(180deg, #ffffff 0%, #dfe9fb 34%, #7f9ed6 50%, #34508f 52%, #c9d8f4 68%, #ffffff 100%);
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 0%, #e7ecfb 32%, #8f9bd6 49%, #3a4a94 52%, #cdd6f4 70%, #ffffff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 0.02em #1e2f66;
-  filter: drop-shadow(0.05em 0.06em 0 #ff5bb8);
+  -webkit-text-stroke: 0.018em #26235c;
+  filter: drop-shadow(0.05em 0.07em 0 #ff59c3);
+}
+.tpl-y2k .wa-meta {
+  font-family: "Archivo", sans-serif;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 .tpl-y2k .wa-handle {
-  color: #ff2e9a;
+  color: #ff2ea6;
   font-weight: 700;
 }
 .tpl-y2k .wa-avatar,
 .tpl-y2k .wa-avatar--initials {
-  border: 0.22em solid #fff;
-  box-shadow: 0 0 0 0.14em #7f9ed6, 0 0.25em 0.7em rgba(30, 47, 102, 0.4);
+  border: 0.2em solid #fff;
+  box-shadow:
+    0 0 0 0.12em #8f9bd6,
+    0 0.3em 0.8em rgba(38, 35, 92, 0.4);
 }
 .tpl-y2k .wa-avatar--initials {
-  font-family: "Fraunces", serif;
+  font-family: "Archivo", sans-serif;
   font-style: italic;
-  background: linear-gradient(180deg, #f2f7ff, #9db9e4 55%, #5f7fbb);
-  color: #1e2f66;
+  font-weight: 900;
+  background: linear-gradient(180deg, #f4f6ff, #a7b3e2 55%, #6b78b8);
+  color: #26235c;
 }
 .tpl-y2k .wa-desc {
-  color: #1e2f66;
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: #26235c;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.75);
   border-radius: 1em;
-  padding: 0.6em 0.9em;
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  padding: 0.65em 0.95em;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 .tpl-y2k .wa-cat-title {
   display: inline-block;
-  font-weight: 700;
-  color: #1e2f66;
-  background: linear-gradient(180deg, #ffffff, #cfe0f7 55%, #a9c4ea);
+  font-style: italic;
+  font-weight: 800;
+  color: #26235c;
+  background: linear-gradient(180deg, #ffffff, #dae0f7 52%, #b7c1ea);
   border: 1px solid #fff;
   border-radius: 999px;
-  padding: 0.14em 0.85em;
-  letter-spacing: 0.08em;
-  box-shadow: 0 0.15em 0.4em rgba(30, 47, 102, 0.3);
+  padding: 0.12em 0.9em;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0.2em 0.45em rgba(38, 35, 92, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 .tpl-y2k .wa-cat-title::before {
   content: "\2726\00a0";
-  color: #ff2e9a;
+  color: #ff2ea6;
 }
 .tpl-y2k .wa-fav {
-  background: rgba(255, 255, 255, 0.28);
-  border-radius: 0.6em;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 0.55em;
   padding: 0.2em 0.5em;
 }
 .tpl-y2k .wa-fav img {
-  border-radius: 0.5em;
+  border-radius: 0.45em;
   border: 1px solid #fff;
 }
 .tpl-y2k .wa-fav-rank {
-  color: #ff2e9a;
-  font-weight: 700;
-}
-
-/* ---------- SUIZO / BAUHAUS (SWISS) · rejilla, un acento ---------- */
-.tpl-swiss {
-  position: relative;
-  --ink: #111111;
-  --ink-soft: rgba(17, 17, 17, 0.55);
-  --hair: #111111;
-  background: #f1ece2;
-}
-.tpl-swiss .wa-card,
-.tpl-swiss .wa-name,
-.tpl-swiss .wa-cat-title,
-.tpl-swiss .wa-fav,
-.tpl-swiss .wa-fav-title,
-.tpl-swiss .wa-meta,
-.tpl-swiss .wa-desc {
-  font-family: "Archivo", "Public Sans", "Helvetica Neue", Arial, sans-serif;
-}
-/* gran círculo de acento, medio fuera por la derecha (sin desbordar abajo) */
-.tpl-swiss::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(
-    circle at 108% 34%,
-    var(--card-accent) 0 7.5em,
-    transparent 7.5em
-  );
-  pointer-events: none;
-}
-/* rejilla de puntos, esquina inferior derecha */
-.tpl-swiss::after {
-  content: "";
-  position: absolute;
-  right: 1.6em;
-  bottom: 1.6em;
-  width: 6em;
-  height: 4.4em;
-  z-index: -1;
-  background-image: radial-gradient(#111 1.6px, transparent 1.8px);
-  background-size: 1.1em 1.1em;
-  pointer-events: none;
-}
-.tpl-swiss .wa-name {
-  font-weight: 900;
-  font-size: 3.1em;
-  line-height: 0.86;
-  letter-spacing: -0.045em;
-  text-transform: lowercase;
-}
-.tpl-swiss .wa-meta {
-  font-size: 0.62em;
-  letter-spacing: 0.02em;
-}
-.tpl-swiss .wa-handle {
-  color: var(--card-accent);
-}
-.tpl-swiss .wa-avatar,
-.tpl-swiss .wa-avatar--initials {
-  border-radius: 0;
-  border: 1px solid #111;
-  filter: grayscale(1) contrast(1.05);
-}
-.tpl-swiss .wa-avatar--initials {
-  font-weight: 900;
-  background: #111;
-  color: #f1ece2;
-  filter: none;
-}
-.tpl-swiss .wa-desc {
-  font-weight: 400;
-  color: var(--ink);
-  border-top: 1px solid #111;
-  padding-top: 0.55em;
-  max-width: 30ch;
-}
-.tpl-swiss .wa-cat-title {
-  color: #111;
-  border-top: 2px solid #111;
-  border-bottom: 0;
-  padding: 0.4em 0 0;
-  margin-bottom: 0.7em;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  font-size: 0.74em;
-  font-weight: 700;
-}
-.tpl-swiss .wa-cat:nth-child(1) .wa-cat-title { border-top-color: var(--card-accent); }
-.tpl-swiss .wa-fav {
-  border-bottom: 1px solid rgba(17, 17, 17, 0.25);
-  padding-bottom: 0.45em;
-}
-.tpl-swiss .wa-fav-rank {
-  color: var(--card-accent);
-  font-weight: 900;
-}
-.tpl-swiss .wa-fav img {
-  border-radius: 0;
-  filter: grayscale(1) contrast(1.05);
+  color: #ff2ea6;
+  font-weight: 800;
+  font-style: italic;
 }
 
 /* ---------- GRAFITI (GRAFFITI) · muro, spray, cartel roto ---------- */
