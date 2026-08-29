@@ -1,6 +1,6 @@
 /* ===========================================================================
    WhoAmI Studio — sistema de diseño
-   Dirección: "liner notes" editoriales. Papel cálido, tinta, bermellón.
+   Dirección: estudio / galería. Gris casi neutro, tinta, un cobalto eléctrico.
    Fraunces (display) · Public Sans (texto) · JetBrains Mono (etiquetas).
    =========================================================================== */
 
@@ -11,39 +11,38 @@
   --font-sans: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* papel */
-  --bg: #f4f0e6;
-  --bg-deep: #ece6d7;
-  --surface: #faf7ef;
-  --surface-2: #f0ebde;
-  --paper-line: #e4dcc8;
+  /* superficies */
+  --bg: #f5f5f4;
+  --bg-deep: #ececeb;
+  --surface: #ffffff;
+  --surface-2: #efefee;
+  --paper-line: #e2e2e0;
 
   /* tinta */
-  --text: #191712;
-  --text-muted: #6c6456;
-  --text-faint: #9c9484;
+  --text: #141416;
+  --text-muted: #5d5e64;
+  --text-faint: #929399;
 
-  --border: rgba(25, 23, 18, 0.14);
-  --border-strong: rgba(25, 23, 18, 0.26);
+  --border: rgba(18, 18, 22, 0.12);
+  --border-strong: rgba(18, 18, 22, 0.24);
 
-  /* acentos */
-  --accent: #d1402a;
-  --accent-hover: #b8341f;
-  --accent-contrast: #fdf6ee;
-  --accent-soft: rgba(209, 64, 42, 0.12);
-  --stamp: #2f4b6b;
+  /* acento — cobalto plano */
+  --accent: #1330e6;
+  --accent-hover: #0f27bd;
+  --accent-contrast: #ffffff;
+  --accent-soft: rgba(19, 48, 230, 0.1);
 
-  --danger: #c0392b;
-  --danger-soft: rgba(192, 57, 43, 0.12);
-  --success: #3f7d3a;
+  --danger: #d23a2c;
+  --danger-soft: rgba(210, 58, 44, 0.12);
+  --success: #12793e;
 
-  --shadow-sm: 0 1px 2px rgba(25, 23, 18, 0.08);
-  --shadow-md: 0 10px 34px rgba(25, 23, 18, 0.12);
-  --shadow-lg: 0 28px 70px rgba(25, 23, 18, 0.2);
+  --shadow-sm: 0 1px 2px rgba(18, 18, 22, 0.07);
+  --shadow-md: 0 12px 32px rgba(18, 18, 22, 0.1);
+  --shadow-lg: 0 30px 72px rgba(18, 18, 22, 0.16);
 
-  --radius-sm: 0.35rem;
-  --radius: 0.55rem;
-  --radius-lg: 1rem;
+  --radius-sm: 0.25rem;
+  --radius: 0.4rem;
+  --radius-lg: 0.7rem;
 
   --header-h: 3.75rem;
 }
@@ -51,64 +50,62 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #17140f;
-  --bg-deep: #100e0a;
-  --surface: #201c16;
-  --surface-2: #29241d;
-  --paper-line: #322b21;
+  --bg: #131315;
+  --bg-deep: #0d0d0f;
+  --surface: #1b1b1e;
+  --surface-2: #242428;
+  --paper-line: #303035;
 
-  --text: #f1ebdd;
-  --text-muted: #a49a86;
-  --text-faint: #756c5c;
+  --text: #f1f1f3;
+  --text-muted: #9a9ba2;
+  --text-faint: #6a6b73;
 
-  --border: rgba(241, 235, 221, 0.14);
-  --border-strong: rgba(241, 235, 221, 0.28);
+  --border: rgba(241, 241, 243, 0.13);
+  --border-strong: rgba(241, 241, 243, 0.26);
 
-  --accent: #e85f42;
-  --accent-hover: #f2765b;
-  --accent-contrast: #1a1510;
-  --accent-soft: rgba(232, 95, 66, 0.16);
-  --stamp: #7ba0c6;
+  --accent: #5f7bff;
+  --accent-hover: #7d92ff;
+  --accent-contrast: #0b0b1c;
+  --accent-soft: rgba(95, 123, 255, 0.16);
 
-  --danger: #e8695a;
-  --danger-soft: rgba(232, 105, 90, 0.16);
-  --success: #6cbf63;
+  --danger: #ef6a5c;
+  --danger-soft: rgba(239, 106, 92, 0.16);
+  --success: #55c47c;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 10px 34px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.65);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 30px 72px rgba(0, 0, 0, 0.65);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --bg: #17140f;
-    --bg-deep: #100e0a;
-    --surface: #201c16;
-    --surface-2: #29241d;
-    --paper-line: #322b21;
+    --bg: #131315;
+    --bg-deep: #0d0d0f;
+    --surface: #1b1b1e;
+    --surface-2: #242428;
+    --paper-line: #303035;
 
-    --text: #f1ebdd;
-    --text-muted: #a49a86;
-    --text-faint: #756c5c;
+    --text: #f1f1f3;
+    --text-muted: #9a9ba2;
+    --text-faint: #6a6b73;
 
-    --border: rgba(241, 235, 221, 0.14);
-    --border-strong: rgba(241, 235, 221, 0.28);
+    --border: rgba(241, 241, 243, 0.13);
+    --border-strong: rgba(241, 241, 243, 0.26);
 
-    --accent: #e85f42;
-    --accent-hover: #f2765b;
-    --accent-contrast: #1a1510;
-    --accent-soft: rgba(232, 95, 66, 0.16);
-    --stamp: #7ba0c6;
+    --accent: #5f7bff;
+    --accent-hover: #7d92ff;
+    --accent-contrast: #0b0b1c;
+    --accent-soft: rgba(95, 123, 255, 0.16);
 
-    --danger: #e8695a;
-    --danger-soft: rgba(232, 105, 90, 0.16);
-    --success: #6cbf63;
+    --danger: #ef6a5c;
+    --danger-soft: rgba(239, 106, 92, 0.16);
+    --success: #55c47c;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 10px 34px rgba(0, 0, 0, 0.55);
-    --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.65);
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 30px 72px rgba(0, 0, 0, 0.65);
   }
 }
 
@@ -139,21 +136,20 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* grano de papel */
+/* textura muy tenue */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.4;
-  mix-blend-mode: soft-light;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-:root[data-theme="dark"] body::before {
   opacity: 0.22;
-  mix-blend-mode: overlay;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] body::before {
+  opacity: 0.3;
+  mix-blend-mode: screen;
 }
 
 h1,
@@ -161,9 +157,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
   font-optical-sizing: auto;
 }
 
@@ -252,9 +248,9 @@ label {
 .field-label,
 label > span:first-child {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -274,7 +270,6 @@ label > span:first-child {
   min-height: 2.6rem;
   font-size: 0.92rem;
   font-weight: 500;
-  letter-spacing: 0.01em;
   border: 1px solid var(--_bd);
   border-radius: var(--radius);
   background: var(--_bg);
@@ -351,7 +346,7 @@ label > span:first-child {
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -367,7 +362,7 @@ label > span:first-child {
   align-items: center;
   padding: 0.2rem 0.55rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;

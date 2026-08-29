@@ -19,41 +19,30 @@ export class LandingPageComponent {
     location: 'CDMX',
     description: 'Diseño de producto de día, discos raros de noche.',
     birthDate: '1997-04-12T00:00:00.000Z',
-    favoriteColor: '#d1402a',
+    favoriteColor: '#1330e6',
     avatarUrl: '',
     layout: 'VERTICAL',
-    template: 'DARK'
+    template: 'LIGHT'
   }
 
   readonly demoCategories: CardCategory[] = [
     {
       id: 'c1',
-      name: 'Discos',
-      type: 'MUSIC',
+      name: 'Películas',
+      type: 'MOVIE',
       order: 1,
       favorites: [
-        { id: 'f1', title: 'In Rainbows', imageUrl: '', externalId: '1', order: 1 },
-        { id: 'f2', title: 'Blonde', imageUrl: '', externalId: '2', order: 2 },
-        { id: 'f3', title: 'Discovery', imageUrl: '', externalId: '3', order: 3 }
+        { id: 'f1', title: 'Dune: Part Two', imageUrl: 'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg', externalId: '1', order: 1 },
+        { id: 'f2', title: 'Interstellar', imageUrl: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', externalId: '2', order: 2 }
       ]
     },
     {
       id: 'c2',
-      name: 'Películas',
-      type: 'MOVIE',
+      name: 'Discos',
+      type: 'MUSIC',
       order: 2,
       favorites: [
-        { id: 'f4', title: 'Perfect Days', imageUrl: '', externalId: '4', order: 1 },
-        { id: 'f5', title: 'La La Land', imageUrl: '', externalId: '5', order: 2 }
-      ]
-    },
-    {
-      id: 'c3',
-      name: 'Libros',
-      type: 'BOOK',
-      order: 3,
-      favorites: [
-        { id: 'f6', title: 'Solaris — Stanisław Lem', imageUrl: '', externalId: '6', order: 1 }
+        { id: 'f3', title: 'Random Access Memories', imageUrl: 'https://cdn-images.dzcdn.net/images/cover/311bba0fc112d15f72c8b5a65f0456c1/250x250-000000-80-0-0.jpg', externalId: '3', order: 1 }
       ]
     }
   ]

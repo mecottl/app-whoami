@@ -35,10 +35,11 @@ export class CardFaceComponent {
 
   private layout = computed(() => this._card()?.layout ?? 'VERTICAL')
 
+  template = computed(() => this._card()?.template ?? 'DARK')
   layoutClass = computed(() => `layout-${this.layout().toLowerCase()}`)
-  themeClass = computed(
-    () => `tpl-${(this._card()?.template ?? 'DARK').toLowerCase()}`
-  )
+  themeClass = computed(() => `tpl-${this.template().toLowerCase()}`)
+  /** "Etiqueta" (NEON) muestra los favoritos como chips, no como lista. */
+  chipsMode = computed(() => this.template() === 'NEON')
   populated = computed(() =>
     this._categories().filter((c) => c.favorites?.length)
   )
@@ -75,9 +76,10 @@ export class CardFaceComponent {
     em += rows * (2.1 + favsPerRow * 2.7) // por fila: título + favoritos
     em += (rows - 1) * 1.6 // separación entre filas
 
-    const availPx = this.layout() === 'HORIZONTAL' ? h - padY : h - padY
-    const scale = availPx / (em * 15)
-    return clamp(15 * scale, 10.5, 18)
+    // el "Póster" gasta mucho alto en el nombre; deja menos aire para lo demás
+    const tplBudget = this.template() === 'MINIMAL' ? 0.62 : 1
+    const scale = ((h - padY) * tplBudget) / (em * 15)
+    return clamp(15 * scale, 10, 18)
   })
 
   initials = computed(() => {

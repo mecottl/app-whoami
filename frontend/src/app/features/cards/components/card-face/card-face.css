@@ -4,12 +4,12 @@
   height: 100%;
 }
 
-/* Interior en `em`; el font-size del .wa-card (dinámico) escala la card. */
+/* El interior se dimensiona en `em`; el .wa-card lleva un font-size dinámico. */
 .wa-card {
-  --accent-color: #d1402a;
-  --ink: #f3ede0;
-  --ink-soft: rgba(243, 237, 224, 0.62);
-  --hair: rgba(243, 237, 224, 0.16);
+  --card-accent: #1330e6;
+  --ink: #f2f2f4;
+  --ink-soft: rgba(242, 242, 244, 0.62);
+  --hair: rgba(242, 242, 244, 0.16);
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -28,29 +28,28 @@
 }
 
 .wa-avatar {
-  width: 4.2em;
-  height: 4.2em;
+  width: 4em;
+  height: 4em;
   border-radius: 999px;
   object-fit: cover;
   flex-shrink: 0;
   border: 1px solid var(--hair);
 }
-
 .wa-avatar--initials {
   display: grid;
   place-items: center;
   font-family: "Fraunces", serif;
-  font-size: 1.6em;
+  font-size: 1.5em;
   font-weight: 600;
   color: #fff;
-  background: var(--accent-color);
+  background: var(--card-accent);
   border: 0;
 }
 
 .wa-name {
   font-family: "Fraunces", serif;
-  font-weight: 600;
-  font-size: 1.95em;
+  font-weight: 500;
+  font-size: 1.9em;
   line-height: 1.02;
   letter-spacing: -0.02em;
 }
@@ -59,18 +58,18 @@
   margin-top: 0.35em;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.2em 0.75em;
+  gap: 0.2em 0.7em;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.72em;
+  font-size: 0.7em;
   letter-spacing: 0.02em;
   color: var(--ink-soft);
 }
 .wa-handle {
-  color: var(--accent-color);
+  color: var(--card-accent);
 }
 
 .wa-desc {
-  font-size: 1.05em;
+  font-size: 1.02em;
   color: var(--ink-soft);
   flex-shrink: 0;
   display: -webkit-box;
@@ -82,7 +81,7 @@
 .wa-cats {
   display: flex;
   flex-direction: column;
-  gap: 1.35em;
+  gap: 1.3em;
   min-height: 0;
 }
 .wa-cats.cols-2 {
@@ -98,10 +97,10 @@
   font-size: 0.72em;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--accent-color);
+  letter-spacing: 0.16em;
+  color: var(--card-accent);
   padding-bottom: 0.5em;
-  margin-bottom: 0.65em;
+  margin-bottom: 0.6em;
   border-bottom: 1px solid var(--hair);
 }
 
@@ -110,46 +109,61 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 0.6em;
+  gap: 0.55em;
 }
-
 .wa-fav {
   display: flex;
   align-items: center;
-  gap: 0.75em;
-  font-size: 1.02em;
+  gap: 0.7em;
+  font-size: 1em;
   min-width: 0;
 }
-
 .wa-fav-rank {
   flex-shrink: 0;
-  width: 1.35em;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.8em;
+  font-size: 0.78em;
   font-weight: 600;
-  color: var(--accent-color);
+  color: var(--card-accent);
 }
-
 .wa-fav img {
-  width: 2.3em;
-  height: 2.3em;
-  border-radius: 0.2em;
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 0.15em;
   object-fit: cover;
   flex-shrink: 0;
 }
-
 .wa-fav-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .wa-cats.cols-2 .wa-fav-title {
   white-space: normal;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   line-height: 1.25;
+}
+
+.wa-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+.wa-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.28em 0.6em 0.28em 0.28em;
+  font-size: 0.88em;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+.wa-chip img {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 999px;
+  object-fit: cover;
 }
 
 .wa-hint {
@@ -165,12 +179,8 @@
 }
 .layout-vertical .wa-cats {
   flex: 1;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
-.layout-vertical .wa-name {
-  font-size: 2.15em;
-}
-
 .layout-square {
   padding: 2.5em;
   gap: 1.3em;
@@ -181,7 +191,6 @@
 .layout-square .wa-cats:not(.cols-2) {
   justify-content: space-evenly;
 }
-
 .layout-horizontal {
   padding: 2.6em 3em;
   display: grid;
@@ -198,15 +207,14 @@
   gap: 0.9em;
 }
 .layout-horizontal .wa-avatar {
-  width: 5.2em;
-  height: 5.2em;
+  width: 5em;
+  height: 5em;
 }
 .layout-horizontal .wa-desc {
   grid-column: 1;
   grid-row: 2;
   align-self: start;
   padding-top: 1.1em;
-  font-size: 1em;
 }
 .layout-horizontal .wa-cats {
   grid-column: 2;
@@ -214,60 +222,210 @@
   align-self: center;
 }
 
-/* ============================ PLANTILLAS ============================ */
-
-/* DARK — tinta cálida */
+/* ==================================================================
+   PLANTILLA · FICHA  (DARK) — catálogo / base de datos
+   ================================================================== */
 .tpl-dark {
-  background: #17130e;
-  --ink: #f1ebdd;
-  --ink-soft: rgba(241, 235, 221, 0.6);
-  --hair: rgba(241, 235, 221, 0.14);
+  background: #101014;
+  --ink: #ececed;
+  --ink-soft: rgba(236, 236, 237, 0.55);
+  --hair: rgba(236, 236, 237, 0.16);
+}
+.tpl-dark .wa-name {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  font-size: 1.15em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.tpl-dark .wa-avatar {
+  border-radius: 0.15em;
+}
+.tpl-dark .wa-avatar--initials {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1em;
+  border-radius: 0.15em;
+  background: transparent;
+  border: 1px solid var(--hair);
+  color: var(--ink);
+}
+.tpl-dark .wa-desc {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8em;
+  line-height: 1.6;
+}
+.tpl-dark .wa-cat-title {
+  border-bottom-style: dashed;
+}
+.tpl-dark .wa-fav {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82em;
+  align-items: baseline;
+  gap: 0.6em;
+}
+.tpl-dark .wa-fav img {
+  display: none;
+}
+.tpl-dark .wa-fav-rank::after {
+  content: "·";
+  margin-left: 0.5em;
+  opacity: 0.4;
+}
+.tpl-dark .wa-fav-title {
+  white-space: nowrap;
 }
 
-/* LIGHT — papel hueso */
+/* ==================================================================
+   PLANTILLA · EDITORIAL  (LIGHT) — perfil de revista
+   ================================================================== */
 .tpl-light {
-  background: #f4efe3;
-  --ink: #201c15;
-  --ink-soft: rgba(32, 28, 21, 0.62);
-  --hair: rgba(32, 28, 21, 0.14);
+  background: #faf8f3;
+  --ink: #1a1813;
+  --ink-soft: rgba(26, 24, 19, 0.6);
+  --hair: rgba(26, 24, 19, 0.16);
+}
+.tpl-light .wa-name {
+  font-size: 2.55em;
+  font-weight: 400;
+  line-height: 0.98;
+}
+.tpl-light .wa-desc {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 1.4em;
+  line-height: 1.3;
+  color: var(--ink);
+  padding-left: 0.8em;
+  border-left: 3px solid var(--card-accent);
+  -webkit-line-clamp: 4;
+}
+.tpl-light .wa-cat-title {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.05em;
+  color: var(--ink-soft);
+}
+.tpl-light .wa-fav {
+  gap: 0.85em;
+}
+.tpl-light .wa-fav img {
+  width: 3em;
+  height: 3em;
+}
+.tpl-light .wa-fav-title {
+  font-family: "Fraunces", serif;
+  font-size: 1.1em;
+}
+.tpl-light .wa-fav-rank {
+  font-family: "Fraunces", serif;
+  color: var(--ink-soft);
 }
 
-/* MINIMAL — blanco, casi sin adornos */
+/* ==================================================================
+   PLANTILLA · PÓSTER  (MINIMAL) — el nombre lo es todo
+   ================================================================== */
 .tpl-minimal {
   background: #ffffff;
-  --ink: #111111;
-  --ink-soft: rgba(17, 17, 17, 0.55);
-  --hair: rgba(17, 17, 17, 0.1);
+  --ink: #0b0b0b;
+  --ink-soft: rgba(11, 11, 11, 0.5);
+  --hair: rgba(11, 11, 11, 0.12);
+}
+.tpl-minimal .wa-head {
+  align-items: flex-start;
+}
+.tpl-minimal .wa-avatar {
+  width: 2.6em;
+  height: 2.6em;
+}
+.tpl-minimal .wa-name {
+  font-size: 4em;
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+.tpl-minimal .wa-cats {
+  border-top: 1.5px solid currentColor;
+  padding-top: 0.9em;
+}
+.tpl-minimal .wa-meta {
+  font-size: 0.66em;
+}
+.tpl-minimal .wa-desc {
+  font-size: 0.9em;
+  -webkit-line-clamp: 2;
+}
+.tpl-minimal .wa-cats {
+  margin-top: auto;
+  gap: 0.8em;
 }
 .tpl-minimal .wa-cat-title {
-  color: #111111;
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0.3em;
+  font-size: 0.62em;
+  color: var(--ink-soft);
 }
-.tpl-minimal .wa-fav-rank,
-.tpl-minimal .wa-handle {
-  color: #111111;
+.tpl-minimal .wa-favs {
+  gap: 0.2em;
 }
-.tpl-minimal .wa-avatar--initials {
-  background: #111111;
+.tpl-minimal .wa-fav {
+  font-size: 0.82em;
+}
+.tpl-minimal .wa-fav img {
+  display: none;
+}
+.tpl-minimal .wa-fav-rank {
+  color: var(--ink-soft);
+}
+.layout-vertical.tpl-minimal .wa-cats,
+.layout-square.tpl-minimal .wa-cats {
+  flex: 0 0 auto;
+  justify-content: flex-start;
 }
 
-/* NEON (etiqueta heredada) — "BOLD": la card se inunda con tu color */
+/* ==================================================================
+   PLANTILLA · ETIQUETA  (NEON) — sticker, tu color, chips
+   ================================================================== */
 .tpl-neon {
-  background:
-    linear-gradient(
-      152deg,
-      color-mix(in srgb, var(--accent-color) 82%, #120a08),
-      color-mix(in srgb, var(--accent-color) 48%, #120a08)
-    );
-  --ink: #fdf7f2;
-  --ink-soft: rgba(253, 247, 242, 0.72);
-  --hair: rgba(253, 247, 242, 0.24);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--card-accent) 88%, #0b0910),
+    color-mix(in srgb, var(--card-accent) 52%, #0b0910)
+  );
+  --ink: #fdfcff;
+  --ink-soft: rgba(253, 252, 255, 0.78);
+  --hair: rgba(253, 252, 255, 0.28);
 }
-.tpl-neon .wa-cat-title,
-.tpl-neon .wa-fav-rank,
-.tpl-neon .wa-handle {
-  color: #fdf7f2;
+.tpl-neon .wa-card,
+.tpl-neon.wa-card {
+  border-radius: 0;
+}
+.tpl-neon .wa-avatar {
+  width: 5.2em;
+  height: 5.2em;
+  border-width: 2px;
 }
 .tpl-neon .wa-avatar--initials {
-  background: rgba(253, 247, 242, 0.16);
-  color: #fdf7f2;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+.tpl-neon .wa-name {
+  font-weight: 600;
+  font-size: 2.1em;
+}
+.tpl-neon .wa-handle {
+  color: #fff;
+  font-weight: 500;
+}
+.tpl-neon .wa-cat-title {
+  color: #fff;
+  border-bottom: 0;
+  margin-bottom: 0.45em;
+  padding-bottom: 0;
+}
+.tpl-neon .wa-cat-title::before {
+  content: "◆ ";
+  opacity: 0.7;
 }

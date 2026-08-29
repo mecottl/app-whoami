@@ -3,7 +3,7 @@
     class="wa-card"
     [class]="themeClass() + ' ' + layoutClass()"
     [style.font-size.px]="fontSize()"
-    [style.--accent-color]="c.favoriteColor || null"
+    [style.--card-accent]="c.favoriteColor || null"
   >
     <header class="wa-head">
       @if (c.avatarUrl) {
@@ -28,17 +28,31 @@
       @for (cat of populated(); track cat.id) {
         <section class="wa-cat">
           <h4 class="wa-cat-title">{{ cat.name }}</h4>
-          <ol class="wa-favs">
-            @for (fav of cat.favorites; track fav.id; let i = $index) {
-              <li class="wa-fav">
-                <span class="wa-fav-rank">{{ i + 1 }}</span>
-                @if (fav.imageUrl) {
-                  <img [src]="img(fav.imageUrl)" [alt]="fav.title" crossorigin="anonymous" />
-                }
-                <span class="wa-fav-title">{{ fav.title }}</span>
-              </li>
-            }
-          </ol>
+
+          @if (chipsMode()) {
+            <div class="wa-chips">
+              @for (fav of cat.favorites; track fav.id) {
+                <span class="wa-chip">
+                  @if (fav.imageUrl) {
+                    <img [src]="img(fav.imageUrl)" [alt]="fav.title" crossorigin="anonymous" />
+                  }
+                  {{ fav.title }}
+                </span>
+              }
+            </div>
+          } @else {
+            <ol class="wa-favs">
+              @for (fav of cat.favorites; track fav.id; let i = $index) {
+                <li class="wa-fav">
+                  <span class="wa-fav-rank">{{ i + 1 }}</span>
+                  @if (fav.imageUrl) {
+                    <img [src]="img(fav.imageUrl)" [alt]="fav.title" crossorigin="anonymous" />
+                  }
+                  <span class="wa-fav-title">{{ fav.title }}</span>
+                </li>
+              }
+            </ol>
+          }
         </section>
       }
       @if (populated().length === 0) {

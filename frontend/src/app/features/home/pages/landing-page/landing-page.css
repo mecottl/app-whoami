@@ -239,16 +239,16 @@
   color: var(--text-muted);
   border-top: 1px solid var(--border);
 }
-.foot .brand-mark {
-  width: 1.3rem;
-  height: 1.3rem;
-  display: grid;
-  place-items: center;
+.foot-brand {
   font-family: var(--font-display);
-  font-size: 0.8rem;
-  color: var(--accent-contrast);
-  background: var(--accent);
-  border-radius: 4px;
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.foot-q {
+  color: var(--accent);
+  font-weight: 600;
 }
 .foot-dim {
   color: var(--text-faint);

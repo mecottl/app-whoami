@@ -75,7 +75,7 @@
           <div class="row-2">
             <label>
               <span>Color</span>
-              <input type="color" [value]="c.favoriteColor || '#d1402a'" (input)="onInput('favoriteColor', $event)" />
+              <input type="color" [value]="c.favoriteColor || '#1330e6'" (input)="onInput('favoriteColor', $event)" />
             </label>
             <p class="age-note">
               @if (age() !== null) { {{ age() }} años } @else { — }
@@ -95,10 +95,10 @@
             <label>
               <span>Template</span>
               <select [value]="c.template" (change)="onInput('template', $event)">
-                <option value="DARK">Tinta</option>
-                <option value="LIGHT">Papel</option>
-                <option value="MINIMAL">Mínima</option>
-                <option value="NEON">Color</option>
+                <option value="DARK">Ficha</option>
+                <option value="LIGHT">Editorial</option>
+                <option value="MINIMAL">Póster</option>
+                <option value="NEON">Etiqueta</option>
               </select>
             </label>
           </div>

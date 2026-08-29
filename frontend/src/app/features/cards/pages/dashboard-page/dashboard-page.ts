@@ -64,7 +64,7 @@ export class DashboardPageComponent implements OnInit {
   }
 
   templateLabel(card: Card) {
-    return { DARK: 'Tinta', LIGHT: 'Papel', MINIMAL: 'Mínima', NEON: 'Color' }[
+    return { DARK: 'Ficha', LIGHT: 'Editorial', MINIMAL: 'Póster', NEON: 'Etiqueta' }[
       card.template
     ]
   }
