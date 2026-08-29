@@ -8,16 +8,26 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
-    const url = process.env.DATABASE_URL as string
+    let url = process.env.DATABASE_URL as string
     const isLocal = /@(localhost|127\.0\.0\.1)[:/]/.test(url)
 
+    let ssl: { rejectUnauthorized: boolean } | undefined
+    if (!isLocal) {
+      // `pg` v8 trata sslmode=require como verify-full, y el certificado del
+      // pooler de Supabase/Neon es self-signed -> fallaría. Quitamos el
+      // parámetro de la URL y controlamos el TLS aquí.
+      try {
+        const u = new URL(url)
+        u.searchParams.delete('sslmode')
+        url = u.toString()
+      } catch {
+        /* URL rara: la dejamos tal cual */
+      }
+      ssl = { rejectUnauthorized: false }
+    }
+
     super({
-      adapter: new PrismaPg({
-        connectionString: url,
-        // Poolers gestionados (Supabase, Neon…) exigen TLS con un certificado
-        // que no valida contra las CA del sistema. En local no se toca.
-        ...(isLocal ? {} : { ssl: { rejectUnauthorized: false } }),
-      }),
+      adapter: new PrismaPg({ connectionString: url, ...(ssl ? { ssl } : {}) }),
     })
   }
 
