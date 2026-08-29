@@ -78,13 +78,19 @@ export class CardFaceComponent {
   /** Ajuste fino tras medir: si el contenido se sale, se encoge. */
   private fitScale = signal(1)
 
-  /** Estimación inicial del font-size (todo el interior está en `em`). */
+  /**
+   * Estimación del font-size (todo el interior está en `em`).
+   * Reserva SIEMPRE el caso peor: nombre a 2 líneas y descripción a 3.
+   * Así el tamaño no depende de lo largos que sean; un texto corto solo
+   * deja más aire, nunca encoge las listas.
+   */
   private baseFontSize = computed(() => {
     const cats = this.populated()
     const n = cats.length
     if (n === 0) return 15
 
     const { h, padY } = CANVAS[this.layout()]
+    const horizontal = this.layout() === 'HORIZONTAL'
     const cols = this.cols()
     const rows = Math.ceil(n / cols)
     const favsPerRow = Math.max(
@@ -93,10 +99,19 @@ export class CardFaceComponent {
       )
     )
 
-    let em = this.layout() === 'HORIZONTAL' ? 2 : 5.5
-    if (this._card()?.description) em += 5
-    em += rows * (2.3 + favsPerRow * 2.9)
-    em += (rows - 1) * 1.9
+    const hasDesc = !!this._card()?.description
+    const catsEm =
+      rows * (2.3 + favsPerRow * 2.9) + (rows - 1) * 1.9
+
+    let em: number
+    if (horizontal) {
+      // grid de 2 columnas: manda la más alta
+      const leftEm = 5.5 + (hasDesc ? 4 : 0)
+      em = Math.max(leftEm, catsEm)
+    } else {
+      // apilado: cabecera (nombre 2 líneas máx) + descripción (3) + listas
+      em = 7 + (hasDesc ? 5.5 : 0) + catsEm
+    }
 
     const scale = (h - padY) / (em * 15)
     return clamp(15 * scale, 9, 19)
