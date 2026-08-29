@@ -8,9 +8,15 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
+    const url = process.env.DATABASE_URL as string
+    const isLocal = /@(localhost|127\.0\.0\.1)[:/]/.test(url)
+
     super({
       adapter: new PrismaPg({
-        connectionString: process.env.DATABASE_URL as string,
+        connectionString: url,
+        // Los poolers gestionados (Supabase, Neon…) exigen TLS pero presentan
+        // un certificado que no valida contra las CA del sistema.
+        ssl: isLocal ? undefined : { rejectUnauthorized: false },
       }),
     })
   }

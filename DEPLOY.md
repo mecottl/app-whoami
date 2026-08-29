@@ -33,13 +33,21 @@ cookies/orígenes no se cruzan.
 ## 1. Base de datos — Supabase
 
 1. <https://supabase.com> → **New project**. Guarda la contraseña de la base.
-2. **Project Settings → Database → Connection string → pestaña `Session pooler`**.
-   Copia esa cadena (host `...pooler.supabase.com`, puerto `5432`). Sustituye
-   `[YOUR-PASSWORD]` y añade `?sslmode=require` al final si no está.
-   - Usa el **Session pooler**, no el *Transaction pooler* (6543): el backend es
-     un proceso Node persistente y Prisma usa prepared statements.
-3. Esa cadena es tu `DATABASE_URL`. Las migraciones corren solas en cada deploy
-   de Render (`prisma migrate deploy` en el `startCommand`).
+2. Botón **Connect** (arriba del dashboard) → pestaña **ORMs** o **Prisma**.
+   Verás dos cadenas:
+   ```
+   DATABASE_URL  = ...pooler.supabase.com:6543/postgres?pgbouncer=true   (transaction)
+   DIRECT_URL    = ...pooler.supabase.com:5432/postgres                  (session)
+   ```
+3. **Usa la de puerto `5432` (la que Supabase llama `DIRECT_URL`)** como tu
+   `DATABASE_URL` en Render. El backend es un proceso Node persistente: el
+   session pooler le va mejor que el transaction pooler y soporta migraciones.
+   - Sustituye `[YOUR-PASSWORD]` por la contraseña del paso 1.
+   - Añade `?sslmode=require` al final.
+   - Queda algo así:
+     `postgresql://postgres.abcd:TU_PASS@aws-0-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require`
+4. Las migraciones corren solas en cada deploy de Render
+   (`prisma migrate deploy` en el `startCommand`).
 
 ---
 
@@ -51,7 +59,7 @@ cookies/orígenes no se cruzan.
 
    | Variable | Valor |
    |---|---|
-   | `DATABASE_URL` | la cadena *Session pooler* de Supabase |
+   | `DATABASE_URL` | la cadena de puerto 5432 de Supabase + `?sslmode=require` |
    | `CORS_ORIGIN` | tu dominio final de Vercel, p. ej. `https://whoami.vercel.app` |
    | `TMDB_API_KEY` | tu key (rotada) |
    | `RAWG_API_KEY` | opcional |
