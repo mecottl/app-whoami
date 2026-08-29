@@ -1,0 +1,2 @@
+ALTER TYPE "FavoriteType" ADD VALUE 'ARTIST';
+ALTER TYPE "FavoriteType" ADD VALUE 'ANIME';

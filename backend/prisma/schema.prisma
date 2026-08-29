@@ -91,4 +91,6 @@ enum FavoriteType {
   SERIES
   SPORT
   BOOK
+  ARTIST
+  ANIME
 }

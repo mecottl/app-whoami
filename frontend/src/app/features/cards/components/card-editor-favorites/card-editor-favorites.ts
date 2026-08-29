@@ -59,10 +59,9 @@ export class CardEditorFavoritesComponent implements OnInit {
       },
       error: (err) => {
         this.searching.set(false)
+        const msg = err?.error?.message
         this.searchError.set(
-          err?.status === 503
-            ? 'Esta búsqueda no está configurada todavía.'
-            : 'No se pudo buscar.'
+          typeof msg === 'string' && msg ? msg : 'No se pudo buscar.'
         )
       }
     })

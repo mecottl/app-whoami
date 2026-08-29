@@ -17,4 +17,15 @@ export class DeezerProvider {
       imageUrl: a.cover_medium ?? null,
     }))
   }
+
+  async searchArtists(query: string): Promise<SearchResult[]> {
+    const url = `https://api.deezer.com/search/artist?q=${encodeURIComponent(query)}`
+    const res = await firstValueFrom(this.http.get(url))
+
+    return (res.data.data ?? []).slice(0, 8).map((a: any) => ({
+      id: a.id.toString(),
+      title: a.name,
+      imageUrl: a.picture_medium ?? a.picture ?? null,
+    }))
+  }
 }

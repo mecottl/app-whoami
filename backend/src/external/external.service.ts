@@ -6,6 +6,7 @@ import { DeezerProvider } from './providers/deezer.provider.js'
 import { RawgProvider } from './providers/rawg.provider.js'
 import { SportsDbProvider } from './providers/sportsdb.provider.js'
 import { OpenLibraryProvider } from './providers/openlibrary.provider.js'
+import { AniListProvider } from './providers/anilist.provider.js'
 import type { SearchResult } from './search-result.js'
 
 const ALLOWED_IMAGE_HOSTS = [
@@ -16,6 +17,8 @@ const ALLOWED_IMAGE_HOSTS = [
   'r2.thesportsdb.com',
   'www.thesportsdb.com',
   'covers.openlibrary.org',
+  'cdn.myanimelist.net',
+  's4.anilist.co',
 ]
 
 export type SearchableType =
@@ -25,6 +28,8 @@ export type SearchableType =
   | 'GAME'
   | 'SPORT'
   | 'BOOK'
+  | 'ARTIST'
+  | 'ANIME'
 
 @Injectable()
 export class ExternalService {
@@ -34,6 +39,7 @@ export class ExternalService {
     private rawg: RawgProvider,
     private sportsdb: SportsDbProvider,
     private openlibrary: OpenLibraryProvider,
+    private anilist: AniListProvider,
     private http: HttpService,
   ) {}
 
@@ -51,6 +57,10 @@ export class ExternalService {
         return this.sportsdb.search(query)
       case 'BOOK':
         return this.openlibrary.search(query)
+      case 'ARTIST':
+        return this.deezer.searchArtists(query)
+      case 'ANIME':
+        return this.anilist.search(query)
       default:
         throw new BadRequestException(`Tipo de búsqueda no soportado: ${type}`)
     }
