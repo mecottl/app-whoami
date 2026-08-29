@@ -63,12 +63,15 @@
   display: grid;
   gap: 1rem;
   align-content: start;
+  min-width: 0;
 }
 
 .panel {
   padding: 1.1rem;
   display: grid;
   gap: 0.9rem;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .panel-title {

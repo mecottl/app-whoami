@@ -1,6 +1,14 @@
-import { Component, Input, computed, signal } from '@angular/core'
-import { Card } from '../../../../shared/models/card.model'
-import { CardCategory } from '../../data-access/cards.service'
+import {
+  Component,
+  ElementRef,
+  Input,
+  afterNextRender,
+  computed,
+  effect,
+  inject,
+  signal
+} from '@angular/core'
+import { Card, CardCategory } from '../../../../shared/models/card.model'
 import { imgProxy } from '../../../../shared/constants/api'
 
 /** Alto útil (px) del lienzo por layout, descontando el padding vertical. */
@@ -17,8 +25,11 @@ const CANVAS: Record<string, { h: number; padY: number }> = {
   styleUrl: './card-face.css'
 })
 export class CardFaceComponent {
+  private host = inject(ElementRef<HTMLElement>)
+
   private _card = signal<Card | null>(null)
   private _categories = signal<CardCategory[]>([])
+  private _age = signal<number | null>(null)
 
   @Input({ required: true }) set card(v: Card) {
     this._card.set(v)
@@ -29,7 +40,6 @@ export class CardFaceComponent {
   @Input() set age(v: number | null) {
     this._age.set(v)
   }
-  private _age = signal<number | null>(null)
 
   card$ = this._card.asReadonly()
 
@@ -44,7 +54,6 @@ export class CardFaceComponent {
     this._categories().filter((c) => c.favorites?.length)
   )
 
-  /** Nº de columnas para la rejilla de categorías. */
   cols = computed(() => {
     const n = this.populated().length
     const l = this.layout()
@@ -52,11 +61,11 @@ export class CardFaceComponent {
     return 1
   })
 
-  /**
-   * font-size dinámico del `.wa-card`: todo el interior usa `em`, así que
-   * este número escala la card entera para que quepan las categorías.
-   */
-  fontSize = computed(() => {
+  /** Ajuste fino tras medir: si el contenido se sale, se encoge. */
+  private fitScale = signal(1)
+
+  /** Estimación inicial del font-size (todo el interior está en `em`). */
+  private baseFontSize = computed(() => {
     const cats = this.populated()
     const n = cats.length
     if (n === 0) return 15
@@ -70,17 +79,48 @@ export class CardFaceComponent {
       )
     )
 
-    // altura estimada del contenido en "em" a font-size 15
-    let em = this.layout() === 'HORIZONTAL' ? 0 : 5 // header (en horizontal va aparte)
-    if (this._card()?.description) em += 4.8 // hasta 3 líneas
-    em += rows * (2.1 + favsPerRow * 2.7) // por fila: título + favoritos
-    em += (rows - 1) * 1.6 // separación entre filas
+    let em = this.layout() === 'HORIZONTAL' ? 1.5 : 5
+    if (this._card()?.description) em += this.template() === 'LIGHT' ? 6 : 4.6
+    em += rows * (2.2 + favsPerRow * 2.9)
+    em += (rows - 1) * 1.8
 
-    // el "Póster" gasta mucho alto en el nombre; deja menos aire para lo demás
-    const tplBudget = this.template() === 'MINIMAL' ? 0.62 : 1
+    const tplBudget = this.template() === 'MINIMAL' ? 0.6 : 1
     const scale = ((h - padY) * tplBudget) / (em * 15)
-    return clamp(15 * scale, 10, 18)
+    return clamp(15 * scale, 9, 18)
   })
+
+  fontSize = computed(() =>
+    Math.round(this.baseFontSize() * this.fitScale() * 100) / 100
+  )
+
+  constructor() {
+    afterNextRender(() => this.startRefit())
+    // reinicia el ajuste cuando cambia el contenido
+    effect(() => {
+      this._card()
+      this._categories()
+      this._age()
+      this.fitScale.set(1)
+      queueMicrotask(() => this.startRefit())
+    })
+  }
+
+  private startRefit(pass = 0) {
+    const card = this.host.nativeElement.querySelector(
+      '.wa-card'
+    ) as HTMLElement | null
+    if (!card || pass > 6) return
+
+    const over = card.scrollHeight - card.clientHeight
+    if (over > 2) {
+      const ratio = card.clientHeight / card.scrollHeight
+      const next = Math.max(0.42, this.fitScale() * ratio * 0.97)
+      if (next < this.fitScale() - 0.005) {
+        this.fitScale.set(next)
+        requestAnimationFrame(() => this.startRefit(pass + 1))
+      }
+    }
+  }
 
   initials = computed(() => {
     const nm = this._card()?.name?.trim() ?? ''
