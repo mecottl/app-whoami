@@ -45,11 +45,17 @@ export class CardFaceComponent {
 
   private layout = computed(() => this._card()?.layout ?? 'VERTICAL')
 
-  template = computed(() => this._card()?.template ?? 'DARK')
+  private static readonly KNOWN_TEMPLATES = new Set([
+    'DARK', 'LIGHT', 'MINIMAL', 'PRESS', 'COMIC', 'FUTURE', 'VINTAGE',
+    'GLASS', 'VECTOR', 'RETRO', 'PIXEL', 'Y2K', 'SWISS', 'GRAFFITI'
+  ])
+
+  template = computed(() => {
+    const t = this._card()?.template ?? 'DARK'
+    return CardFaceComponent.KNOWN_TEMPLATES.has(t) ? t : 'LIGHT'
+  })
   layoutClass = computed(() => `layout-${this.layout().toLowerCase()}`)
   themeClass = computed(() => `tpl-${this.template().toLowerCase()}`)
-  /** "Etiqueta" (NEON) muestra los favoritos como chips, no como lista. */
-  chipsMode = computed(() => this.template() === 'NEON')
   populated = computed(() =>
     this._categories().filter((c) => c.favorites?.length)
   )
@@ -80,7 +86,7 @@ export class CardFaceComponent {
     )
 
     let em = this.layout() === 'HORIZONTAL' ? 2 : 5.5
-    if (this._card()?.description) em += this.template() === 'LIGHT' ? 6 : 4.6
+    if (this._card()?.description) em += 5
     em += rows * (2.3 + favsPerRow * 2.9)
     em += (rows - 1) * 1.9
 

@@ -1,12 +1,5 @@
 name: db-keepalive
 
-# Supabase pausa los proyectos del plan free tras ~7 días sin actividad.
-# Este job pega al endpoint /health del backend cada 3 días; ese endpoint
-# ejecuta un `SELECT 1` real contra la base, así que cuenta como actividad.
-#
-# Requiere un secret del repo:
-#   KEEPALIVE_URL = https://whoami-api.onrender.com/health   (tu URL de Render)
-
 on:
   schedule:
     - cron: "0 8 */3 * *"

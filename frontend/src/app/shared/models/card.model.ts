@@ -4,12 +4,18 @@ export type CardLayout = 'VERTICAL' | 'HORIZONTAL' | 'SQUARE'
 export type CardTemplate =
   | 'DARK'
   | 'LIGHT'
-  | 'NEON'
   | 'MINIMAL'
   | 'PRESS'
   | 'COMIC'
   | 'FUTURE'
   | 'VINTAGE'
+  | 'GLASS'
+  | 'VECTOR'
+  | 'RETRO'
+  | 'PIXEL'
+  | 'Y2K'
+  | 'SWISS'
+  | 'GRAFFITI'
 
 export interface Favorite {
   id: string

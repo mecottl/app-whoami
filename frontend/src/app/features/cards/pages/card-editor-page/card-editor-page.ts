@@ -49,12 +49,23 @@ export class CardEditorPage implements OnInit {
   private saveTimeout: ReturnType<typeof setTimeout> | null = null
   private lastPayload = ''
 
+  readonly maxCategories = 4
+
   availableTypes = computed(() => {
     const used = new Set(this.categories().map((c) => c.type))
     return (Object.values(FAVORITE_TYPES) as FavoriteType[]).filter(
       (t) => !used.has(t)
     )
   })
+
+  canAddCategory = computed(
+    () =>
+      this.availableTypes().length > 0 &&
+      this.categories().length < this.maxCategories
+  )
+  atCategoryLimit = computed(
+    () => this.categories().length >= this.maxCategories
+  )
 
   age = computed(() => ageFromBirthDate(this.card()?.birthDate))
 
@@ -110,31 +121,10 @@ export class CardEditorPage implements OnInit {
     this.patch(field, (event.target as HTMLInputElement | HTMLSelectElement).value)
   }
 
-  readonly descWordLimit = 100
+  readonly descCharLimit = 500
 
-  descWords(text: string | null | undefined) {
-    const t = (text ?? '').trim()
-    return t ? t.split(/\s+/).length : 0
-  }
-
-  onDescInput(event: Event) {
-    const el = event.target as HTMLTextAreaElement
-    const words = el.value.split(/(\s+)/)
-    let count = 0
-    let cut = el.value.length
-    for (let i = 0; i < words.length; i++) {
-      if (i % 2 === 0 && words[i]) {
-        count++
-        if (count > this.descWordLimit) {
-          cut = words.slice(0, i).join('').length
-          break
-        }
-      }
-    }
-    if (cut < el.value.length) {
-      el.value = el.value.slice(0, cut).replace(/\s+$/, '')
-    }
-    this.patch('description', el.value)
+  descChars(text: string | null | undefined) {
+    return (text ?? '').length
   }
 
   private buildPayload(card: Card): UpdateCardPayload {
@@ -232,17 +222,20 @@ export class CardEditorPage implements OnInit {
 
   addCategory() {
     const type = this.newCategoryType()
-    if (!this.availableTypes().includes(type)) return
+    if (!this.canAddCategory() || !this.availableTypes().includes(type)) return
 
     this.cardsService
       .createCategory(this.id, { name: this.label(type), type })
       .subscribe({
         next: () => this.loadCategories(),
         error: (err) => {
+          const msg = err?.error?.message
           this.error.set(
             err?.status === 409
               ? 'Ya tienes una categoría de ese tipo.'
-              : 'No se pudo crear la categoría.'
+              : typeof msg === 'string' && msg
+                ? msg
+                : 'No se pudo crear la categoría.'
           )
         }
       })

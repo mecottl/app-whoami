@@ -22,7 +22,7 @@ model User {
 model Card {
   id            String  @id @default(uuid())
   name          String  @db.VarChar(80)
-  description   String? @db.VarChar(700)
+  description   String? @db.VarChar(500)
   favoriteColor String? @db.VarChar(9)
   avatarUrl     String? @default("")
   handle        String? @db.VarChar(30)
@@ -79,6 +79,13 @@ enum Template {
   COMIC
   FUTURE
   VINTAGE
+  GLASS
+  VECTOR
+  RETRO
+  PIXEL
+  Y2K
+  SWISS
+  GRAFFITI
 }
 
 enum Layout {

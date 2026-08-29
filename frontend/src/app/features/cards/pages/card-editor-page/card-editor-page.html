@@ -48,12 +48,13 @@
           </div>
 
           <label>
-            <span>Descripción <em class="count">{{ descWords(c.description) }}/{{ descWordLimit }} palabras</em></span>
+            <span>Descripción <em class="count">{{ descChars(c.description) }}/{{ descCharLimit }}</em></span>
             <textarea
               rows="3"
               class="no-resize"
+              [attr.maxlength]="descCharLimit"
               [value]="c.description ?? ''"
-              (input)="onDescInput($event)"
+              (input)="onInput('description', $event)"
             ></textarea>
           </label>
 
@@ -120,7 +121,7 @@
         <div class="card panel">
           <h2 class="panel-title">Categorías</h2>
 
-          @if (availableTypes().length > 0) {
+          @if (canAddCategory()) {
             <div class="add-category">
               <select [value]="newCategoryType()" (change)="newCategoryType.set($any($event.target).value)">
                 @for (type of availableTypes(); track type) {
@@ -129,6 +130,8 @@
               </select>
               <button type="button" class="btn btn-sm" (click)="addCategory()">Añadir</button>
             </div>
+          } @else if (atCategoryLimit()) {
+            <p class="muted small">Máximo {{ maxCategories }} categorías por card.</p>
           } @else {
             <p class="muted small">Ya añadiste todas las categorías.</p>
           }

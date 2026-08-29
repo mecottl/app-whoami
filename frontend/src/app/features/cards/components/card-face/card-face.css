@@ -146,27 +146,6 @@
   line-height: 1.25;
 }
 
-.wa-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4em;
-}
-.wa-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  padding: 0.28em 0.6em 0.28em 0.28em;
-  font-size: 0.88em;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-}
-.wa-chip img {
-  width: 1.7em;
-  height: 1.7em;
-  border-radius: 999px;
-  object-fit: cover;
-}
-
 .wa-hint {
   font-size: 0.95em;
   color: var(--ink-soft);
@@ -330,46 +309,7 @@
   color: var(--ink-soft);
 }
 
-/* ---------- ETIQUETA (NEON) · sticker de tu color ---------- */
-.tpl-neon {
-  background: linear-gradient(
-    155deg,
-    color-mix(in srgb, var(--card-accent) 88%, #0b0910),
-    color-mix(in srgb, var(--card-accent) 52%, #0b0910)
-  );
-  --ink: #fdfcff;
-  --ink-soft: rgba(253, 252, 255, 0.78);
-  --hair: rgba(253, 252, 255, 0.28);
-}
-.tpl-neon .wa-avatar {
-  width: 5.2em;
-  height: 5.2em;
-  border-width: 2px;
-}
-.tpl-neon .wa-avatar--initials {
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-}
-.tpl-neon .wa-name {
-  font-weight: 600;
-  font-size: 2.1em;
-}
-.tpl-neon .wa-handle {
-  color: #fff;
-  font-weight: 500;
-}
-.tpl-neon .wa-cat-title {
-  color: #fff;
-  border-bottom: 0;
-  margin-bottom: 0.45em;
-  padding-bottom: 0;
-}
-.tpl-neon .wa-cat-title::before {
-  content: "\25c6\00a0";
-  opacity: 0.7;
-}
-
-/* ---------- PÓSTER (MINIMAL) · el nombre lo ocupa todo ---------- */
+/* ---------- MINIMALISTA (MINIMAL) · el nombre lo ocupa todo ---------- */
 .tpl-minimal {
   background: #ffffff;
   --ink: #0b0b0b;
@@ -378,10 +318,9 @@
 }
 .tpl-minimal.layout-vertical,
 .tpl-minimal.layout-square {
-  gap: 0;
+  gap: 1.1em;
 }
 .tpl-minimal .wa-head {
-  flex: 0 0 auto;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.55em;
@@ -406,21 +345,14 @@
   font-size: 0.6em;
 }
 .tpl-minimal .wa-desc {
-  flex: 0 0 auto;
-  margin-top: auto;
-  font-size: 0.86em;
-  -webkit-line-clamp: 2;
-  padding: 1.4em 0 0.7em;
-}
-.tpl-minimal.layout-horizontal .wa-desc {
-  margin-top: 0.6em;
+  font-size: 0.95em;
+  color: var(--ink-soft);
 }
 .tpl-minimal .wa-cats {
-  flex: 0 0 auto;
   justify-content: flex-start;
-  gap: 0.7em;
+  gap: 0.9em;
   border-top: 1.5px solid currentColor;
-  padding-top: 0.85em;
+  padding-top: 0.95em;
 }
 .tpl-minimal .wa-cat-title {
   border-bottom: 0;
@@ -588,16 +520,16 @@
 
 /* ---------- FUTURISTA (FUTURE) · interfaz / HUD ---------- */
 .tpl-future {
-  background-color: #080b0e;
+  background-color: #07090c;
   background-image: repeating-linear-gradient(
     0deg,
-    rgba(120, 200, 220, 0.045) 0 2px,
-    transparent 2px 4px
+    color-mix(in srgb, var(--card-accent) 22%, transparent) 0 1px,
+    transparent 1px 4px
   );
-  --ink: #dbe7ec;
-  --ink-soft: rgba(219, 231, 236, 0.55);
-  --hair: rgba(120, 200, 220, 0.35);
-  outline: 1px solid rgba(120, 200, 220, 0.25);
+  --ink: #e7edf1;
+  --ink-soft: rgba(231, 237, 241, 0.52);
+  --hair: color-mix(in srgb, var(--card-accent) 45%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--card-accent) 35%, transparent);
   outline-offset: -0.8em;
 }
 .tpl-future .wa-name {
@@ -606,6 +538,7 @@
   font-size: 1.35em;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--card-accent);
 }
 .tpl-future .wa-meta {
   font-family: "JetBrains Mono", monospace;
@@ -726,5 +659,362 @@
 .tpl-vintage .wa-fav img {
   filter: sepia(0.5) contrast(0.95);
   border: 1px solid var(--ink);
+  border-radius: 0;
+}
+
+/* ---------- GLASSMORPHISM (GLASS) · cristal esmerilado ---------- */
+.tpl-glass {
+  background:
+    radial-gradient(120% 90% at 12% 0%, color-mix(in srgb, var(--card-accent) 55%, #0b1020), transparent 60%),
+    radial-gradient(120% 90% at 100% 100%, color-mix(in srgb, var(--card-accent) 40%, #0b1020), transparent 55%),
+    #0b1020;
+  --ink: #f4f6ff;
+  --ink-soft: rgba(244, 246, 255, 0.66);
+  --hair: rgba(255, 255, 255, 0.22);
+}
+.tpl-glass .wa-avatar,
+.tpl-glass .wa-avatar--initials {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.14);
+}
+.tpl-glass .wa-name {
+  font-weight: 500;
+  font-size: 2.1em;
+}
+.tpl-glass .wa-desc {
+  color: var(--ink-soft);
+}
+.tpl-glass .wa-cat {
+  background: rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 1.1em;
+  padding: 0.9em 1em;
+}
+.tpl-glass .wa-cat-title {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+.tpl-glass .wa-fav img {
+  border-radius: 0.4em;
+  background: rgba(255, 255, 255, 0.1);
+}
+.tpl-glass .wa-fav-rank {
+  color: #fff;
+}
+
+/* ---------- VECTOR (VECTOR) · plano, geométrico, sólido ---------- */
+.tpl-vector {
+  background: #f2efe6;
+  --ink: #141414;
+  --ink-soft: rgba(20, 20, 20, 0.7);
+  --hair: #141414;
+}
+.tpl-vector .wa-name {
+  font-weight: 700;
+  font-size: 2.2em;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+.tpl-vector .wa-avatar,
+.tpl-vector .wa-avatar--initials {
+  border-radius: 0;
+  border: 3px solid #141414;
+}
+.tpl-vector .wa-avatar--initials {
+  background: var(--card-accent);
+  color: #fff;
+}
+.tpl-vector .wa-desc {
+  border-left: 6px solid var(--card-accent);
+  padding-left: 0.7em;
+  color: var(--ink);
+}
+.tpl-vector .wa-cat-title {
+  display: inline-block;
+  background: var(--card-accent);
+  color: #fff;
+  border: 0;
+  padding: 0.2em 0.7em;
+  letter-spacing: 0.12em;
+}
+.tpl-vector .wa-fav {
+  border-bottom: 2px solid #141414;
+  padding-bottom: 0.35em;
+}
+.tpl-vector .wa-fav-rank {
+  color: var(--card-accent);
+  font-weight: 700;
+}
+.tpl-vector .wa-fav img {
+  border-radius: 0;
+  border: 2px solid #141414;
+}
+
+/* ---------- RETRO (RETRO) · atardecer 70s ---------- */
+.tpl-retro {
+  background: linear-gradient(180deg, #e9803b 0%, #c9542e 45%, #7b3b2e 100%);
+  --ink: #fdeede;
+  --ink-soft: rgba(253, 238, 222, 0.72);
+  --hair: rgba(253, 238, 222, 0.4);
+}
+.tpl-retro .wa-name {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 2.4em;
+  letter-spacing: 0.01em;
+}
+.tpl-retro .wa-avatar,
+.tpl-retro .wa-avatar--initials {
+  border-radius: 0.6em;
+  border: 2px solid var(--ink);
+}
+.tpl-retro .wa-avatar--initials {
+  background: rgba(253, 238, 222, 0.16);
+  color: var(--ink);
+}
+.tpl-retro .wa-desc {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  color: var(--ink);
+}
+.tpl-retro .wa-cat-title {
+  display: inline-block;
+  background: var(--ink);
+  color: #7b3b2e;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.18em 0.8em;
+}
+.tpl-retro .wa-fav img {
+  border-radius: 0.4em;
+  border: 1px solid var(--hair);
+}
+.tpl-retro .wa-fav-rank {
+  color: var(--ink);
+}
+
+/* ---------- PIXEL ART (PIXEL) · 8-bit ---------- */
+.tpl-pixel {
+  background-color: #1a1a2e;
+  background-image:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.04) 75%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.04) 75%);
+  background-size: 0.6em 0.6em;
+  background-position: 0 0, 0.3em 0.3em;
+  --ink: #eef0f8;
+  --ink-soft: rgba(238, 240, 248, 0.6);
+  --hair: #eef0f8;
+}
+.tpl-pixel .wa-card,
+.tpl-pixel .wa-name,
+.tpl-pixel .wa-cat-title,
+.tpl-pixel .wa-fav {
+  font-family: "JetBrains Mono", monospace;
+}
+.tpl-pixel .wa-name {
+  font-weight: 700;
+  font-size: 1.25em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tpl-pixel img {
+  image-rendering: pixelated;
+}
+.tpl-pixel .wa-avatar,
+.tpl-pixel .wa-avatar--initials {
+  border-radius: 0;
+  border: 2px solid var(--ink);
+}
+.tpl-pixel .wa-avatar--initials {
+  background: var(--card-accent);
+  color: #1a1a2e;
+}
+.tpl-pixel .wa-desc {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78em;
+  line-height: 1.6;
+  border: 2px solid var(--hair);
+  padding: 0.5em 0.7em;
+}
+.tpl-pixel .wa-cat-title {
+  color: var(--card-accent);
+  border-bottom: 2px solid var(--hair);
+}
+.tpl-pixel .wa-fav {
+  font-size: 0.82em;
+}
+.tpl-pixel .wa-fav-rank {
+  color: var(--card-accent);
+}
+.tpl-pixel .wa-fav img {
+  border-radius: 0;
+  border: 2px solid var(--hair);
+  width: 2.2em;
+  height: 2.2em;
+}
+
+/* ---------- Y2K (Y2K) · cromo y burbujas ---------- */
+.tpl-y2k {
+  background: linear-gradient(160deg, #d7e6f5 0%, #a9c7e8 40%, #cbb9e6 100%);
+  --ink: #16233a;
+  --ink-soft: rgba(22, 35, 58, 0.62);
+  --hair: rgba(22, 35, 58, 0.25);
+}
+.tpl-y2k .wa-name {
+  font-weight: 700;
+  font-size: 2.3em;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, #ffffff 0%, #9db8d6 45%, #4d6f9c 55%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.4px #16233a;
+}
+.tpl-y2k .wa-avatar,
+.tpl-y2k .wa-avatar--initials {
+  border: 2px solid #fff;
+  box-shadow: 0 0.2em 0.6em rgba(22, 35, 58, 0.3);
+}
+.tpl-y2k .wa-avatar--initials {
+  background: linear-gradient(180deg, #eaf2fb, #8fb2d8);
+  color: #16233a;
+}
+.tpl-y2k .wa-desc {
+  color: var(--ink);
+}
+.tpl-y2k .wa-cat-title {
+  display: inline-block;
+  background: linear-gradient(180deg, #ffffff, #b9d0e8);
+  color: #16233a;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  padding: 0.16em 0.8em;
+  box-shadow: 0 0.15em 0.4em rgba(22, 35, 58, 0.25);
+}
+.tpl-y2k .wa-fav img {
+  border-radius: 0.5em;
+  border: 1px solid #fff;
+}
+.tpl-y2k .wa-fav-rank {
+  color: #4d6f9c;
+  font-weight: 700;
+}
+
+/* ---------- SUIZO (SWISS) · rejilla, sin adornos ---------- */
+.tpl-swiss {
+  background: #ffffff;
+  --ink: #0a0a0a;
+  --ink-soft: rgba(10, 10, 10, 0.55);
+  --hair: #0a0a0a;
+}
+.tpl-swiss .wa-card,
+.tpl-swiss .wa-name,
+.tpl-swiss .wa-cat-title,
+.tpl-swiss .wa-fav,
+.tpl-swiss .wa-meta {
+  font-family: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+}
+.tpl-swiss .wa-name {
+  font-weight: 700;
+  font-size: 2.8em;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+}
+.tpl-swiss .wa-avatar,
+.tpl-swiss .wa-avatar--initials {
+  border-radius: 0;
+  border: 1px solid #0a0a0a;
+}
+.tpl-swiss .wa-avatar--initials {
+  background: var(--card-accent);
+  color: #fff;
+}
+.tpl-swiss .wa-desc {
+  color: var(--ink);
+  border-top: 1px solid #0a0a0a;
+  padding-top: 0.5em;
+}
+.tpl-swiss .wa-cat-title {
+  color: #0a0a0a;
+  border-top: 3px solid var(--card-accent);
+  border-bottom: 0;
+  padding-top: 0.4em;
+  padding-bottom: 0;
+  letter-spacing: 0;
+  font-size: 0.8em;
+}
+.tpl-swiss .wa-fav {
+  border-bottom: 1px solid #0a0a0a;
+  padding-bottom: 0.4em;
+}
+.tpl-swiss .wa-fav-rank {
+  color: var(--card-accent);
+  font-weight: 700;
+}
+.tpl-swiss .wa-fav img {
+  border-radius: 0;
+}
+
+/* ---------- GRAFITI (GRAFFITI) · muro y spray ---------- */
+.tpl-graffiti {
+  background-color: #23211f;
+  background-image:
+    radial-gradient(color-mix(in srgb, var(--card-accent) 30%, transparent) 8%, transparent 9%),
+    radial-gradient(rgba(255, 255, 255, 0.04) 8%, transparent 9%);
+  background-size: 1.6em 1.6em, 1.1em 1.1em;
+  background-position: 0 0, 0.5em 0.7em;
+  --ink: #f6f4ef;
+  --ink-soft: rgba(246, 244, 239, 0.6);
+  --hair: rgba(246, 244, 239, 0.28);
+}
+.tpl-graffiti .wa-name {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: 2.7em;
+  letter-spacing: -0.02em;
+  color: var(--card-accent);
+  -webkit-text-stroke: 1.5px #16130f;
+  transform: rotate(-2deg);
+  transform-origin: left;
+}
+.tpl-graffiti .wa-avatar,
+.tpl-graffiti .wa-avatar--initials {
+  border: 3px solid #16130f;
+  box-shadow: 0.25em 0.25em 0 var(--card-accent);
+}
+.tpl-graffiti .wa-avatar--initials {
+  background: #16130f;
+  color: var(--card-accent);
+}
+.tpl-graffiti .wa-desc {
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.55em 0.75em;
+  border-left: 4px solid var(--card-accent);
+}
+.tpl-graffiti .wa-cat-title {
+  display: inline-block;
+  color: var(--card-accent);
+  border: 0;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 0.6px #16130f;
+  transform: rotate(-1.5deg);
+}
+.tpl-graffiti .wa-fav {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.25em 0.5em;
+  border-left: 2px solid var(--card-accent);
+}
+.tpl-graffiti .wa-fav-rank {
+  color: var(--card-accent);
+  font-weight: 700;
+}
+.tpl-graffiti .wa-fav img {
+  border: 2px solid #16130f;
   border-radius: 0;
 }

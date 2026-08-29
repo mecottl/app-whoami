@@ -8,7 +8,7 @@ export class CreateCardDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(700)
+  @MaxLength(500)
   description?: string
 
   @IsOptional()

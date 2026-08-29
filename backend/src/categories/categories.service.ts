@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service.js'
 import { CreateCategoryDto } from './dto/create-category.dto.js'
 
@@ -24,8 +24,17 @@ export class CategoriesService {
     return category
   }
 
+  private static readonly MAX_CATEGORIES = 4
+
   async create(userId: string, cardId: string, dto: CreateCategoryDto) {
     await this.assertCardOwner(userId, cardId)
+
+    const count = await this.prisma.cardCategory.count({ where: { cardId } })
+    if (count >= CategoriesService.MAX_CATEGORIES) {
+      throw new BadRequestException(
+        `Máximo ${CategoriesService.MAX_CATEGORIES} categorías por card`,
+      )
+    }
 
     const dup = await this.prisma.cardCategory.findFirst({
       where: { cardId, type: dto.type },
