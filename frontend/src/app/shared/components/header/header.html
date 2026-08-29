@@ -8,7 +8,7 @@
     @if (isAuthed()) {
       <a class="nav-link" routerLink="/dashboard">Cards</a>
       <button type="button" class="btn btn-ghost btn-sm" (click)="logout()">Salir</button>
-    } @else if (!onAuthRoute()) {
+    } @else {
       <a class="nav-link" routerLink="/login">Entrar</a>
       <a class="btn btn-primary btn-sm" routerLink="/register">Empezar</a>
     }

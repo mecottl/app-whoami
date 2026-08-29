@@ -14,15 +14,15 @@ import { CardCategory } from '../../../cards/data-access/cards.service'
 export class LandingPageComponent {
   readonly demoCard: Card = {
     id: 'demo',
-    name: '',
-    handle: '@alexrvra',
-    location: 'CDMX',
+    name: 'Una persona con identidad',
+    handle: '@whoami',
+    location: 'Pais de las maravillas',
     description: 'Diseño de producto de día, discos raros de noche.',
     birthDate: '1997-04-12T00:00:00.000Z',
     favoriteColor: '#1330e6',
     avatarUrl: '',
     layout: 'VERTICAL',
-    template: 'LIGHT'
+    template: 'COMIC'
   }
 
   readonly demoCategories: CardCategory[] = [

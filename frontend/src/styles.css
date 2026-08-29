@@ -123,6 +123,10 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* barra de scroll siempre presente: al abrir el panel de acceso el fondo
+     deja de tener scroll y sin esto todo el contenido se desplazaba ~15px */
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 body {

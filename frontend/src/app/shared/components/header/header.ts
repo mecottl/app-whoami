@@ -16,13 +16,13 @@ export class HeaderComponent {
   private router = inject(Router)
   theme = inject(ThemeService)
 
+  // se actualiza en cada navegación para re-evaluar el estado de sesión
   private url = signal(this.router.url)
 
-  onAuthRoute = computed(() =>
-    ['/login', '/register'].some((r) => this.url().startsWith(r))
+  isAuthed = computed(() => (this.url(), this.auth.isLoggedIn()))
+  brandLink = computed(() =>
+    (this.url(), this.auth.isLoggedIn()) ? '/dashboard' : '/'
   )
-  isAuthed = computed(() => this.auth.isLoggedIn() && !this.onAuthRoute())
-  brandLink = computed(() => (this.auth.isLoggedIn() ? '/dashboard' : '/'))
 
   constructor() {
     this.router.events

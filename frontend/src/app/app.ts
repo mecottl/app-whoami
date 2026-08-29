@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
 import { HeaderComponent } from './shared/components/header/header'
 import { ThemeService } from './core/services/theme.service'
+import { AuthDrawerService } from './features/auth/data-access/auth-drawer.service'
 
 @Component({
   selector: 'app-root',
@@ -13,4 +14,7 @@ import { ThemeService } from './core/services/theme.service'
 export class App {
   // Instancia el servicio para que aplique el tema al arrancar.
   private theme = inject(ThemeService)
+  // Eager: debe escuchar la navegación ANTES de que se abra /login para
+  // recordar el scroll del landing.
+  private authDrawer = inject(AuthDrawerService)
 }

@@ -3,7 +3,8 @@ import {
   HostListener,
   Input,
   afterNextRender,
-  inject
+  inject,
+  signal
 } from '@angular/core'
 import { Router, RouterLink } from '@angular/router'
 import { LandingPageComponent } from '../../../home/pages/landing-page/landing-page'
@@ -25,17 +26,24 @@ export class AuthShellComponent {
   @Input() sub = ''
 
   open = this.drawer.open
+  bgOffset = this.drawer.bgOffset
+
+  /** evita que el clic/tecla que abrió el panel lo cierre de inmediato */
+  ready = signal(false)
 
   constructor() {
     afterNextRender(() => {
       setTimeout(() => this.drawer.reveal(), 20)
+      setTimeout(() => this.ready.set(true), 450)
     })
   }
 
   @HostListener('document:keydown.escape')
   close() {
-    if (!this.open()) return
+    if (!this.open() || !this.ready()) return
     this.drawer.reset()
-    setTimeout(() => this.router.navigateByUrl('/'), 300)
+    setTimeout(() => {
+      this.router.navigateByUrl('/').then(() => this.drawer.restoreScroll())
+    }, 300)
   }
 }

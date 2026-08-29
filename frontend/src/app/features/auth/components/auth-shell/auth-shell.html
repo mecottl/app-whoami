@@ -1,6 +1,8 @@
-<div class="ov" [class.open]="open()">
+<div class="ov" [class.open]="open()" [class.ready]="ready()">
   <div class="ov-behind" inert aria-hidden="true">
-    <app-landing-page />
+    <app-landing-page
+      [style.transform]="'translateY(-' + bgOffset() + 'px) scale(1.02)'"
+    />
   </div>
 
   <button type="button" class="ov-scrim" aria-label="Cerrar" (click)="close()"></button>
