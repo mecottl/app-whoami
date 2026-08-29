@@ -71,7 +71,6 @@
   display: grid;
   gap: 0.9rem;
   min-width: 0;
-  overflow: hidden;
 }
 
 .panel-title {
