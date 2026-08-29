@@ -26,26 +26,23 @@
       </label>
     }
 
-    <div class="form-row">
-      <label>
-        <span>Layout</span>
-        <select [(ngModel)]="layout" name="layout">
-          <option value="VERTICAL">Vertical (9:16)</option>
-          <option value="SQUARE">Cuadrado (1:1)</option>
-          <option value="HORIZONTAL">Horizontal (16:9)</option>
-        </select>
-      </label>
+    <label>
+      <span>Layout</span>
+      <select [(ngModel)]="layout" name="layout">
+        @for (l of layouts; track l.value) {
+          <option [value]="l.value">{{ l.label }}</option>
+        }
+      </select>
+    </label>
 
-      <label>
-        <span>Template</span>
-        <select [(ngModel)]="template" name="template">
-          <option value="DARK">Ficha</option>
-          <option value="LIGHT">Editorial</option>
-          <option value="MINIMAL">Póster</option>
-          <option value="NEON">Etiqueta</option>
-        </select>
-      </label>
-    </div>
+    <label>
+      <span>Plantilla <span class="opt">(la cambias luego)</span></span>
+      <select [(ngModel)]="template" name="template">
+        @for (t of templates; track t.value) {
+          <option [value]="t.value">{{ t.label }}</option>
+        }
+      </select>
+    </label>
 
     @if (error()) {
       <p class="form-error">{{ error() }}</p>

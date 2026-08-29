@@ -83,24 +83,30 @@
             </p>
           </div>
 
-          <div class="row-2">
-            <label>
-              <span>Layout</span>
-              <select [value]="c.layout" (change)="onInput('layout', $event)">
-                <option value="VERTICAL">Vertical 9:16</option>
-                <option value="SQUARE">Cuadrado 1:1</option>
-                <option value="HORIZONTAL">Horizontal 16:9</option>
-              </select>
-            </label>
-            <label>
-              <span>Template</span>
-              <select [value]="c.template" (change)="onInput('template', $event)">
-                <option value="DARK">Ficha</option>
-                <option value="LIGHT">Editorial</option>
-                <option value="MINIMAL">Póster</option>
-                <option value="NEON">Etiqueta</option>
-              </select>
-            </label>
+          <label>
+            <span>Layout</span>
+            <select [value]="c.layout" (change)="onInput('layout', $event)">
+              @for (l of layouts; track l.value) {
+                <option [value]="l.value">{{ l.label }}</option>
+              }
+            </select>
+          </label>
+
+          <div class="field">
+            <span class="field-label">Plantilla</span>
+            <div class="tpl-grid">
+              @for (t of templates; track t.value) {
+                <button
+                  type="button"
+                  class="tpl-opt"
+                  [class.active]="c.template === t.value"
+                  (click)="patch('template', t.value)"
+                >
+                  <span class="tpl-name">{{ t.label }}</span>
+                  <span class="tpl-hint">{{ t.hint }}</span>
+                </button>
+              }
+            </div>
           </div>
         </div>
 

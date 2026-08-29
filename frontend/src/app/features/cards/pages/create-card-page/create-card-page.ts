@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router'
 import { CardsService } from '../../data-access/cards.service'
 import { AuthService } from '../../../auth/data-access/auth.service'
 import { CardLayout, CardTemplate } from '../../../../shared/models/card.model'
+import { CARD_TEMPLATES, CARD_LAYOUTS } from '../../../../shared/constants/card-templates'
 
 @Component({
   selector: 'app-create-card-page',
@@ -17,7 +18,10 @@ export class CreateCardPageComponent implements OnInit {
   description = ''
   birthDate = ''
   layout: CardLayout = 'VERTICAL'
-  template: CardTemplate = 'DARK'
+  template: CardTemplate = 'LIGHT'
+
+  templates = CARD_TEMPLATES
+  layouts = CARD_LAYOUTS
 
   needsBirthDate = signal(false)
   error = signal('')

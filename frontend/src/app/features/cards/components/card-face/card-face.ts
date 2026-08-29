@@ -79,14 +79,13 @@ export class CardFaceComponent {
       )
     )
 
-    let em = this.layout() === 'HORIZONTAL' ? 1.5 : 5
+    let em = this.layout() === 'HORIZONTAL' ? 2 : 5.5
     if (this._card()?.description) em += this.template() === 'LIGHT' ? 6 : 4.6
-    em += rows * (2.2 + favsPerRow * 2.9)
-    em += (rows - 1) * 1.8
+    em += rows * (2.3 + favsPerRow * 2.9)
+    em += (rows - 1) * 1.9
 
-    const tplBudget = this.template() === 'MINIMAL' ? 0.6 : 1
-    const scale = ((h - padY) * tplBudget) / (em * 15)
-    return clamp(15 * scale, 9, 18)
+    const scale = (h - padY) / (em * 15)
+    return clamp(15 * scale, 9, 19)
   })
 
   fontSize = computed(() =>

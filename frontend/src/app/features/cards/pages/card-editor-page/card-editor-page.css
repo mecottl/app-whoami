@@ -142,6 +142,44 @@
   font-size: 0.85rem;
 }
 
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.tpl-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+.tpl-opt {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.tpl-opt:hover {
+  background: var(--surface-2);
+}
+.tpl-opt.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.tpl-name {
+  font-size: 0.86rem;
+  font-weight: 550;
+}
+.tpl-hint {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--text-faint);
+}
+
 .count {
   float: right;
   font-style: normal;

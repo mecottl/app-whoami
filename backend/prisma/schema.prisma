@@ -72,6 +72,10 @@ enum Template {
   LIGHT
   NEON
   MINIMAL
+  PRESS
+  COMIC
+  FUTURE
+  VINTAGE
 }
 
 enum Layout {

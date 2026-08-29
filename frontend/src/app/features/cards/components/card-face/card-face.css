@@ -172,33 +172,44 @@
   color: var(--ink-soft);
 }
 
-/* ============================ LAYOUTS ============================ */
+/* ============================ LAYOUTS ============================
+   La composición vive aquí; las plantillas solo cambian el estilo.
+   ================================================================ */
 
+/* --- VERTICAL 9:16 : identidad arriba, listas centradas en el alto --- */
 .layout-vertical {
-  padding: 3em 2.7em;
-  gap: 1.6em;
+  padding: 3.2em 2.8em;
+  gap: 1.5em;
+}
+.layout-vertical .wa-head {
+  flex-shrink: 0;
 }
 .layout-vertical .wa-cats {
   flex: 1;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: 1.4em;
 }
+
+/* --- SQUARE 1:1 : equilibrado --- */
 .layout-square {
-  padding: 2.5em;
+  padding: 2.6em;
   gap: 1.3em;
 }
 .layout-square .wa-cats {
   flex: 1;
+  justify-content: center;
+  gap: 1.4em;
 }
-.layout-square .wa-cats:not(.cols-2) {
-  justify-content: space-evenly;
-}
+
+/* --- HORIZONTAL 16:9 : identidad | listas, todo centrado --- */
 .layout-horizontal {
-  padding: 2.6em 3em;
+  padding: 2.4em 3em;
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: 0.82fr 1.18fr;
+  grid-template-rows: min-content min-content;
   column-gap: 3em;
-  align-items: stretch;
+  row-gap: 1.1em;
+  align-content: center;
 }
 .layout-horizontal .wa-head {
   grid-column: 1;
@@ -208,30 +219,32 @@
   gap: 0.9em;
 }
 .layout-horizontal .wa-avatar {
-  width: 5em;
-  height: 5em;
+  width: 4.6em;
+  height: 4.6em;
 }
 .layout-horizontal .wa-desc {
   grid-column: 1;
   grid-row: 2;
-  align-self: start;
-  padding-top: 1.1em;
 }
 .layout-horizontal .wa-cats {
   grid-column: 2;
   grid-row: 1 / 3;
-  align-self: start;
+  align-self: center;
+  justify-content: center;
   min-height: 0;
 }
 
 /* ==================================================================
-   PLANTILLA · FICHA  (DARK) — catálogo / base de datos
+   PLANTILLAS — cada una cambia tipografía, color y ornamento.
+   La composición la ponen los .layout-*.
    ================================================================== */
+
+/* ---------- FICHA (DARK) · catálogo monoespaciado ---------- */
 .tpl-dark {
   background: #101014;
   --ink: #ececed;
   --ink-soft: rgba(236, 236, 237, 0.55);
-  --hair: rgba(236, 236, 237, 0.16);
+  --hair: rgba(236, 236, 237, 0.18);
 }
 .tpl-dark .wa-name {
   font-family: "JetBrains Mono", monospace;
@@ -240,13 +253,13 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
-.tpl-dark .wa-avatar {
+.tpl-dark .wa-avatar,
+.tpl-dark .wa-avatar--initials {
   border-radius: 0.15em;
 }
 .tpl-dark .wa-avatar--initials {
   font-family: "JetBrains Mono", monospace;
   font-size: 1em;
-  border-radius: 0.15em;
   background: transparent;
   border: 1px solid var(--hair);
   color: var(--ink);
@@ -262,7 +275,6 @@
 .tpl-dark .wa-fav {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.82em;
-  align-items: center;
   gap: 0.7em;
 }
 .tpl-dark .wa-fav img {
@@ -270,13 +282,8 @@
   height: 2.1em;
   border-radius: 0;
 }
-.tpl-dark .wa-fav-title {
-  white-space: nowrap;
-}
 
-/* ==================================================================
-   PLANTILLA · EDITORIAL  (LIGHT) — perfil de revista
-   ================================================================== */
+/* ---------- EDITORIAL (LIGHT) · perfil de revista ---------- */
 .tpl-light {
   background: #faf8f3;
   --ink: #1a1813;
@@ -284,14 +291,14 @@
   --hair: rgba(26, 24, 19, 0.16);
 }
 .tpl-light .wa-name {
-  font-size: 2.55em;
+  font-size: 2.5em;
   font-weight: 400;
   line-height: 0.98;
 }
 .tpl-light .wa-desc {
   font-family: "Fraunces", serif;
   font-style: italic;
-  font-size: 1.4em;
+  font-size: 1.35em;
   line-height: 1.3;
   color: var(--ink);
   padding-left: 0.8em;
@@ -323,74 +330,7 @@
   color: var(--ink-soft);
 }
 
-/* ==================================================================
-   PLANTILLA · PÓSTER  (MINIMAL) — el nombre lo es todo
-   ================================================================== */
-.tpl-minimal {
-  background: #ffffff;
-  --ink: #0b0b0b;
-  --ink-soft: rgba(11, 11, 11, 0.5);
-  --hair: rgba(11, 11, 11, 0.12);
-}
-.tpl-minimal .wa-head {
-  align-items: flex-start;
-}
-.tpl-minimal .wa-avatar {
-  width: 2.6em;
-  height: 2.6em;
-}
-.tpl-minimal .wa-name {
-  font-size: 4em;
-  font-weight: 500;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-}
-.tpl-minimal .wa-cats {
-  border-top: 1.5px solid currentColor;
-  padding-top: 0.9em;
-}
-.tpl-minimal .wa-meta {
-  font-size: 0.66em;
-}
-.tpl-minimal .wa-desc {
-  font-size: 0.9em;
-  -webkit-line-clamp: 2;
-}
-.tpl-minimal .wa-cats {
-  margin-top: auto;
-  gap: 0.8em;
-}
-.tpl-minimal .wa-cat-title {
-  border-bottom: 0;
-  padding-bottom: 0;
-  margin-bottom: 0.3em;
-  font-size: 0.62em;
-  color: var(--ink-soft);
-}
-.tpl-minimal .wa-favs {
-  gap: 0.35em;
-}
-.tpl-minimal .wa-fav {
-  font-size: 0.82em;
-  gap: 0.55em;
-}
-.tpl-minimal .wa-fav img {
-  width: 1.6em;
-  height: 1.6em;
-  border-radius: 0.1em;
-}
-.tpl-minimal .wa-fav-rank {
-  color: var(--ink-soft);
-}
-.layout-vertical.tpl-minimal .wa-cats,
-.layout-square.tpl-minimal .wa-cats {
-  flex: 0 0 auto;
-  justify-content: flex-start;
-}
-
-/* ==================================================================
-   PLANTILLA · ETIQUETA  (NEON) — sticker, tu color, chips
-   ================================================================== */
+/* ---------- ETIQUETA (NEON) · sticker de tu color ---------- */
 .tpl-neon {
   background: linear-gradient(
     155deg,
@@ -400,10 +340,6 @@
   --ink: #fdfcff;
   --ink-soft: rgba(253, 252, 255, 0.78);
   --hair: rgba(253, 252, 255, 0.28);
-}
-.tpl-neon .wa-card,
-.tpl-neon.wa-card {
-  border-radius: 0;
 }
 .tpl-neon .wa-avatar {
   width: 5.2em;
@@ -429,6 +365,367 @@
   padding-bottom: 0;
 }
 .tpl-neon .wa-cat-title::before {
-  content: "◆ ";
+  content: "\25c6\00a0";
   opacity: 0.7;
+}
+
+/* ---------- PÓSTER (MINIMAL) · el nombre lo ocupa todo ---------- */
+.tpl-minimal {
+  background: #ffffff;
+  --ink: #0b0b0b;
+  --ink-soft: rgba(11, 11, 11, 0.5);
+  --hair: rgba(11, 11, 11, 0.14);
+}
+.tpl-minimal.layout-vertical,
+.tpl-minimal.layout-square {
+  gap: 0;
+}
+.tpl-minimal .wa-head {
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55em;
+}
+.tpl-minimal .wa-avatar {
+  width: 2.4em;
+  height: 2.4em;
+}
+.tpl-minimal .wa-name {
+  font-size: 5em;
+  font-weight: 500;
+  line-height: 0.86;
+  letter-spacing: -0.048em;
+}
+.tpl-minimal.layout-horizontal .wa-name {
+  font-size: 3.6em;
+}
+.tpl-minimal.layout-square .wa-name {
+  font-size: 4em;
+}
+.tpl-minimal .wa-meta {
+  font-size: 0.6em;
+}
+.tpl-minimal .wa-desc {
+  flex: 0 0 auto;
+  margin-top: auto;
+  font-size: 0.86em;
+  -webkit-line-clamp: 2;
+  padding: 1.4em 0 0.7em;
+}
+.tpl-minimal.layout-horizontal .wa-desc {
+  margin-top: 0.6em;
+}
+.tpl-minimal .wa-cats {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+  gap: 0.7em;
+  border-top: 1.5px solid currentColor;
+  padding-top: 0.85em;
+}
+.tpl-minimal .wa-cat-title {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0.3em;
+  font-size: 0.6em;
+  color: var(--ink-soft);
+}
+.tpl-minimal .wa-favs {
+  gap: 0.3em;
+}
+.tpl-minimal .wa-fav {
+  font-size: 0.8em;
+  gap: 0.5em;
+}
+.tpl-minimal .wa-fav img {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.08em;
+}
+.tpl-minimal .wa-fav-rank {
+  color: var(--ink-soft);
+}
+
+/* ---------- PERIÓDICO (PRESS) · portada de diario ---------- */
+.tpl-press {
+  background: #f4f1e6;
+  --ink: #16130d;
+  --ink-soft: rgba(22, 19, 13, 0.66);
+  --hair: rgba(22, 19, 13, 0.55);
+}
+.tpl-press .wa-head {
+  border-top: 3px double var(--ink);
+  border-bottom: 3px double var(--ink);
+  padding: 0.45em 0;
+  align-items: center;
+}
+.tpl-press .wa-name {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: 2.3em;
+  line-height: 1;
+}
+.tpl-press .wa-meta {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62em;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.tpl-press .wa-avatar {
+  border-radius: 0;
+  filter: grayscale(1) contrast(1.15);
+  border: 1px solid var(--ink);
+}
+.tpl-press .wa-avatar--initials {
+  background: var(--ink);
+  color: #f4f1e6;
+  border-radius: 0;
+}
+.tpl-press .wa-desc {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 1.02em;
+  line-height: 1.35;
+  text-align: justify;
+  -webkit-line-clamp: 3;
+}
+.tpl-press .wa-desc::first-letter {
+  font-size: 2.6em;
+  font-weight: 700;
+  float: left;
+  line-height: 0.78;
+  padding: 0.05em 0.1em 0 0;
+}
+.tpl-press .wa-cat-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--ink);
+}
+.tpl-press .wa-fav {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 0.92em;
+}
+.tpl-press .wa-fav-rank {
+  font-family: "Fraunces", serif;
+  color: var(--ink);
+}
+.tpl-press .wa-fav img {
+  filter: grayscale(1) contrast(1.1);
+  border-radius: 0;
+}
+
+/* ---------- CÓMIC (COMIC) · viñeta, bordes gruesos ---------- */
+.tpl-comic {
+  background-color: color-mix(in srgb, var(--card-accent) 20%, #fff7e0);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--card-accent) 42%, transparent) 22%,
+    transparent 23%
+  );
+  background-size: 0.85em 0.85em;
+  --ink: #14110c;
+  --ink-soft: rgba(20, 17, 12, 0.72);
+  --hair: #14110c;
+}
+.tpl-comic .wa-name {
+  font-weight: 600;
+  font-size: 2.3em;
+  letter-spacing: -0.02em;
+  -webkit-text-stroke: 0.5px #14110c;
+}
+.tpl-comic .wa-avatar {
+  border: 3px solid #14110c;
+}
+.tpl-comic .wa-avatar--initials {
+  background: var(--card-accent);
+  color: #14110c;
+  border: 3px solid #14110c;
+}
+.tpl-comic .wa-desc {
+  position: relative;
+  background: #fff;
+  color: #14110c;
+  border: 3px solid #14110c;
+  border-radius: 1em;
+  padding: 0.65em 0.9em;
+  font-weight: 500;
+  -webkit-line-clamp: 3;
+}
+.tpl-comic .wa-desc::after {
+  content: "";
+  position: absolute;
+  left: 1.5em;
+  bottom: -0.85em;
+  border: 0.5em solid transparent;
+  border-top-color: #14110c;
+}
+.tpl-comic .wa-cat-title {
+  display: inline-block;
+  background: #14110c;
+  color: #fff;
+  border: 0;
+  font-size: 0.82em;
+  font-weight: 600;
+  padding: 0.18em 0.7em;
+  border-radius: 0.25em;
+  transform: rotate(-2deg);
+  letter-spacing: 0.1em;
+}
+.tpl-comic .wa-fav {
+  background: #fff;
+  border: 2px solid #14110c;
+  border-radius: 0.3em;
+  padding: 0.22em 0.5em;
+  font-weight: 500;
+}
+.tpl-comic .wa-fav-rank {
+  color: #14110c;
+}
+.tpl-comic .wa-fav img {
+  border: 2px solid #14110c;
+  border-radius: 0.15em;
+}
+
+/* ---------- FUTURISTA (FUTURE) · interfaz / HUD ---------- */
+.tpl-future {
+  background-color: #080b0e;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(120, 200, 220, 0.045) 0 2px,
+    transparent 2px 4px
+  );
+  --ink: #dbe7ec;
+  --ink-soft: rgba(219, 231, 236, 0.55);
+  --hair: rgba(120, 200, 220, 0.35);
+  --card-accent: #35e0d8;
+  outline: 1px solid rgba(120, 200, 220, 0.25);
+  outline-offset: -0.8em;
+}
+.tpl-future .wa-name {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  font-size: 1.35em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tpl-future .wa-meta {
+  font-family: "JetBrains Mono", monospace;
+}
+.tpl-future .wa-handle {
+  color: #35e0d8;
+}
+.tpl-future .wa-avatar {
+  border-radius: 0;
+  border: 1px solid #35e0d8;
+  filter: saturate(0.4) brightness(1.05);
+}
+.tpl-future .wa-avatar--initials {
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid #35e0d8;
+  color: #35e0d8;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1em;
+}
+.tpl-future .wa-desc {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8em;
+  line-height: 1.55;
+  -webkit-line-clamp: 3;
+}
+.tpl-future .wa-cat-title {
+  font-family: "JetBrains Mono", monospace;
+  color: #35e0d8;
+  border-bottom: 1px solid var(--hair);
+}
+.tpl-future .wa-cat-title::before {
+  content: "\25b8\00a0";
+}
+.tpl-future .wa-fav {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82em;
+  gap: 0.7em;
+}
+.tpl-future .wa-fav-rank {
+  color: #35e0d8;
+}
+.tpl-future .wa-fav-rank::before {
+  content: "[";
+}
+.tpl-future .wa-fav-rank::after {
+  content: "]";
+}
+.tpl-future .wa-fav img {
+  border-radius: 0;
+  border: 1px solid var(--hair);
+  width: 2em;
+  height: 2em;
+}
+
+/* ---------- ANTIGUO (VINTAGE) · documento envejecido ---------- */
+.tpl-vintage {
+  background: #ece0c4;
+  --ink: #3b2c19;
+  --ink-soft: rgba(59, 44, 25, 0.65);
+  --hair: rgba(59, 44, 25, 0.42);
+  outline: 1px solid var(--ink);
+  outline-offset: -0.7em;
+  box-shadow: inset 0 0 6em rgba(90, 64, 30, 0.35);
+}
+.tpl-vintage .wa-name {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 2.2em;
+  letter-spacing: 0.01em;
+}
+.tpl-vintage .wa-meta {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 0.8em;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.tpl-vintage .wa-avatar {
+  filter: sepia(0.6) contrast(0.95);
+  border: 2px solid var(--ink);
+  padding: 2px;
+}
+.tpl-vintage .wa-avatar--initials {
+  background: transparent;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: "Fraunces", serif;
+}
+.tpl-vintage .wa-desc {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 1.1em;
+  line-height: 1.35;
+  -webkit-line-clamp: 3;
+}
+.tpl-vintage .wa-cat-title {
+  font-family: "Fraunces", serif;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+  font-size: 0.95em;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.tpl-vintage .wa-cat-title::after {
+  content: "\00a0\2766";
+  opacity: 0.6;
+}
+.tpl-vintage .wa-fav {
+  font-family: "Fraunces", serif;
+  font-size: 0.98em;
+}
+.tpl-vintage .wa-fav-rank {
+  font-family: "Fraunces", serif;
+  color: var(--ink-soft);
+}
+.tpl-vintage .wa-fav img {
+  filter: sepia(0.5) contrast(0.95);
+  border: 1px solid var(--ink);
+  border-radius: 0;
 }

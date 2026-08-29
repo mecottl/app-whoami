@@ -10,6 +10,7 @@ import {
 import { CardEditorCategoryComponent } from '../../components/card-editor-categorie/card-editor-categorie'
 import { CardPreviewComponent } from '../../components/card-preview/card-preview'
 import { ageFromBirthDate } from '../../../../shared/utils/age'
+import { CARD_TEMPLATES, CARD_LAYOUTS } from '../../../../shared/constants/card-templates'
 
 type Tab = 'edit' | 'preview'
 
@@ -35,6 +36,9 @@ export class CardEditorPage implements OnInit {
 
   newCategoryType = signal<FavoriteType>(FAVORITE_TYPES.MOVIE)
   avatarBusy = signal(false)
+
+  templates = CARD_TEMPLATES
+  layouts = CARD_LAYOUTS
 
   private saveTimeout: ReturnType<typeof setTimeout> | null = null
   private lastPayload = ''

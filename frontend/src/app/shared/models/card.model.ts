@@ -1,7 +1,15 @@
 import { FavoriteType } from '../constants/favorite-types'
 
 export type CardLayout = 'VERTICAL' | 'HORIZONTAL' | 'SQUARE'
-export type CardTemplate = 'DARK' | 'LIGHT' | 'NEON' | 'MINIMAL'
+export type CardTemplate =
+  | 'DARK'
+  | 'LIGHT'
+  | 'NEON'
+  | 'MINIMAL'
+  | 'PRESS'
+  | 'COMIC'
+  | 'FUTURE'
+  | 'VINTAGE'
 
 export interface Favorite {
   id: string

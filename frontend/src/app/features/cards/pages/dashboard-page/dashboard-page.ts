@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router'
 import { CardsService } from '../../data-access/cards.service'
 import { Card } from '../../../../shared/models/card.model'
 import { CardThumbComponent } from '../../components/card-thumb/card-thumb'
+import { TEMPLATE_LABEL } from '../../../../shared/constants/card-templates'
 
 @Component({
   selector: 'app-dashboard-page',
@@ -64,8 +65,6 @@ export class DashboardPageComponent implements OnInit {
   }
 
   templateLabel(card: Card) {
-    return { DARK: 'Ficha', LIGHT: 'Editorial', MINIMAL: 'Póster', NEON: 'Etiqueta' }[
-      card.template
-    ]
+    return TEMPLATE_LABEL[card.template] ?? card.template
   }
 }
