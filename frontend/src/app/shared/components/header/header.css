@@ -19,7 +19,7 @@
 
 .brand {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.55rem;
   color: var(--text);
 }
@@ -27,16 +27,30 @@
   text-decoration: none;
 }
 
-.brand-word {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 1.35rem;
-  letter-spacing: -0.03em;
+.brand-logo {
+  height: 1.15rem;
+  width: auto;
+  display: block;
 }
-.brand-q {
-  color: var(--accent);
-  font-weight: 600;
-  margin-left: 0.02em;
+/* por defecto (tema claro): logo negro */
+.brand-logo--dark {
+  display: none;
+}
+/* toggle manual a oscuro */
+:host-context(:root[data-theme='dark']) .brand-logo--light {
+  display: none;
+}
+:host-context(:root[data-theme='dark']) .brand-logo--dark {
+  display: block;
+}
+/* preferencia del sistema, salvo que el usuario haya forzado claro */
+@media (prefers-color-scheme: dark) {
+  :host-context(:root:not([data-theme='light'])) .brand-logo--light {
+    display: none;
+  }
+  :host-context(:root:not([data-theme='light'])) .brand-logo--dark {
+    display: block;
+  }
 }
 
 .brand-dim {

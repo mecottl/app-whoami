@@ -253,3 +253,41 @@
 .foot-dim {
   color: var(--text-faint);
 }
+
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--text);
+}
+.brand:hover {
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 1.15rem;
+  width: auto;
+  display: block;
+}
+
+/* por defecto (tema claro): logo negro */
+.brand-logo--dark {
+  display: none;
+}
+/* toggle manual a oscuro */
+:host-context(:root[data-theme='dark']) .brand-logo--light {
+  display: none;
+}
+:host-context(:root[data-theme='dark']) .brand-logo--dark {
+  display: block;
+}
+/* preferencia del sistema, salvo que el usuario haya forzado claro */
+@media (prefers-color-scheme: dark) {
+  :host-context(:root:not([data-theme='light'])) .brand-logo--light {
+    display: none;
+  }
+  :host-context(:root:not([data-theme='light'])) .brand-logo--dark {
+    display: block;
+  }
+}
