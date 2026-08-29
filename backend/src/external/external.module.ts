@@ -6,6 +6,7 @@ import { TmdbProvider } from './providers/tmdb.provider.js'
 import { DeezerProvider } from './providers/deezer.provider.js'
 import { RawgProvider } from './providers/rawg.provider.js'
 import { SportsDbProvider } from './providers/sportsdb.provider.js'
+import { OpenLibraryProvider } from './providers/openlibrary.provider.js'
 
 @Module({
   imports: [HttpModule],
@@ -16,6 +17,7 @@ import { SportsDbProvider } from './providers/sportsdb.provider.js'
     DeezerProvider,
     RawgProvider,
     SportsDbProvider,
+    OpenLibraryProvider,
   ],
 })
 export class ExternalModule {}

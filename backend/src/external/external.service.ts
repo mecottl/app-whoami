@@ -5,6 +5,7 @@ import { TmdbProvider } from './providers/tmdb.provider.js'
 import { DeezerProvider } from './providers/deezer.provider.js'
 import { RawgProvider } from './providers/rawg.provider.js'
 import { SportsDbProvider } from './providers/sportsdb.provider.js'
+import { OpenLibraryProvider } from './providers/openlibrary.provider.js'
 import type { SearchResult } from './search-result.js'
 
 const ALLOWED_IMAGE_HOSTS = [
@@ -14,9 +15,16 @@ const ALLOWED_IMAGE_HOSTS = [
   'media.rawg.io',
   'r2.thesportsdb.com',
   'www.thesportsdb.com',
+  'covers.openlibrary.org',
 ]
 
-export type SearchableType = 'MOVIE' | 'SERIES' | 'MUSIC' | 'GAME' | 'SPORT'
+export type SearchableType =
+  | 'MOVIE'
+  | 'SERIES'
+  | 'MUSIC'
+  | 'GAME'
+  | 'SPORT'
+  | 'BOOK'
 
 @Injectable()
 export class ExternalService {
@@ -25,6 +33,7 @@ export class ExternalService {
     private deezer: DeezerProvider,
     private rawg: RawgProvider,
     private sportsdb: SportsDbProvider,
+    private openlibrary: OpenLibraryProvider,
     private http: HttpService,
   ) {}
 
@@ -40,6 +49,8 @@ export class ExternalService {
         return this.rawg.search(query)
       case 'SPORT':
         return this.sportsdb.search(query)
+      case 'BOOK':
+        return this.openlibrary.search(query)
       default:
         throw new BadRequestException(`Tipo de búsqueda no soportado: ${type}`)
     }

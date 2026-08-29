@@ -46,6 +46,12 @@ export class CardsService {
         return this.prisma.card.findMany({
             where: { userId },
             orderBy: { createdAt: "desc" },
+            include: {
+                categories: {
+                    orderBy: { order: "asc" },
+                    include: { favorites: { orderBy: { order: "asc" } } },
+                },
+            },
         })
     }
 
@@ -65,6 +71,8 @@ export class CardsService {
                 description: dto.description,
                 favoriteColor: dto.favoriteColor,
                 avatarUrl: dto.avatarUrl,
+                handle: dto.handle,
+                location: dto.location,
                 template: dto.template,
                 layout: dto.layout,
                 birthDate: dto.birthDate ? new Date(dto.birthDate) : undefined,

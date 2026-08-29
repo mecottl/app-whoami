@@ -25,6 +25,8 @@ model Card {
   description   String?
   favoriteColor String?
   avatarUrl     String?  @default("")
+  handle        String?
+  location      String?
 
   template Template
   layout   Layout
@@ -84,4 +86,5 @@ enum FavoriteType {
   GAME
   SERIES
   SPORT
+  BOOK
 }

@@ -31,6 +31,16 @@ export class UpdateCardDto {
 
   @IsOptional()
   @IsString()
+  @MaxLength(30)
+  handle?: string
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(40)
+  location?: string
+
+  @IsOptional()
+  @IsString()
   @MaxLength(700000) // permite una imagen pequeña embebida como data URL
   avatarUrl?: string
 }
