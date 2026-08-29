@@ -1,0 +1,40 @@
+# Render Blueprint para el backend NestJS.
+# Uso: Render Dashboard -> New -> Blueprint -> selecciona este repo.
+# Rellena las envVars marcadas `sync: false` en el panel (no se commitean).
+#
+# El frontend NO va aquí: se despliega en Vercel (ver frontend/vercel.json).
+# La base de datos es Supabase (ver DEPLOY.md).
+
+services:
+  - type: web
+    name: whoami-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    buildCommand: bun install && bunx prisma generate && bun run build
+    startCommand: bunx prisma migrate deploy && bun run start:prod
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Supabase -> Project Settings -> Database -> Connection string -> "Session pooler"
+      # (host ...pooler.supabase.com, puerto 5432). Incluye ?sslmode=require
+      - key: DATABASE_URL
+        sync: false
+      # Se genera solo. Si prefieres uno propio, edítalo en el panel.
+      - key: JWT_SECRET
+        generateValue: true
+      # La URL pública del frontend en Vercel, p.ej. https://whoami.vercel.app
+      # Admite varias separadas por coma.
+      - key: CORS_ORIGIN
+        sync: false
+      # https://www.themoviedb.org/settings/api  (películas + series)
+      - key: TMDB_API_KEY
+        sync: false
+      # https://rawg.io/apikey  (juegos; sin ella GAME responde 503)
+      - key: RAWG_API_KEY
+        sync: false
+      # "3" es la key pública de pruebas de TheSportsDB
+      - key: SPORTSDB_API_KEY
+        value: "3"

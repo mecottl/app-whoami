@@ -16,9 +16,11 @@ async function bootstrap() {
     }),
   )
 
-  app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
-  })
+  const corsOrigins = (process.env.CORS_ORIGIN || 'http://localhost:4200')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean)
+  app.enableCors({ origin: corsOrigins })
 
   app.use((_req: any, res: any, next: any) => {
     res.setHeader('Cache-Control', 'no-store')
@@ -28,8 +30,8 @@ async function bootstrap() {
   app.enableShutdownHooks()
 
   const port = process.env.PORT || 3000
-  await app.listen(port)
-  new Logger('Bootstrap').log(`API escuchando en http://localhost:${port}`)
+  await app.listen(port, '0.0.0.0')
+  new Logger('Bootstrap').log(`API escuchando en el puerto ${port}`)
 }
 
 bootstrap()

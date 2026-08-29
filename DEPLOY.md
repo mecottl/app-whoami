@@ -1,55 +1,101 @@
 # Despliegue
 
-La app son **tres piezas**: frontend (Angular, estático), backend (NestJS, servidor)
-y Postgres. Vercel hospeda bien las dos primeras; para la base de datos hace falta
-un Postgres gestionado.
+Tres piezas:
 
-## Recomendado
-
-| Pieza | Dónde | Por qué |
+| Pieza | Dónde | Config en el repo |
 |---|---|---|
-| Postgres | **Neon** (free tier) | integración nativa con Vercel, sin tarjeta |
-| Backend | **Railway** o **Render** | NestJS + Prisma corre mejor en un servicio *always-on* (sin cold starts); un solo `Dockerfile`/comando |
-| Frontend | **Vercel** | estático, deploy en cada push |
+| Base de datos | **Supabase** (Postgres free) | — |
+| Backend (NestJS) | **Render** (web service free) | `render.yaml` |
+| Frontend (Angular) | **Vercel** (estático) | `frontend/vercel.json` |
+| Keep-alive de la DB | **GitHub Actions** (cron) | `.github/workflows/db-keepalive.yml` |
 
-(Todo en Vercel también se puede: el backend iría como *serverless function*. Cold
-starts de ~1-2 s y algún ajuste extra en el bootstrap de Nest.)
+El frontend llama siempre a `/api/...` (mismo origen); Vercel reescribe `/api/*`
+hacia el backend de Render, así que **no hay CORS entre navegador y API** y las
+cookies/orígenes no se cruzan.
 
-## Pasos
+> Notas del plan free:
+> - **Render** duerme el servicio tras 15 min sin tráfico; el primer request
+>   después tarda ~50 s en responder.
+> - **Supabase** pausa el proyecto tras ~7 días sin actividad. El cron de
+>   keep-alive lo evita.
 
-### 0. Antes de nada
-- **Merge la rama**: `git checkout main && git merge rework/overhaul-fases-a-f && git push`
-- **Rota la API key de TMDB** (estuvo en el repo público).
+---
 
-### 1. Postgres (Neon)
-1. Crea un proyecto en neon.tech → copia el `DATABASE_URL` (con `?sslmode=require`).
-2. Desde tu máquina, apunta `backend/.env` a esa URL y corre:
-   `cd backend && bun --bun run prisma migrate deploy`
+## 0. Antes de nada
 
-### 2. Backend (Railway)
-1. Nuevo proyecto → deploy desde el repo, **root = `backend`**.
-2. Build: `bun install && bun --bun run prisma generate && bun run build`
-   Start: `bun run start:prod`
-3. Variables de entorno:
+- **Merge la rama:** `git checkout main && git merge rework/overhaul-fases-a-f && git push`
+- **Rota la `TMDB_API_KEY`** (estuvo en el repo público en un commit antiguo).
+- (Opcional) consigue una `RAWG_API_KEY` en <https://rawg.io/apikey> para la
+  categoría *Juegos* (sin ella responde 503, el resto funciona).
+
+---
+
+## 1. Base de datos — Supabase
+
+1. <https://supabase.com> → **New project**. Guarda la contraseña de la base.
+2. **Project Settings → Database → Connection string → pestaña `Session pooler`**.
+   Copia esa cadena (host `...pooler.supabase.com`, puerto `5432`). Sustituye
+   `[YOUR-PASSWORD]` y añade `?sslmode=require` al final si no está.
+   - Usa el **Session pooler**, no el *Transaction pooler* (6543): el backend es
+     un proceso Node persistente y Prisma usa prepared statements.
+3. Esa cadena es tu `DATABASE_URL`. Las migraciones corren solas en cada deploy
+   de Render (`prisma migrate deploy` en el `startCommand`).
+
+---
+
+## 2. Backend — Render
+
+1. <https://render.com> → **New → Blueprint** → elige este repo. Render lee
+   `render.yaml` y crea el servicio `whoami-api`.
+2. Rellena las variables marcadas (se piden en el panel):
+
+   | Variable | Valor |
+   |---|---|
+   | `DATABASE_URL` | la cadena *Session pooler* de Supabase |
+   | `CORS_ORIGIN` | tu dominio final de Vercel, p. ej. `https://whoami.vercel.app` |
+   | `TMDB_API_KEY` | tu key (rotada) |
+   | `RAWG_API_KEY` | opcional |
+
+   `JWT_SECRET` se genera solo; `SPORTSDB_API_KEY` ya viene con `3`.
+3. Deploy. Cuando termine, copia la URL pública
+   (p. ej. `https://whoami-api.onrender.com`) y verifica:
+   `curl https://whoami-api.onrender.com/health` → `{"ok":true,"db":true,...}`
+
+> Si Render no detecta Bun automáticamente, en el panel del servicio pon
+> Build Command: `npm i -g bun && bun install && bunx prisma generate && bun run build`
+
+---
+
+## 3. Frontend — Vercel
+
+1. Edita **`frontend/vercel.json`** y cambia la URL del primer rewrite por la de
+   tu backend en Render:
+   ```json
+   { "source": "/api/(.*)", "destination": "https://TU-BACKEND.onrender.com/$1" }
    ```
-   DATABASE_URL      = (de Neon)
-   JWT_SECRET        = (genera uno nuevo)
-   TMDB_API_KEY      = (rotada)
-   RAWG_API_KEY      = (opcional, rawg.io/apikey)
-   SPORTSDB_API_KEY  = 3
-   CORS_ORIGIN       = https://TU-APP.vercel.app
-   PORT              = 3000
-   ```
-4. Copia la URL pública del backend (p. ej. `https://whoami-api.up.railway.app`).
+   Commit + push.
+2. <https://vercel.com> → **Add New → Project** → importa el repo.
+   - **Root Directory: `frontend`**
+   - Framework Preset: **Other** (lo demás lo pone `vercel.json`)
+3. Deploy. Copia el dominio final.
+4. Vuelve a Render y pon `CORS_ORIGIN` = ese dominio. Redeploy del backend.
 
-### 3. Frontend (Vercel)
-1. Import del repo → **root = `frontend`**, framework Angular (autodetectado).
-2. En `frontend/src/index.html`, dentro de `<head>`, añade:
-   ```html
-   <script>window.__WHOAMI_API__ = 'https://whoami-api.up.railway.app';</script>
-   ```
-   (o deja que use `mismo-origen/api` si montas el backend en Vercel bajo `/api`).
-3. Deploy.
+---
 
-### 4. Cerrar el círculo
-- Pon `CORS_ORIGIN` del backend = dominio final de Vercel y redeploy el backend.
+## 4. Keep-alive de la base de datos
+
+Ya está el workflow `.github/workflows/db-keepalive.yml` (cada 3 días pega a
+`/health`, que hace un `SELECT 1`).
+
+1. En GitHub: **Settings → Secrets and variables → Actions → New repository secret**
+   - `KEEPALIVE_URL` = `https://TU-BACKEND.onrender.com/health`
+2. **Actions → db-keepalive → Run workflow** una vez para comprobar que pasa.
+
+(Alternativa: un *Cron Job* en Render, pero requiere plan de pago.)
+
+---
+
+## Local
+
+`backend/.env` (copia de `.env.example`) sigue apuntando a tu Postgres local
+por Docker. Nada de esto cambia el desarrollo local.

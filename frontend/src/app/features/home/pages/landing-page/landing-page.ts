@@ -14,7 +14,7 @@ import { CardCategory } from '../../../cards/data-access/cards.service'
 export class LandingPageComponent {
   readonly demoCard: Card = {
     id: 'demo',
-    name: 'Alex Rivera',
+    name: '',
     handle: '@alexrvra',
     location: 'CDMX',
     description: 'Diseño de producto de día, discos raros de noche.',
@@ -53,7 +53,9 @@ export class LandingPageComponent {
     'Música',
     'Libros',
     'Juegos',
-    'Deportes'
+    'Deportes',
+    'Anime',
+
   ]
 
   readonly steps = [
