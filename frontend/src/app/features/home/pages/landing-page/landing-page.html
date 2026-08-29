@@ -1,30 +1,67 @@
-<section class="landing page">
-  <div class="hero">
-    <p class="eyebrow">WhoAmI Studio</p>
-    <h1>Tu identidad, en una card que puedes compartir.</h1>
-    <p class="lede muted">
-      Junta quién eres con lo que te gusta —películas, música, intereses— y
-      arma una card visual limpia, lista para tus redes.
+<section class="hero">
+  <div class="hero-copy">
+    <p class="kicker">WhoAmI Studio · Est. 2026</p>
+    <h1>La carta de<br />quién eres.</h1>
+    <p class="lede">
+      Junta tu identidad con lo que te gusta —discos, películas, libros, equipos—
+      y edítalo hasta que sea una sola imagen. Lista para compartir.
     </p>
-
     <div class="hero-actions">
-      <a routerLink="/register" class="btn btn-primary">Crear cuenta</a>
-      <a routerLink="/login" class="btn">Iniciar sesión</a>
+      <a routerLink="/register" class="btn btn-primary">Crear mi carta</a>
+      <a routerLink="/login" class="btn">Ya tengo cuenta</a>
     </div>
+    <p class="hero-note">Gratis · privada por defecto · exporta a PNG</p>
   </div>
 
-  <ul class="feature-list">
-    <li class="card feature">
-      <h3>Editor con preview</h3>
-      <p class="muted">Cambia nombre, fecha, colores y templates y velo al instante.</p>
-    </li>
-    <li class="card feature">
-      <h3>Top 3 por categoría</h3>
-      <p class="muted">Rankings de pelis y discos con datos de APIs reales.</p>
-    </li>
-    <li class="card feature">
-      <h3>Privado por defecto</h3>
-      <p class="muted">Tus cards son tuyas. Nadie más las ve salvo que tú las compartas.</p>
-    </li>
+  <div class="hero-card" aria-hidden="true">
+    <div class="demo-stage">
+      <div class="demo-inner">
+        <app-card-face
+          [card]="demoCard"
+          [categories]="demoCategories"
+          [age]="28"
+        />
+      </div>
+    </div>
+    <span class="demo-tag">vista previa</span>
+  </div>
+</section>
+
+<section class="strip">
+  <span class="strip-label">Categorías</span>
+  <ul class="strip-list">
+    @for (c of categories; track c) {
+      <li>{{ c }}</li>
+    }
   </ul>
 </section>
+
+<section class="index">
+  <div class="index-head">
+    <p class="eyebrow">El proceso</p>
+    <h2>Cuatro pasos, cinco minutos.</h2>
+  </div>
+  <ol class="index-list">
+    @for (s of steps; track s.n) {
+      <li class="index-item">
+        <span class="index-n">{{ s.n }}</span>
+        <div>
+          <h3>{{ s.t }}</h3>
+          <p class="muted">{{ s.d }}</p>
+        </div>
+      </li>
+    }
+  </ol>
+</section>
+
+<section class="closer">
+  <h2>Nadie más tú.</h2>
+  <p class="muted">Tus cartas son privadas hasta que decidas compartirlas.</p>
+  <a routerLink="/register" class="btn btn-primary">Empezar</a>
+</section>
+
+<footer class="foot">
+  <span class="brand-mark" aria-hidden="true">W</span>
+  <span>WhoAmI Studio</span>
+  <span class="foot-dim">— identidad, editada.</span>
+</footer>

@@ -13,9 +13,10 @@
       }
       <div class="wa-id">
         <h3 class="wa-name">{{ c.name || 'Sin nombre' }}</h3>
-        @if (age !== null) {
-          <p class="wa-age">{{ age }} años</p>
-        }
+        <p class="wa-meta">
+          @if (c.handle) { <span class="wa-handle">{{ handleText() }}</span> }
+          @if (metaBits().length) { <span>{{ metaBits().join('  ·  ') }}</span> }
+        </p>
       </div>
     </header>
 

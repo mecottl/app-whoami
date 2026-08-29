@@ -1,111 +1,114 @@
 /* ===========================================================================
    WhoAmI Studio — sistema de diseño
-   Minimalista, mobile-first, con modo claro y oscuro.
+   Dirección: "liner notes" editoriales. Papel cálido, tinta, bermellón.
+   Fraunces (display) · Public Sans (texto) · JetBrains Mono (etiquetas).
    =========================================================================== */
 
 :root {
   color-scheme: light;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  --font-display: "Fraunces", "Times New Roman", Georgia, serif;
+  --font-sans: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* superficies */
-  --bg: #fbfbfa;
-  --bg-subtle: #f4f4f2;
-  --surface: #ffffff;
-  --surface-2: #f7f7f6;
+  /* papel */
+  --bg: #f4f0e6;
+  --bg-deep: #ece6d7;
+  --surface: #faf7ef;
+  --surface-2: #f0ebde;
+  --paper-line: #e4dcc8;
 
-  /* texto */
-  --text: #18181b;
-  --text-muted: #6b6b70;
-  --text-faint: #9a9aa0;
+  /* tinta */
+  --text: #191712;
+  --text-muted: #6c6456;
+  --text-faint: #9c9484;
 
-  /* líneas */
-  --border: rgba(24, 24, 27, 0.1);
-  --border-strong: rgba(24, 24, 27, 0.18);
+  --border: rgba(25, 23, 18, 0.14);
+  --border-strong: rgba(25, 23, 18, 0.26);
 
-  /* acento */
-  --accent: #4f46e5;
-  --accent-hover: #4338ca;
-  --accent-contrast: #ffffff;
-  --accent-soft: rgba(79, 70, 229, 0.1);
+  /* acentos */
+  --accent: #d1402a;
+  --accent-hover: #b8341f;
+  --accent-contrast: #fdf6ee;
+  --accent-soft: rgba(209, 64, 42, 0.12);
+  --stamp: #2f4b6b;
 
-  /* feedback */
-  --danger: #dc2626;
-  --danger-soft: rgba(220, 38, 38, 0.1);
-  --success: #16a34a;
+  --danger: #c0392b;
+  --danger-soft: rgba(192, 57, 43, 0.12);
+  --success: #3f7d3a;
 
-  /* elevación */
-  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.06);
-  --shadow-md: 0 6px 24px rgba(24, 24, 27, 0.08);
-  --shadow-lg: 0 20px 50px rgba(24, 24, 27, 0.12);
+  --shadow-sm: 0 1px 2px rgba(25, 23, 18, 0.08);
+  --shadow-md: 0 10px 34px rgba(25, 23, 18, 0.12);
+  --shadow-lg: 0 28px 70px rgba(25, 23, 18, 0.2);
 
-  /* forma */
-  --radius-sm: 0.5rem;
-  --radius: 0.75rem;
-  --radius-lg: 1.25rem;
+  --radius-sm: 0.35rem;
+  --radius: 0.55rem;
+  --radius-lg: 1rem;
 
-  --header-h: 3.5rem;
+  --header-h: 3.75rem;
 }
 
-:root[data-theme="dark"],
-:root.theme-dark {
+:root[data-theme="dark"] {
   color-scheme: dark;
 
-  --bg: #0f0f11;
-  --bg-subtle: #161618;
-  --surface: #1a1a1d;
-  --surface-2: #212125;
+  --bg: #17140f;
+  --bg-deep: #100e0a;
+  --surface: #201c16;
+  --surface-2: #29241d;
+  --paper-line: #322b21;
 
-  --text: #f4f4f5;
-  --text-muted: #a1a1aa;
-  --text-faint: #71717a;
+  --text: #f1ebdd;
+  --text-muted: #a49a86;
+  --text-faint: #756c5c;
 
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.2);
+  --border: rgba(241, 235, 221, 0.14);
+  --border-strong: rgba(241, 235, 221, 0.28);
 
-  --accent: #818cf8;
-  --accent-hover: #a5b4fc;
-  --accent-contrast: #10101c;
-  --accent-soft: rgba(129, 140, 248, 0.14);
+  --accent: #e85f42;
+  --accent-hover: #f2765b;
+  --accent-contrast: #1a1510;
+  --accent-soft: rgba(232, 95, 66, 0.16);
+  --stamp: #7ba0c6;
 
-  --danger: #f87171;
-  --danger-soft: rgba(248, 113, 113, 0.14);
-  --success: #4ade80;
+  --danger: #e8695a;
+  --danger-soft: rgba(232, 105, 90, 0.16);
+  --success: #6cbf63;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.55);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 34px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.65);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]):not(.theme-light) {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --bg: #0f0f11;
-    --bg-subtle: #161618;
-    --surface: #1a1a1d;
-    --surface-2: #212125;
+    --bg: #17140f;
+    --bg-deep: #100e0a;
+    --surface: #201c16;
+    --surface-2: #29241d;
+    --paper-line: #322b21;
 
-    --text: #f4f4f5;
-    --text-muted: #a1a1aa;
-    --text-faint: #71717a;
+    --text: #f1ebdd;
+    --text-muted: #a49a86;
+    --text-faint: #756c5c;
 
-    --border: rgba(255, 255, 255, 0.1);
-    --border-strong: rgba(255, 255, 255, 0.2);
+    --border: rgba(241, 235, 221, 0.14);
+    --border-strong: rgba(241, 235, 221, 0.28);
 
-    --accent: #818cf8;
-    --accent-hover: #a5b4fc;
-    --accent-contrast: #10101c;
-    --accent-soft: rgba(129, 140, 248, 0.14);
+    --accent: #e85f42;
+    --accent-hover: #f2765b;
+    --accent-contrast: #1a1510;
+    --accent-soft: rgba(232, 95, 66, 0.16);
+    --stamp: #7ba0c6;
 
-    --danger: #f87171;
-    --danger-soft: rgba(248, 113, 113, 0.14);
-    --success: #4ade80;
+    --danger: #e8695a;
+    --danger-soft: rgba(232, 105, 90, 0.16);
+    --success: #6cbf63;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.45);
-    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.55);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 10px 34px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.65);
   }
 }
 
@@ -129,35 +132,53 @@ body {
   min-height: 100dvh;
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
+/* grano de papel */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="dark"] body::before {
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+}
+
 h1,
 h2,
 h3,
 h4 {
-  line-height: 1.2;
-  font-weight: 650;
-  letter-spacing: -0.015em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  font-optical-sizing: auto;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  font-size: clamp(2.1rem, 7vw, 3.5rem);
 }
-
 h2 {
-  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
 a {
   color: var(--accent);
   text-decoration: none;
+  text-underline-offset: 3px;
 }
-
 a:hover {
   text-decoration: underline;
 }
@@ -173,8 +194,13 @@ img {
   border-radius: var(--radius-sm);
 }
 
+::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
 /* --------------------------------------------------------------------------- */
-/* controles de formulario                                                     */
+/* controles                                                                   */
 
 input,
 textarea,
@@ -188,7 +214,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),
 textarea,
 select {
   width: 100%;
-  padding: 0.7rem 0.85rem;
+  padding: 0.65rem 0.8rem;
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
@@ -197,7 +223,7 @@ select {
 
 input[type="color"] {
   width: 3rem;
-  height: 2.5rem;
+  height: 2.6rem;
   padding: 0.2rem;
   background: var(--surface);
   border: 1px solid var(--border-strong);
@@ -214,7 +240,7 @@ select:focus {
 
 textarea {
   resize: vertical;
-  min-height: 5rem;
+  min-height: 4.5rem;
 }
 
 label {
@@ -225,7 +251,11 @@ label {
 
 .field-label,
 label > span:first-child {
-  font-weight: 550;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-muted);
 }
 
@@ -240,10 +270,11 @@ label > span:first-child {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 1.05rem;
   min-height: 2.6rem;
-  font-size: 0.95rem;
-  font-weight: 550;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   border: 1px solid var(--_bd);
   border-radius: var(--radius);
   background: var(--_bg);
@@ -257,11 +288,9 @@ label > span:first-child {
 .btn:hover {
   text-decoration: none;
 }
-
 .btn:active {
   transform: translateY(1px);
 }
-
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -270,27 +299,24 @@ label > span:first-child {
 .btn-primary {
   --_bg: var(--accent);
   --_fg: var(--accent-contrast);
-  --_bd: transparent;
+  --_bd: var(--accent);
 }
-
 .btn-primary:hover {
   --_bg: var(--accent-hover);
+  --_bd: var(--accent-hover);
 }
 
 .btn-ghost {
   --_bg: transparent;
   --_bd: transparent;
 }
-
 .btn-ghost:hover {
   --_bg: var(--surface-2);
 }
 
 .btn-danger {
   --_fg: var(--danger);
-  --_bd: var(--border-strong);
 }
-
 .btn-danger:hover {
   --_bg: var(--danger-soft);
   --_bd: var(--danger);
@@ -299,7 +325,7 @@ label > span:first-child {
 .btn-sm {
   padding: 0.35rem 0.7rem;
   min-height: 2rem;
-  font-size: 0.85rem;
+  font-size: 0.83rem;
 }
 
 .btn-block {
@@ -311,9 +337,9 @@ label > span:first-child {
 
 .page {
   width: 100%;
-  max-width: 68rem;
+  max-width: 66rem;
   margin-inline: auto;
-  padding: 1.25rem 1.1rem 4rem;
+  padding: 1.5rem 1.15rem 4rem;
 }
 
 .card {
@@ -324,11 +350,12 @@ label > span:first-child {
 }
 
 .eyebrow {
-  font-size: 0.75rem;
-  font-weight: 650;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-faint);
+  letter-spacing: 0.16em;
+  color: var(--accent);
 }
 
 .muted {
@@ -338,9 +365,12 @@ label > span:first-child {
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.6rem;
-  font-size: 0.75rem;
-  font-weight: 550;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   border-radius: 999px;
   background: var(--surface-2);
   color: var(--text-muted);
@@ -356,13 +386,14 @@ label > span:first-child {
   border-radius: var(--radius-sm);
 }
 
-.stack {
-  display: grid;
-  gap: 1rem;
+.rule {
+  height: 1px;
+  background: var(--border);
+  border: 0;
 }
 
 @media (min-width: 768px) {
   .page {
-    padding: 2rem 1.5rem 5rem;
+    padding: 2.5rem 1.5rem 5rem;
   }
 }

@@ -33,8 +33,19 @@
 
           <label>
             <span>Nombre</span>
-            <input type="text" [value]="c.name" (input)="onInput('name', $event)" />
+            <input type="text" maxlength="80" [value]="c.name" (input)="onInput('name', $event)" />
           </label>
+
+          <div class="row-2">
+            <label>
+              <span>@ handle</span>
+              <input type="text" maxlength="30" placeholder="@tunombre" [value]="c.handle ?? ''" (input)="onInput('handle', $event)" />
+            </label>
+            <label>
+              <span>Ciudad</span>
+              <input type="text" maxlength="40" placeholder="CDMX" [value]="c.location ?? ''" (input)="onInput('location', $event)" />
+            </label>
+          </div>
 
           <label>
             <span>Descripción <em class="count">{{ (c.description ?? '').length }}/180</em></span>
@@ -64,7 +75,7 @@
           <div class="row-2">
             <label>
               <span>Color</span>
-              <input type="color" [value]="c.favoriteColor || '#4f46e5'" (input)="onInput('favoriteColor', $event)" />
+              <input type="color" [value]="c.favoriteColor || '#d1402a'" (input)="onInput('favoriteColor', $event)" />
             </label>
             <p class="age-note">
               @if (age() !== null) { {{ age() }} años } @else { — }
@@ -84,10 +95,10 @@
             <label>
               <span>Template</span>
               <select [value]="c.template" (change)="onInput('template', $event)">
-                <option value="DARK">Dark</option>
-                <option value="LIGHT">Light</option>
-                <option value="MINIMAL">Minimal</option>
-                <option value="NEON">Neon</option>
+                <option value="DARK">Tinta</option>
+                <option value="LIGHT">Papel</option>
+                <option value="MINIMAL">Mínima</option>
+                <option value="NEON">Color</option>
               </select>
             </label>
           </div>

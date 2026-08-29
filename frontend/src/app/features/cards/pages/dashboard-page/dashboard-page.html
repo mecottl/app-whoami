@@ -1,8 +1,8 @@
 <section class="page dashboard">
   <header class="dash-head">
     <div>
-      <p class="eyebrow">Dashboard</p>
-      <h1>Tus cards</h1>
+      <p class="eyebrow">Tu catálogo</p>
+      <h1>Cards</h1>
     </div>
     <a routerLink="/create-card" class="btn btn-primary">Nueva card</a>
   </header>
@@ -12,42 +12,44 @@
   }
 
   @if (loading()) {
-    <div class="cards-grid">
+    <div class="grid">
       @for (i of [1, 2, 3]; track i) {
-        <div class="card tile skeleton"></div>
+        <div class="tile skeleton"></div>
       }
     </div>
   } @else if (cards().length === 0) {
-    <article class="card empty">
-      <h2>Aún no tienes cards</h2>
-      <p class="muted">Crea la primera para empezar a conectar favoritos, layouts y templates.</p>
+    <article class="empty card">
+      <h2>Todavía no hay nada aquí</h2>
+      <p class="muted">Tu primera card empieza con un nombre y una foto.</p>
       <a routerLink="/create-card" class="btn btn-primary">Crear mi primera card</a>
     </article>
   } @else {
-    <div class="cards-grid">
+    <div class="grid">
       @for (card of cards(); track card.id) {
-        <article class="card tile">
-          <div class="tile-meta">
-            <span class="chip">{{ card.template }}</span>
-            <span class="chip">{{ card.layout }}</span>
-          </div>
-
-          <h2 class="tile-name">{{ card.name || 'Sin nombre' }}</h2>
-          @if (card.description) {
-            <p class="tile-desc muted">{{ card.description }}</p>
-          }
-          <p class="tile-date">{{ card.birthDate | date: 'longDate' : 'UTC' }}</p>
-
-          <div class="tile-actions">
-            <a class="btn btn-sm" [routerLink]="['/cards', card.id]">Editar</a>
-            <button
-              type="button"
-              class="btn btn-sm btn-danger"
-              [disabled]="deletingId() === card.id"
-              (click)="remove(card)"
-            >
-              {{ deletingId() === card.id ? 'Eliminando…' : 'Eliminar' }}
-            </button>
+        <article class="tile">
+          <a class="tile-thumb" [routerLink]="['/cards', card.id]" [attr.aria-label]="'Editar ' + card.name">
+            <app-card-thumb [card]="card" />
+          </a>
+          <div class="tile-body">
+            <h2 class="tile-name">{{ card.name || 'Sin nombre' }}</h2>
+            <p class="tile-meta">
+              <span>{{ templateLabel(card) }}</span>
+              <span>·</span>
+              <span>{{ (card.categories ?? []).length }} cat.</span>
+              <span>·</span>
+              <span>{{ countFavs(card) }} favs</span>
+            </p>
+            <div class="tile-actions">
+              <a class="btn btn-sm" [routerLink]="['/cards', card.id]">Editar</a>
+              <button
+                type="button"
+                class="btn btn-sm btn-danger"
+                [disabled]="deletingId() === card.id"
+                (click)="remove(card)"
+              >
+                {{ deletingId() === card.id ? '…' : 'Eliminar' }}
+              </button>
+            </div>
           </div>
         </article>
       }

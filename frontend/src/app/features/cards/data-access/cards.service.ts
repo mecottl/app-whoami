@@ -2,24 +2,16 @@
 
 import { Injectable } from '@angular/core'
 import { ApiService } from '../../../core/services/api.service'
-import { Card, CreateCardPayload, UpdateCardPayload } from '../../../shared/models/card.model'
+import {
+  Card,
+  CardCategory,
+  Favorite,
+  CreateCardPayload,
+  UpdateCardPayload
+} from '../../../shared/models/card.model'
 import { FavoriteType } from '../../../shared/constants/favorite-types'
 
-export interface CardCategory {
-  id: string
-  name: string
-  type: FavoriteType
-  order: number
-  favorites: Favorite[]
-}
-
-export interface Favorite {
-  id: string
-  title: string
-  imageUrl: string
-  externalId: string
-  order: number
-}
+export type { CardCategory, Favorite } from '../../../shared/models/card.model'
 
 export interface SearchResult {
   id: string

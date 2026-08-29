@@ -26,7 +26,10 @@ export class CardFaceComponent {
   @Input() set categories(v: CardCategory[]) {
     this._categories.set(v ?? [])
   }
-  @Input() age: number | null = null
+  @Input() set age(v: number | null) {
+    this._age.set(v)
+  }
+  private _age = signal<number | null>(null)
 
   card$ = this._card.asReadonly()
 
@@ -85,6 +88,21 @@ export class CardFaceComponent {
       .slice(0, 2)
       .map((p) => p[0]?.toUpperCase() ?? '')
       .join('')
+  })
+
+  handleText = computed(() => {
+    const h = this._card()?.handle?.trim()
+    if (!h) return ''
+    return h.startsWith('@') ? h : `@${h}`
+  })
+
+  metaBits = computed(() => {
+    const c = this._card()
+    const bits: string[] = []
+    if (c?.location?.trim()) bits.push(c.location.trim())
+    const age = this._age()
+    if (age != null) bits.push(`${age} años`)
+    return bits
   })
 
   img(url: string) {

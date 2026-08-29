@@ -103,6 +103,8 @@ export class CardEditorPage implements OnInit {
   private buildPayload(card: Card): UpdateCardPayload {
     return {
       name: card.name,
+      handle: card.handle ?? '',
+      location: card.location ?? '',
       description: card.description ?? '',
       favoriteColor: card.favoriteColor ?? undefined,
       avatarUrl: card.avatarUrl ?? undefined,

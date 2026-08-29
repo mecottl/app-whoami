@@ -3,11 +3,12 @@ import { DatePipe } from '@angular/common'
 import { RouterLink } from '@angular/router'
 import { CardsService } from '../../data-access/cards.service'
 import { Card } from '../../../../shared/models/card.model'
+import { CardThumbComponent } from '../../components/card-thumb/card-thumb'
 
 @Component({
   selector: 'app-dashboard-page',
   standalone: true,
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, CardThumbComponent],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.css'
 })
@@ -40,7 +41,7 @@ export class DashboardPageComponent implements OnInit {
 
   remove(card: Card) {
     if (this.deletingId()) return
-    if (!confirm(`¿Eliminar la card "${card.name}"? Esta acción no se puede deshacer.`)) return
+    if (!confirm(`¿Eliminar la card de "${card.name}"? No se puede deshacer.`)) return
 
     this.deletingId.set(card.id)
     this.cardsService.deleteCard(card.id).subscribe({
@@ -53,5 +54,18 @@ export class DashboardPageComponent implements OnInit {
         this.deletingId.set(null)
       }
     })
+  }
+
+  countFavs(card: Card) {
+    return (card.categories ?? []).reduce(
+      (n, c) => n + (c.favorites?.length ?? 0),
+      0
+    )
+  }
+
+  templateLabel(card: Card) {
+    return { DARK: 'Tinta', LIGHT: 'Papel', MINIMAL: 'Mínima', NEON: 'Color' }[
+      card.template
+    ]
   }
 }
