@@ -1,4 +1,4 @@
-# 📊 WhoAmI — Estado del Proyecto (FASE 1: Base de Datos)
+# 📊 WhoAmI - Estado del Proyecto (FASE 1: Base de Datos)
 
 ## ✅ Estado actual
 
@@ -57,7 +57,7 @@ El proyecto está utilizando prácticas modernas:
 
 # 🚀 Siguiente fase
 
-## FASE 2 — Backend (NestJS + Prisma)
+## FASE 2 - Backend (NestJS + Prisma)
 
 ### 🎯 Objetivo
 Integrar Prisma dentro de NestJS con arquitectura limpia y comenzar lógica de negocio.

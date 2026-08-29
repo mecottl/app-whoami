@@ -1,14 +1,14 @@
-# 📊 WhoAmI Studio — Estado del Proyecto (Backend)
+# 📊 WhoAmI Studio - Estado del Proyecto (Backend)
 
 ## ✅ Estado actual
 
 El backend ha completado exitosamente:
 
-* FASE 1 — Base de datos
-* FASE 2 — Autenticación
-* FASE 3 — Cards (CRUD)
-* FASE 4 — Favorites
-* FASE 5 — External APIs
+* FASE 1 - Base de datos
+* FASE 2 - Autenticación
+* FASE 3 - Cards (CRUD)
+* FASE 4 - Favorites
+* FASE 5 - External APIs
 
 ---
 
@@ -177,7 +177,7 @@ GET /external/albums/search?q=
 
 ## 🚀 Siguiente fase
 
-### 🎨 FASE 7 — Frontend base
+### 🎨 FASE 7 - Frontend base
 
 Implementar:
 

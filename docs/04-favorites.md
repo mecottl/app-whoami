@@ -1,4 +1,4 @@
-# 📊 WhoAmI Studio — Estado del Proyecto
+# 📊 WhoAmI Studio - Estado del Proyecto
 
 ## ✅ Estado actual: FASE 4 COMPLETADA (Favorites Module)
 
@@ -77,7 +77,7 @@ El sistema ya permite:
 
 ---
 
-## 🚀 Siguiente fase: FASE 5 — Integración con APIs externas
+## 🚀 Siguiente fase: FASE 5 - Integración con APIs externas
 
 ### Objetivo
 Permitir que el usuario busque contenido real (películas, música, etc.) en lugar de ingresarlo manualmente.

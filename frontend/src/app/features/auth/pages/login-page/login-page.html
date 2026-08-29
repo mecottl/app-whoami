@@ -1,32 +1,30 @@
-<section class="auth-page">
-  <article class="auth-card card">
-    <p class="eyebrow">Acceso</p>
-    <h1>Entra a tu estudio</h1>
-    <p class="auth-copy muted">Gestiona tus cards y favoritos desde un mismo lugar.</p>
+<app-auth-shell
+  eyebrow="Acceso"
+  heading="Entra a tu estudio"
+  sub="Gestiona tus cards y favoritos desde un mismo lugar."
+>
+  <form class="auth-form" (ngSubmit)="onSubmit()">
+    <label>
+      <span>Email</span>
+      <input [(ngModel)]="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required>
+    </label>
 
-    <form class="auth-form" (ngSubmit)="onSubmit()">
-      <label>
-        <span>Email</span>
-        <input [(ngModel)]="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required>
-      </label>
+    <label>
+      <span>Contraseña</span>
+      <input [(ngModel)]="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+    </label>
 
-      <label>
-        <span>Contraseña</span>
-        <input [(ngModel)]="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
-      </label>
+    @if (error()) {
+      <p class="form-error">{{ error() }}</p>
+    }
 
-      @if (error()) {
-        <p class="form-error">{{ error() }}</p>
-      }
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+      {{ loading() ? 'Entrando…' : 'Iniciar sesión' }}
+    </button>
+  </form>
 
-      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
-        {{ loading() ? 'Entrando…' : 'Iniciar sesión' }}
-      </button>
-    </form>
-
-    <p class="auth-link">
-      ¿Aún no tienes cuenta?
-      <a routerLink="/register">Regístrate</a>
-    </p>
-  </article>
-</section>
+  <p class="auth-link">
+    ¿Aún no tienes cuenta?
+    <a routerLink="/register">Regístrate</a>
+  </p>
+</app-auth-shell>

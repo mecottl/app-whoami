@@ -18,7 +18,7 @@ export class OpenLibraryProvider {
       .filter((d: any) => d.cover_i)
       .map((d: any) => ({
         id: String(d.key ?? d.cover_i),
-        title: d.author_name?.[0] ? `${d.title} — ${d.author_name[0]}` : d.title,
+        title: d.author_name?.[0] ? `${d.title} - ${d.author_name[0]}` : d.title,
         imageUrl: `https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`,
       }))
   }

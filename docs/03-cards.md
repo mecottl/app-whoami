@@ -1,4 +1,4 @@
-# 📊 WhoAmI — Estado del Proyecto
+# 📊 WhoAmI - Estado del Proyecto
 
 ## ✅ Estado actual: FASE 3 COMPLETADA (Cards Module)
 

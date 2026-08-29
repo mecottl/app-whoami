@@ -13,7 +13,7 @@ export class DeezerProvider {
 
     return (res.data.data ?? []).slice(0, 8).map((a: any) => ({
       id: a.id.toString(),
-      title: a.artist?.name ? `${a.title} — ${a.artist.name}` : a.title,
+      title: a.artist?.name ? `${a.title} - ${a.artist.name}` : a.title,
       imageUrl: a.cover_medium ?? null,
     }))
   }

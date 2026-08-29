@@ -2,11 +2,12 @@ import { Component, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Router, RouterLink } from '@angular/router'
 import { AuthService } from '../../data-access/auth.service'
+import { AuthShellComponent } from '../../components/auth-shell/auth-shell'
 
 @Component({
   selector: 'app-register-page',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, AuthShellComponent],
   templateUrl: './register-page.html',
   styleUrl: './register-page.css'
 })

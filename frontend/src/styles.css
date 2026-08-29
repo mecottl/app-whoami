@@ -1,5 +1,5 @@
 /* ===========================================================================
-   WhoAmI Studio — sistema de diseño
+   WhoAmI Studio - sistema de diseño
    Dirección: estudio / galería. Gris casi neutro, tinta, un cobalto eléctrico.
    Fraunces (display) · Public Sans (texto) · JetBrains Mono (etiquetas).
    =========================================================================== */
@@ -26,7 +26,7 @@
   --border: rgba(18, 18, 22, 0.12);
   --border-strong: rgba(18, 18, 22, 0.24);
 
-  /* acento — cobalto plano */
+  /* acento - cobalto plano */
   --accent: #1330e6;
   --accent-hover: #0f27bd;
   --accent-contrast: #ffffff;

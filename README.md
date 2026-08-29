@@ -2,9 +2,9 @@
 
 Crea cards visuales de identidad (nombre, edad, gustos) y expórtalas como PNG para compartir.
 
-- **Frontend** — Angular 21 (standalone, signals), CSS vanilla. `frontend/`
-- **Backend** — NestJS 11 + Prisma 7 + PostgreSQL. `backend/`
-- **Gestor de paquetes** — [Bun](https://bun.sh). Un solo lockfile (`bun.lock`) por paquete.
+- **Frontend** - Angular 21 (standalone, signals), CSS vanilla. `frontend/`
+- **Backend** - NestJS 11 + Prisma 7 + PostgreSQL. `backend/`
+- **Gestor de paquetes** - [Bun](https://bun.sh). Un solo lockfile (`bun.lock`) por paquete.
 
 ## Puesta en marcha
 

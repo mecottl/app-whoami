@@ -1,28 +1,6 @@
-.auth-page {
-  min-height: calc(100dvh - var(--header-h));
-  display: grid;
-  place-items: center;
-  padding: 1.5rem 1.1rem 3rem;
-}
-
-.auth-card {
-  width: min(100%, 26rem);
-  padding: 1.75rem;
-}
-
-.auth-card h1 {
-  font-size: 1.5rem;
-  margin: 0.4rem 0 0.4rem;
-}
-
-.auth-copy {
-  font-size: 0.92rem;
-}
-
 .auth-form {
   display: grid;
   gap: 0.9rem;
-  margin-top: 1.5rem;
 }
 
 .auth-form .btn {
@@ -30,7 +8,9 @@
 }
 
 .auth-link {
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
   font-size: 0.9rem;
   color: var(--text-muted);
 }

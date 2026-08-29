@@ -1,0 +1,136 @@
+:host {
+  display: block;
+}
+
+/* wrapper sin caja: cada capa se posiciona sola para no crear un
+   contexto de apilamiento que atrape al panel por debajo del header */
+.ov {
+  display: contents;
+}
+
+/* landing detrás, atenuado ------------------------------------------------- */
+
+.ov-behind {
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  z-index: 30;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.ov-behind > * {
+  display: block;
+  transform: scale(1.03);
+  transform-origin: top left;
+  filter: saturate(0.85);
+}
+
+.ov-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40; /* por debajo del header (50): el topbar sigue visible */
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+.ov.open .ov-scrim {
+  opacity: 1;
+}
+
+/* panel deslizante ------------------------------------------------------- */
+
+.ov-drawer {
+  position: fixed;
+  inset-block: 0;
+  right: 0;
+  z-index: 60; /* por encima del header: lo tapa donde se solapan */
+  width: min(100%, 27rem);
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(100%);
+  transition: transform 340ms cubic-bezier(0.4, 0, 0.1, 1);
+}
+.ov.open .ov-drawer {
+  transform: translateX(0);
+}
+
+@media (min-width: 820px) {
+  .ov-drawer {
+    width: clamp(23rem, 40%, 31rem);
+  }
+}
+
+.drawer-scroll {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.drawer-inner {
+  width: min(100%, 22rem);
+  margin-inline: auto;
+}
+
+.drawer-x {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.drawer-x:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.drawer-brand {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+.drawer-brand span {
+  color: var(--accent);
+}
+.drawer-brand:hover {
+  text-decoration: none;
+}
+
+.head {
+  margin-bottom: 1.75rem;
+}
+.head h1 {
+  font-size: clamp(1.7rem, 5vw, 2.15rem);
+  margin: 0.5rem 0 0;
+}
+.sub {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ov-scrim,
+  .ov-drawer {
+    transition: none;
+  }
+}

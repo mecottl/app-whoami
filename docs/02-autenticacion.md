@@ -1,4 +1,4 @@
-# 📊 WhoAmI Studio — Estado del Proyecto
+# 📊 WhoAmI Studio - Estado del Proyecto
 
 ## ✅ Fase actual: FASE 2 COMPLETADA (Autenticación)
 
@@ -66,7 +66,7 @@ Implementado:
 
 ---
 
-# 🚀 Siguiente fase: FASE 3 — Cards (CRUD + Ownership)
+# 🚀 Siguiente fase: FASE 3 - Cards (CRUD + Ownership)
 
 ## 🎯 Objetivo
 

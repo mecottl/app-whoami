@@ -1,4 +1,4 @@
-# 📊 Reporte de Progreso — Card Builder App
+# 📊 Reporte de Progreso - Card Builder App
 
 ## 🧭 Contexto General
 
@@ -26,7 +26,7 @@ External APIs (TMDB, Deezer)
 
 ---
 
-# 🔧 Backend — Estado Final
+# 🔧 Backend - Estado Final
 
 ## 📦 Módulos implementados
 
@@ -67,7 +67,7 @@ External APIs (TMDB, Deezer)
 
 ---
 
-# 💻 Frontend — Estado Final
+# 💻 Frontend - Estado Final
 
 ## 🧱 Base Angular
 
@@ -132,7 +132,7 @@ Con headers de autorización.
 
 ---
 
-# 🧩 Card Editor — Feature Principal
+# 🧩 Card Editor - Feature Principal
 
 ## ✅ Funcionalidades logradas
 

@@ -1,4 +1,4 @@
-# 📊 WhoAmI — FASE 7–8: Frontend + Cards (Estado actual)
+# 📊 WhoAmI - FASE 7–8: Frontend + Cards (Estado actual)
 
 ## ✅ Estado actual: FUNCIONAL (Auth + Dashboard + Create)
 

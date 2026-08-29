@@ -1,42 +1,40 @@
-<section class="auth-page">
-  <article class="auth-card card">
-    <p class="eyebrow">Registro</p>
-    <h1>Crea tu cuenta</h1>
-    <p class="auth-copy muted">Un minuto y tienes tu primer lienzo listo.</p>
+<app-auth-shell
+  eyebrow="Registro"
+  heading="Crea tu cuenta"
+  sub="Un minuto y tienes tu primer lienzo listo."
+>
+  <form class="auth-form" (ngSubmit)="onSubmit()">
+    <label>
+      <span>Nombre</span>
+      <input [(ngModel)]="name" name="name" type="text" autocomplete="name" placeholder="Tu nombre" required>
+    </label>
 
-    <form class="auth-form" (ngSubmit)="onSubmit()">
-      <label>
-        <span>Nombre</span>
-        <input [(ngModel)]="name" name="name" type="text" autocomplete="name" placeholder="Tu nombre" required>
-      </label>
+    <label>
+      <span>Email</span>
+      <input [(ngModel)]="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required>
+    </label>
 
-      <label>
-        <span>Email</span>
-        <input [(ngModel)]="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required>
-      </label>
+    <label>
+      <span>Fecha de nacimiento</span>
+      <input [(ngModel)]="birthDate" name="birthDate" type="date" required>
+    </label>
 
-      <label>
-        <span>Fecha de nacimiento</span>
-        <input [(ngModel)]="birthDate" name="birthDate" type="date" required>
-      </label>
+    <label>
+      <span>Contraseña</span>
+      <input [(ngModel)]="password" name="password" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6" required>
+    </label>
 
-      <label>
-        <span>Contraseña</span>
-        <input [(ngModel)]="password" name="password" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" minlength="6" required>
-      </label>
+    @if (error()) {
+      <p class="form-error">{{ error() }}</p>
+    }
 
-      @if (error()) {
-        <p class="form-error">{{ error() }}</p>
-      }
+    <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
+      {{ loading() ? 'Creando…' : 'Crear cuenta' }}
+    </button>
+  </form>
 
-      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading()">
-        {{ loading() ? 'Creando…' : 'Crear cuenta' }}
-      </button>
-    </form>
-
-    <p class="auth-link">
-      ¿Ya tienes cuenta?
-      <a routerLink="/login">Inicia sesión</a>
-    </p>
-  </article>
-</section>
+  <p class="auth-link">
+    ¿Ya tienes cuenta?
+    <a routerLink="/login">Inicia sesión</a>
+  </p>
+</app-auth-shell>
