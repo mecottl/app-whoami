@@ -9,7 +9,7 @@ export class UpdateCardDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(180)
+  @MaxLength(700)
   description?: string
 
   @IsOptional()

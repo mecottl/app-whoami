@@ -11,13 +11,19 @@ import { CardEditorCategoryComponent } from '../../components/card-editor-catego
 import { CardPreviewComponent } from '../../components/card-preview/card-preview'
 import { ageFromBirthDate } from '../../../../shared/utils/age'
 import { CARD_TEMPLATES, CARD_LAYOUTS } from '../../../../shared/constants/card-templates'
+import { ColorFieldComponent } from '../../../../shared/components/color-field/color-field'
 
 type Tab = 'edit' | 'preview'
 
 @Component({
   selector: 'app-card-editor',
   standalone: true,
-  imports: [RouterLink, CardEditorCategoryComponent, CardPreviewComponent],
+  imports: [
+    RouterLink,
+    CardEditorCategoryComponent,
+    CardPreviewComponent,
+    ColorFieldComponent
+  ],
   templateUrl: './card-editor-page.html',
   styleUrl: './card-editor-page.css'
 })
@@ -102,6 +108,33 @@ export class CardEditorPage implements OnInit {
 
   onInput(field: keyof UpdateCardPayload, event: Event) {
     this.patch(field, (event.target as HTMLInputElement | HTMLSelectElement).value)
+  }
+
+  readonly descWordLimit = 100
+
+  descWords(text: string | null | undefined) {
+    const t = (text ?? '').trim()
+    return t ? t.split(/\s+/).length : 0
+  }
+
+  onDescInput(event: Event) {
+    const el = event.target as HTMLTextAreaElement
+    const words = el.value.split(/(\s+)/)
+    let count = 0
+    let cut = el.value.length
+    for (let i = 0; i < words.length; i++) {
+      if (i % 2 === 0 && words[i]) {
+        count++
+        if (count > this.descWordLimit) {
+          cut = words.slice(0, i).join('').length
+          break
+        }
+      }
+    }
+    if (cut < el.value.length) {
+      el.value = el.value.slice(0, cut).replace(/\s+$/, '')
+    }
+    this.patch('description', el.value)
   }
 
   private buildPayload(card: Card): UpdateCardPayload {

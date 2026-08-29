@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+.cf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.cf-sw {
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 90ms ease, box-shadow 90ms ease;
+}
+.cf-sw:hover {
+  transform: scale(1.08);
+}
+.cf-sw.on {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text);
+}
+
+.cf-custom {
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  line-height: 1;
+  color: var(--text-muted);
+  background: conic-gradient(
+    from 0deg,
+    #f00,
+    #ff0,
+    #0f0,
+    #0ff,
+    #00f,
+    #f0f,
+    #f00
+  );
+}
+.cf-custom.on {
+  color: #fff;
+}
+
+.cf-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}

@@ -187,6 +187,18 @@
   color: var(--text-faint);
 }
 
+.age-inline {
+  font-style: normal;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-faint);
+}
+.field .app-color-field,
+.field app-color-field {
+  margin-top: 0.15rem;
+}
+
 .canvas-inner {
   display: grid;
   place-items: start center;

@@ -48,8 +48,13 @@
           </div>
 
           <label>
-            <span>Descripción <em class="count">{{ (c.description ?? '').length }}/180</em></span>
-            <textarea rows="2" maxlength="180" [value]="c.description ?? ''" (input)="onInput('description', $event)"></textarea>
+            <span>Descripción <em class="count">{{ descWords(c.description) }}/{{ descWordLimit }} palabras</em></span>
+            <textarea
+              rows="3"
+              class="no-resize"
+              [value]="c.description ?? ''"
+              (input)="onDescInput($event)"
+            ></textarea>
           </label>
 
           <div class="avatar-field">
@@ -72,15 +77,17 @@
             </div>
           </div>
 
-          <div class="row-2">
-            <label>
-              <span>Color</span>
-              <input type="color" [value]="c.favoriteColor || '#1330e6'" (input)="onInput('favoriteColor', $event)" />
-            </label>
-            <p class="age-note">
-              @if (age() !== null) { {{ age() }} años } @else { — }
-              <small>edad (de tu perfil)</small>
-            </p>
+          <div class="field">
+            <span class="field-label">
+              Color de acento
+              <em class="age-inline">
+                @if (age() !== null) { {{ age() }} años · de tu perfil } @else { — }
+              </em>
+            </span>
+            <app-color-field
+              [color]="c.favoriteColor || '#1330e6'"
+              (colorChange)="patch('favoriteColor', $event)"
+            />
           </div>
 
           <label>

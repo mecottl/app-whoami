@@ -1,0 +1,33 @@
+<div class="cf">
+  @for (s of swatches; track s) {
+    <button
+      type="button"
+      class="cf-sw"
+      [class.on]="s.toLowerCase() === color.toLowerCase()"
+      [style.background]="s"
+      [attr.aria-label]="'Color ' + s"
+      (click)="pick(s)"
+    ></button>
+  }
+
+  <button
+    type="button"
+    class="cf-sw cf-custom"
+    [class.on]="isCustom()"
+    [style.background]="isCustom() ? color : null"
+    aria-label="Color personalizado"
+    (click)="openNative()"
+  >
+    @if (!isCustom()) { <span aria-hidden="true">+</span> }
+  </button>
+
+  <input
+    #native
+    type="color"
+    class="cf-native"
+    [value]="color"
+    (input)="onNative($event)"
+    tabindex="-1"
+    aria-hidden="true"
+  />
+</div>

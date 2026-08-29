@@ -15,8 +15,8 @@
     </label>
 
     <label>
-      <span>Descripción <span class="opt">(opcional)</span></span>
-      <textarea [(ngModel)]="description" name="description" rows="3" maxlength="180" placeholder="Una frase que te describa"></textarea>
+      <span>Descripción <span class="opt">(opcional, máx. 100 palabras)</span></span>
+      <textarea [(ngModel)]="description" name="description" rows="3" maxlength="700" class="no-resize" placeholder="Una frase que te describa"></textarea>
     </label>
 
     @if (needsBirthDate()) {

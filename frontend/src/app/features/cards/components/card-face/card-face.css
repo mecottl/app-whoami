@@ -597,7 +597,6 @@
   --ink: #dbe7ec;
   --ink-soft: rgba(219, 231, 236, 0.55);
   --hair: rgba(120, 200, 220, 0.35);
-  --card-accent: #35e0d8;
   outline: 1px solid rgba(120, 200, 220, 0.25);
   outline-offset: -0.8em;
 }
@@ -612,18 +611,18 @@
   font-family: "JetBrains Mono", monospace;
 }
 .tpl-future .wa-handle {
-  color: #35e0d8;
+  color: var(--card-accent);
 }
 .tpl-future .wa-avatar {
   border-radius: 0;
-  border: 1px solid #35e0d8;
+  border: 1px solid var(--card-accent);
   filter: saturate(0.4) brightness(1.05);
 }
 .tpl-future .wa-avatar--initials {
   border-radius: 0;
   background: transparent;
-  border: 1px solid #35e0d8;
-  color: #35e0d8;
+  border: 1px solid var(--card-accent);
+  color: var(--card-accent);
   font-family: "JetBrains Mono", monospace;
   font-size: 1em;
 }
@@ -635,7 +634,7 @@
 }
 .tpl-future .wa-cat-title {
   font-family: "JetBrains Mono", monospace;
-  color: #35e0d8;
+  color: var(--card-accent);
   border-bottom: 1px solid var(--hair);
 }
 .tpl-future .wa-cat-title::before {
@@ -647,7 +646,7 @@
   gap: 0.7em;
 }
 .tpl-future .wa-fav-rank {
-  color: #35e0d8;
+  color: var(--card-accent);
 }
 .tpl-future .wa-fav-rank::before {
   content: "[";
