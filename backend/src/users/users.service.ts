@@ -4,7 +4,7 @@ import { PrismaService } from "../prisma/prisma.service.js";
 interface CreateUserData {
     email: string;
     name: string;
-    password: string;
+    passwordHash: string;
     birthDate?: string | null;
 }
 
@@ -17,7 +17,7 @@ export class UsersService {
             data: {
                 email: data.email,
                 name: data.name,
-                password: data.password,
+                passwordHash: data.passwordHash,
                 birthDate: data.birthDate ? new Date(data.birthDate) : null,
             },
         });

@@ -10,12 +10,10 @@ export class TmdbProvider {
 
   constructor(private http: HttpService) {}
 
-  /** Solo películas (endpoint /search/movie). */
   searchMovies(query: string) {
     return this.query('/search/movie', query, (m) => m.title)
   }
 
-  /** Solo series de TV (endpoint /search/tv). */
   searchSeries(query: string) {
     return this.query('/search/tv', query, (m) => m.name)
   }

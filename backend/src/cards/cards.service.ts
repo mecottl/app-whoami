@@ -4,6 +4,9 @@ import { CreateCardDto } from "./dto/create-card.dto.js";
 import { UpdateCardDto } from "./dto/update-card.dto.js";
 import { UsersService } from "../users/users.service.js";
 
+// La edad se calcula desde User.birthDate; se adjunta a la card en las
+// respuestas para que el frontend no tenga que pedir el perfil aparte.
+
 @Injectable()
 export class CardsService {
     constructor(
@@ -30,22 +33,23 @@ export class CardsService {
             throw new BadRequestException('Falta la fecha de nacimiento')
         }
 
-        return this.prisma.card.create({
+        const card = await this.prisma.card.create({
             data: {
                 name: dto.name,
                 description: dto.description,
-                birthDate: birth,
                 template: dto.template,
                 layout: dto.layout,
                 userId,
             }
         })
+        return { ...card, birthDate: birth }
     }
 
-    findAll(userId: string) {
-        return this.prisma.card.findMany({
+    async findAll(userId: string) {
+        const user = await this.usersService.findById(userId)
+        const cards = await this.prisma.card.findMany({
             where: { userId },
-            orderBy: { createdAt: "desc" },
+            orderBy: { updatedAt: "desc" },
             include: {
                 categories: {
                     orderBy: { order: "asc" },
@@ -53,18 +57,30 @@ export class CardsService {
                 },
             },
         })
+        return cards.map((c) => ({ ...c, birthDate: user?.birthDate ?? null }))
     }
 
     async findOne(userId: string, id: string) {
         const card = await this.prisma.card.findFirst({ where: { id, userId } })
         if (!card) throw new NotFoundException('Card not found')
-        return card
+        const user = await this.usersService.findById(userId)
+        return { ...card, birthDate: user?.birthDate ?? null }
     }
 
     async update(userId: string, id: string, dto: UpdateCardDto) {
         await this.findOne(userId, id)
 
-        return this.prisma.card.update({
+        // birthDate ahora vive en el perfil del usuario, no en la card
+        let birth: Date | null = null
+        if (dto.birthDate) {
+            birth = new Date(dto.birthDate)
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { birthDate: birth },
+            })
+        }
+
+        const card = await this.prisma.card.update({
             where: { id },
             data: {
                 name: dto.name,
@@ -75,9 +91,14 @@ export class CardsService {
                 location: dto.location,
                 template: dto.template,
                 layout: dto.layout,
-                birthDate: dto.birthDate ? new Date(dto.birthDate) : undefined,
             },
         })
+
+        if (!birth) {
+            const user = await this.usersService.findById(userId)
+            birth = user?.birthDate ?? null
+        }
+        return { ...card, birthDate: birth }
     }
 
     async remove(userId: string, id: string) {

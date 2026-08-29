@@ -8,40 +8,43 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  name      String
-  password  String
-  birthDate DateTime?
-  createdAt DateTime  @default(now())
+  id           String    @id @default(uuid())
+  email        String    @unique @db.VarChar(255)
+  name         String    @db.VarChar(80)
+  passwordHash String    @db.VarChar(255)
+  birthDate    DateTime? @db.Date
+  createdAt    DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime  @default(now()) @updatedAt @db.Timestamptz(3)
 
   cards Card[]
 }
 
 model Card {
-  id            String   @id @default(uuid())
-  name          String
-  birthDate     DateTime
-  description   String?
-  favoriteColor String?
-  avatarUrl     String?  @default("")
-  handle        String?
-  location      String?
+  id            String  @id @default(uuid())
+  name          String  @db.VarChar(80)
+  description   String? @db.VarChar(700)
+  favoriteColor String? @db.VarChar(9)
+  avatarUrl     String? @default("")
+  handle        String? @db.VarChar(30)
+  location      String? @db.VarChar(40)
 
   template Template
   layout   Layout
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   categories CardCategory[]
+
+  @@index([userId])
 }
 
 model CardCategory {
   id    String       @id @default(uuid())
-  name  String
+  name  String       @db.VarChar(40)
   type  FavoriteType
   order Int
 
@@ -56,9 +59,9 @@ model CardCategory {
 
 model Favorite {
   id         String @id @default(uuid())
-  title      String
+  title      String @db.VarChar(200)
   imageUrl   String
-  externalId String
+  externalId String @db.VarChar(64)
   order      Int
 
   categoryId String

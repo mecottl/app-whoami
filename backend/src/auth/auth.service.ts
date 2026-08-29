@@ -17,9 +17,10 @@ export class AuthService {
 
         const hashed = await bcrypt.hash(data.password, 10);
 
+        const { password: _pw, ...rest } = data;
         const user = await this.usersService.create({
-            ...data,
-            password: hashed
+            ...rest,
+            passwordHash: hashed
         });
         return this.generateToken(user.id, user.email);
     }
@@ -29,7 +30,7 @@ export class AuthService {
 
         if(!user) throw new UnauthorizedException("Credenciales inválidas");
 
-        const valid = await bcrypt.compare(password, user.password);
+        const valid = await bcrypt.compare(password, user.passwordHash);
 
         if(!valid) throw new UnauthorizedException("Credenciales inválidas");
 
