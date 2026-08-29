@@ -447,75 +447,130 @@
   border-radius: 0;
 }
 
-/* ---------- CÓMIC (COMIC) · viñeta, bordes gruesos ---------- */
+/* ---------- CÓMIC / POP-ART (COMIC + VECTOR) · viñeta, ben-day, tinta ---------- */
 .tpl-comic {
-  background-color: color-mix(in srgb, var(--card-accent) 20%, #fff7e0);
-  background-image: radial-gradient(
-    color-mix(in srgb, var(--card-accent) 42%, transparent) 22%,
-    transparent 23%
+  position: relative;
+  --ink: #0d0b08;
+  --ink-soft: rgba(13, 11, 8, 0.72);
+  --hair: #0d0b08;
+  --pop: var(--card-accent);
+  background:
+    linear-gradient(115deg, #f7d21e 0 34%, transparent 34%),
+    linear-gradient(295deg, #1b8fd4 0 30%, transparent 30%),
+    linear-gradient(0deg, #3bb24a 0 22%, #fbf3df 22%);
+  box-shadow: inset 0 0 0 0.55em #fbf3df, inset 0 0 0 0.62em #0d0b08;
+}
+/* trama de puntos ben-day sobre todo */
+.tpl-comic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(#0d0b08 1.4px, transparent 1.6px);
+  background-size: 0.75em 0.75em;
+  opacity: 0.16;
+  pointer-events: none;
+}
+/* estallido detrás del nombre */
+.tpl-comic::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: repeating-conic-gradient(
+    from 0deg at 14% 12%,
+    var(--pop) 0deg 9deg,
+    transparent 9deg 18deg
   );
-  background-size: 0.85em 0.85em;
-  --ink: #14110c;
-  --ink-soft: rgba(20, 17, 12, 0.72);
-  --hair: #14110c;
+  -webkit-mask: radial-gradient(11em 11em at 14% 12%, #000 55%, transparent 62%);
+  mask: radial-gradient(11em 11em at 14% 12%, #000 55%, transparent 62%);
+  opacity: 0.85;
+  pointer-events: none;
 }
 .tpl-comic .wa-name {
-  font-weight: 600;
-  font-size: 2.3em;
-  letter-spacing: -0.02em;
-  -webkit-text-stroke: 0.5px #14110c;
+  font-family: "Bangers", "Fraunces", Impact, sans-serif;
+  font-weight: 400;
+  font-size: 3em;
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: #f7d21e;
+  -webkit-text-stroke: 0.06em #0d0b08;
+  paint-order: stroke fill;
+  text-shadow: 0.09em 0.09em 0 #0d0b08, 0.16em 0.16em 0 #d4322a;
+  transform: rotate(-2.5deg);
+  transform-origin: left center;
 }
-.tpl-comic .wa-avatar {
-  border: 3px solid #14110c;
+.tpl-comic .wa-meta {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.tpl-comic .wa-handle {
+  color: #d4322a;
+}
+.tpl-comic .wa-avatar,
+.tpl-comic .wa-avatar--initials {
+  border: 0.16em solid #0d0b08;
+  box-shadow: 0.22em 0.22em 0 #0d0b08;
+  border-radius: 0.2em;
 }
 .tpl-comic .wa-avatar--initials {
-  background: var(--card-accent);
-  color: #14110c;
-  border: 3px solid #14110c;
+  font-family: "Bangers", sans-serif;
+  background: var(--pop);
+  color: #fbf3df;
 }
 .tpl-comic .wa-desc {
   position: relative;
   background: #fff;
-  color: #14110c;
-  border: 3px solid #14110c;
-  border-radius: 1em;
-  padding: 0.65em 0.9em;
-  font-weight: 500;
+  color: #0d0b08;
+  border: 0.16em solid #0d0b08;
+  border-radius: 1.1em 1.1em 1.1em 0.2em;
+  padding: 0.7em 1em;
+  font-weight: 600;
+  box-shadow: 0.22em 0.22em 0 #0d0b08;
   -webkit-line-clamp: 3;
 }
 .tpl-comic .wa-desc::after {
   content: "";
   position: absolute;
-  left: 1.5em;
-  bottom: -0.85em;
-  border: 0.5em solid transparent;
-  border-top-color: #14110c;
+  left: 1.4em;
+  bottom: -0.95em;
+  border: 0.55em solid transparent;
+  border-top: 0.7em solid #0d0b08;
 }
 .tpl-comic .wa-cat-title {
   display: inline-block;
-  background: #14110c;
-  color: #fff;
+  font-family: "Bangers", sans-serif;
+  background: #0d0b08;
+  color: #f7d21e;
   border: 0;
-  font-size: 0.82em;
-  font-weight: 600;
-  padding: 0.18em 0.7em;
-  border-radius: 0.25em;
+  font-size: 1em;
+  font-weight: 400;
+  padding: 0.06em 0.7em 0.16em;
+  border-radius: 0.2em;
   transform: rotate(-2deg);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
+  box-shadow: 0.12em 0.12em 0 var(--pop);
 }
+.tpl-comic .wa-cat:nth-child(2) .wa-cat-title { color: #4dd15e; box-shadow: 0.12em 0.12em 0 #1b8fd4; }
+.tpl-comic .wa-cat:nth-child(3) .wa-cat-title { color: #ff8a3d; transform: rotate(1.5deg); }
+.tpl-comic .wa-cat:nth-child(4) .wa-cat-title { color: #6fd0e6; transform: rotate(2deg); }
 .tpl-comic .wa-fav {
   background: #fff;
-  border: 2px solid #14110c;
-  border-radius: 0.3em;
-  padding: 0.22em 0.5em;
-  font-weight: 500;
+  border: 0.12em solid #0d0b08;
+  border-radius: 0.25em;
+  padding: 0.24em 0.55em;
+  font-weight: 600;
+  box-shadow: 0.14em 0.14em 0 #0d0b08;
 }
 .tpl-comic .wa-fav-rank {
-  color: #14110c;
+  font-family: "Bangers", sans-serif;
+  color: #d4322a;
+  font-size: 1.15em;
 }
 .tpl-comic .wa-fav img {
-  border: 2px solid #14110c;
-  border-radius: 0.15em;
+  border: 0.12em solid #0d0b08;
+  border-radius: 0.1em;
+  filter: saturate(1.25) contrast(1.1);
 }
 
 /* ---------- FUTURISTA (FUTURE) · interfaz / HUD ---------- */
@@ -704,121 +759,166 @@
   color: #fff;
 }
 
-/* ---------- VECTOR (VECTOR) · plano, geométrico, sólido ---------- */
-.tpl-vector {
-  background: #f2efe6;
-  --ink: #141414;
-  --ink-soft: rgba(20, 20, 20, 0.7);
-  --hair: #141414;
-}
-.tpl-vector .wa-name {
-  font-weight: 700;
-  font-size: 2.2em;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  line-height: 0.95;
-}
-.tpl-vector .wa-avatar,
-.tpl-vector .wa-avatar--initials {
-  border-radius: 0;
-  border: 3px solid #141414;
-}
-.tpl-vector .wa-avatar--initials {
-  background: var(--card-accent);
-  color: #fff;
-}
-.tpl-vector .wa-desc {
-  border-left: 6px solid var(--card-accent);
-  padding-left: 0.7em;
-  color: var(--ink);
-}
-.tpl-vector .wa-cat-title {
-  display: inline-block;
-  background: var(--card-accent);
-  color: #fff;
-  border: 0;
-  padding: 0.2em 0.7em;
-  letter-spacing: 0.12em;
-}
-.tpl-vector .wa-fav {
-  border-bottom: 2px solid #141414;
-  padding-bottom: 0.35em;
-}
-.tpl-vector .wa-fav-rank {
-  color: var(--card-accent);
-  font-weight: 700;
-}
-.tpl-vector .wa-fav img {
-  border-radius: 0;
-  border: 2px solid #141414;
-}
-
-/* ---------- RETRO (RETRO) · atardecer 70s ---------- */
+/* ---------- RETRO (RETRO) · verano del 70, papel y arcoíris ---------- */
 .tpl-retro {
-  background: linear-gradient(180deg, #e9803b 0%, #c9542e 45%, #7b3b2e 100%);
-  --ink: #fdeede;
-  --ink-soft: rgba(253, 238, 222, 0.72);
-  --hair: rgba(253, 238, 222, 0.4);
+  position: relative;
+  --ink: #4a2f1e;
+  --ink-soft: rgba(74, 47, 30, 0.68);
+  --hair: rgba(74, 47, 30, 0.3);
+  --r1: #c8622b;
+  --r2: #d99a3c;
+  --r3: #3f9a92;
+  background: #f5e6bf;
+}
+/* arcoíris concéntrico desde la esquina inferior izquierda (sin desbordar) */
+.tpl-retro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at -1em calc(100% + 1em),
+    transparent 0 8em,
+    var(--r1) 8em 9.5em,
+    transparent 9.5em 10.6em,
+    var(--r2) 10.6em 12.1em,
+    transparent 12.1em 13.2em,
+    var(--r3) 13.2em 14.7em,
+    transparent 14.7em 15.8em,
+    var(--ink) 15.8em 17.3em,
+    transparent 17.3em
+  );
+  opacity: 0.92;
+  pointer-events: none;
+}
+/* rejilla de círculos dobles, esquina superior derecha */
+.tpl-retro::after {
+  content: "";
+  position: absolute;
+  right: 1.4em;
+  top: 1.4em;
+  width: 5.5em;
+  height: 7em;
+  z-index: -1;
+  background: radial-gradient(
+    circle at center,
+    var(--r1) 22%,
+    transparent 24%,
+    transparent 40%,
+    var(--r1) 42%,
+    transparent 46%
+  );
+  background-size: 1.8em 2.3em;
+  opacity: 0.5;
+  pointer-events: none;
 }
 .tpl-retro .wa-name {
-  font-family: "Fraunces", Georgia, serif;
-  font-weight: 600;
-  font-size: 2.4em;
-  letter-spacing: 0.01em;
+  font-family: "Pacifico", "Fraunces", cursive;
+  font-weight: 400;
+  font-size: 2em;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--ink);
+  text-shadow: 0.05em 0.05em 0 var(--r3);
+}
+.tpl-retro .wa-meta,
+.tpl-retro .wa-cat-title,
+.tpl-retro .wa-fav-title {
+  font-family: "Archivo", "Public Sans", sans-serif;
+  text-transform: uppercase;
+}
+.tpl-retro .wa-handle {
+  color: var(--r1);
+  font-weight: 700;
 }
 .tpl-retro .wa-avatar,
 .tpl-retro .wa-avatar--initials {
   border-radius: 0.6em;
-  border: 2px solid var(--ink);
+  border: 0.18em solid var(--ink);
+  filter: sepia(0.35) saturate(1.2);
 }
 .tpl-retro .wa-avatar--initials {
-  background: rgba(253, 238, 222, 0.16);
+  font-family: "Pacifico", cursive;
+  background: var(--r2);
   color: var(--ink);
+  filter: none;
 }
 .tpl-retro .wa-desc {
-  font-family: "Fraunces", serif;
-  font-style: italic;
+  font-family: "Archivo", "Public Sans", sans-serif;
+  font-weight: 500;
   color: var(--ink);
 }
 .tpl-retro .wa-cat-title {
-  display: inline-block;
-  background: var(--ink);
-  color: #7b3b2e;
-  border: 0;
-  border-radius: 999px;
-  padding: 0.18em 0.8em;
+  color: var(--r1);
+  border-bottom: 0;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  font-size: 0.78em;
 }
-.tpl-retro .wa-fav img {
-  border-radius: 0.4em;
-  border: 1px solid var(--hair);
+.tpl-retro .wa-cat-title::after {
+  content: " \00b7\00b7\00b7\00b7\00b7\00b7";
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+.tpl-retro .wa-fav {
+  font-weight: 600;
 }
 .tpl-retro .wa-fav-rank {
-  color: var(--ink);
+  color: var(--r3);
+  font-weight: 800;
+}
+.tpl-retro .wa-fav img {
+  border-radius: 0.35em;
+  border: 0.12em solid var(--ink);
+  filter: sepia(0.3) saturate(1.15);
 }
 
-/* ---------- PIXEL ART (PIXEL) · 8-bit ---------- */
+/* ---------- PIXEL ART (PIXEL) · arcade, 8-bit ---------- */
 .tpl-pixel {
-  background-color: #1a1a2e;
+  position: relative;
+  --ink: #f4f5ff;
+  --ink-soft: rgba(244, 245, 255, 0.66);
+  --hair: #ff3ea5;
+  --px-cyan: #23e0e0;
+  --px-lime: #7dff4d;
+  --px-pink: #ff3ea5;
+  --px-yellow: #ffd23e;
+  background-color: #0a0a1e;
   background-image:
-    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.04) 75%),
-    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.04) 75%);
-  background-size: 0.6em 0.6em;
-  background-position: 0 0, 0.3em 0.3em;
-  --ink: #eef0f8;
-  --ink-soft: rgba(238, 240, 248, 0.6);
-  --hair: #eef0f8;
+    linear-gradient(#12123a 2px, transparent 2px),
+    linear-gradient(90deg, #12123a 2px, transparent 2px);
+  background-size: 1.1em 1.1em;
+  image-rendering: pixelated;
+}
+.tpl-pixel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(115deg, var(--px-pink) 0 18%, transparent 18%),
+    linear-gradient(295deg, var(--px-cyan) 0 16%, transparent 16%),
+    linear-gradient(0deg, var(--px-lime) 0 8%, transparent 8%);
+  opacity: 0.22;
+  pointer-events: none;
 }
 .tpl-pixel .wa-card,
-.tpl-pixel .wa-name,
-.tpl-pixel .wa-cat-title,
-.tpl-pixel .wa-fav {
+.tpl-pixel .wa-desc,
+.tpl-pixel .wa-fav-title,
+.tpl-pixel .wa-meta {
   font-family: "JetBrains Mono", monospace;
 }
+.tpl-pixel .wa-name,
+.tpl-pixel .wa-cat-title,
+.tpl-pixel .wa-fav-rank {
+  font-family: "Press Start 2P", "JetBrains Mono", monospace;
+}
 .tpl-pixel .wa-name {
-  font-weight: 700;
-  font-size: 1.25em;
+  font-size: 0.95em;
+  line-height: 1.35;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  color: var(--px-yellow);
+  text-shadow: 0.12em 0.12em 0 var(--px-pink);
 }
 .tpl-pixel img {
   image-rendering: pixelated;
@@ -826,195 +926,361 @@
 .tpl-pixel .wa-avatar,
 .tpl-pixel .wa-avatar--initials {
   border-radius: 0;
-  border: 2px solid var(--ink);
+  border: 3px solid var(--px-cyan);
+  box-shadow: 0.2em 0.2em 0 var(--px-pink);
 }
 .tpl-pixel .wa-avatar--initials {
-  background: var(--card-accent);
-  color: #1a1a2e;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.7em;
+  background: var(--px-pink);
+  color: #0a0a1e;
 }
 .tpl-pixel .wa-desc {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.78em;
-  line-height: 1.6;
-  border: 2px solid var(--hair);
-  padding: 0.5em 0.7em;
+  font-size: 0.8em;
+  line-height: 1.7;
+  color: var(--px-cyan);
+  border: 3px solid var(--px-cyan);
+  padding: 0.55em 0.75em;
+  background: rgba(35, 224, 224, 0.08);
 }
 .tpl-pixel .wa-cat-title {
-  color: var(--card-accent);
-  border-bottom: 2px solid var(--hair);
+  display: inline-block;
+  font-size: 0.62em;
+  color: #0a0a1e;
+  background: var(--px-lime);
+  border: 0;
+  padding: 0.4em 0.6em;
+  letter-spacing: 0.02em;
+  box-shadow: 0.16em 0.16em 0 #0a0a1e;
 }
+.tpl-pixel .wa-cat:nth-child(2) .wa-cat-title { background: var(--px-pink); }
+.tpl-pixel .wa-cat:nth-child(3) .wa-cat-title { background: var(--px-cyan); }
+.tpl-pixel .wa-cat:nth-child(4) .wa-cat-title { background: var(--px-yellow); }
 .tpl-pixel .wa-fav {
   font-size: 0.82em;
 }
 .tpl-pixel .wa-fav-rank {
-  color: var(--card-accent);
+  font-size: 0.72em;
+  color: var(--px-yellow);
 }
 .tpl-pixel .wa-fav img {
   border-radius: 0;
-  border: 2px solid var(--hair);
+  border: 2px solid var(--px-pink);
   width: 2.2em;
   height: 2.2em;
 }
 
-/* ---------- Y2K (Y2K) · cromo y burbujas ---------- */
+/* ---------- Y2K (Y2K) · cromo, holo y estrellas ---------- */
 .tpl-y2k {
-  background: linear-gradient(160deg, #d7e6f5 0%, #a9c7e8 40%, #cbb9e6 100%);
-  --ink: #16233a;
-  --ink-soft: rgba(22, 35, 58, 0.62);
-  --hair: rgba(22, 35, 58, 0.25);
+  position: relative;
+  --ink: #1e2f66;
+  --ink-soft: rgba(30, 47, 102, 0.6);
+  --hair: rgba(30, 47, 102, 0.28);
+  background:
+    linear-gradient(150deg, #ff8fd0 0%, #b98ee8 42%, #7fd8f2 100%);
+}
+/* estrella / destello detrás del header */
+.tpl-y2k::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: repeating-conic-gradient(
+    from 8deg at 26% 14%,
+    rgba(255, 255, 255, 0.5) 0deg 7deg,
+    transparent 7deg 20deg
+  );
+  -webkit-mask: radial-gradient(9em 9em at 26% 14%, #000 12%, rgba(0, 0, 0, 0.35) 45%, transparent 72%);
+  mask: radial-gradient(9em 9em at 26% 14%, #000 12%, rgba(0, 0, 0, 0.35) 45%, transparent 72%);
+  pointer-events: none;
+}
+/* piso de rejilla en perspectiva + escaneo */
+.tpl-y2k::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 5px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.4), transparent 30%);
+  background-position: 0 bottom;
+  background-size: 100% 100%, 100% 8em;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 .tpl-y2k .wa-name {
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
   font-weight: 700;
-  font-size: 2.3em;
-  letter-spacing: -0.02em;
-  background: linear-gradient(180deg, #ffffff 0%, #9db8d6 45%, #4d6f9c 55%, #ffffff 100%);
+  font-size: 2.6em;
+  letter-spacing: -0.01em;
+  background: linear-gradient(180deg, #ffffff 0%, #dfe9fb 34%, #7f9ed6 50%, #34508f 52%, #c9d8f4 68%, #ffffff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 0.4px #16233a;
+  -webkit-text-stroke: 0.02em #1e2f66;
+  filter: drop-shadow(0.05em 0.06em 0 #ff5bb8);
+}
+.tpl-y2k .wa-handle {
+  color: #ff2e9a;
+  font-weight: 700;
 }
 .tpl-y2k .wa-avatar,
 .tpl-y2k .wa-avatar--initials {
-  border: 2px solid #fff;
-  box-shadow: 0 0.2em 0.6em rgba(22, 35, 58, 0.3);
+  border: 0.22em solid #fff;
+  box-shadow: 0 0 0 0.14em #7f9ed6, 0 0.25em 0.7em rgba(30, 47, 102, 0.4);
 }
 .tpl-y2k .wa-avatar--initials {
-  background: linear-gradient(180deg, #eaf2fb, #8fb2d8);
-  color: #16233a;
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  background: linear-gradient(180deg, #f2f7ff, #9db9e4 55%, #5f7fbb);
+  color: #1e2f66;
 }
 .tpl-y2k .wa-desc {
-  color: var(--ink);
+  color: #1e2f66;
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 1em;
+  padding: 0.6em 0.9em;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 .tpl-y2k .wa-cat-title {
   display: inline-block;
-  background: linear-gradient(180deg, #ffffff, #b9d0e8);
-  color: #16233a;
+  font-weight: 700;
+  color: #1e2f66;
+  background: linear-gradient(180deg, #ffffff, #cfe0f7 55%, #a9c4ea);
   border: 1px solid #fff;
   border-radius: 999px;
-  padding: 0.16em 0.8em;
-  box-shadow: 0 0.15em 0.4em rgba(22, 35, 58, 0.25);
+  padding: 0.14em 0.85em;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0.15em 0.4em rgba(30, 47, 102, 0.3);
+}
+.tpl-y2k .wa-cat-title::before {
+  content: "\2726\00a0";
+  color: #ff2e9a;
+}
+.tpl-y2k .wa-fav {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 0.6em;
+  padding: 0.2em 0.5em;
 }
 .tpl-y2k .wa-fav img {
   border-radius: 0.5em;
   border: 1px solid #fff;
 }
 .tpl-y2k .wa-fav-rank {
-  color: #4d6f9c;
+  color: #ff2e9a;
   font-weight: 700;
 }
 
-/* ---------- SUIZO (SWISS) · rejilla, sin adornos ---------- */
+/* ---------- SUIZO / BAUHAUS (SWISS) · rejilla, un acento ---------- */
 .tpl-swiss {
-  background: #ffffff;
-  --ink: #0a0a0a;
-  --ink-soft: rgba(10, 10, 10, 0.55);
-  --hair: #0a0a0a;
+  position: relative;
+  --ink: #111111;
+  --ink-soft: rgba(17, 17, 17, 0.55);
+  --hair: #111111;
+  background: #f1ece2;
 }
 .tpl-swiss .wa-card,
 .tpl-swiss .wa-name,
 .tpl-swiss .wa-cat-title,
 .tpl-swiss .wa-fav,
-.tpl-swiss .wa-meta {
-  font-family: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+.tpl-swiss .wa-fav-title,
+.tpl-swiss .wa-meta,
+.tpl-swiss .wa-desc {
+  font-family: "Archivo", "Public Sans", "Helvetica Neue", Arial, sans-serif;
+}
+/* gran círculo de acento, medio fuera por la derecha (sin desbordar abajo) */
+.tpl-swiss::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    circle at 108% 34%,
+    var(--card-accent) 0 7.5em,
+    transparent 7.5em
+  );
+  pointer-events: none;
+}
+/* rejilla de puntos, esquina inferior derecha */
+.tpl-swiss::after {
+  content: "";
+  position: absolute;
+  right: 1.6em;
+  bottom: 1.6em;
+  width: 6em;
+  height: 4.4em;
+  z-index: -1;
+  background-image: radial-gradient(#111 1.6px, transparent 1.8px);
+  background-size: 1.1em 1.1em;
+  pointer-events: none;
 }
 .tpl-swiss .wa-name {
-  font-weight: 700;
-  font-size: 2.8em;
-  line-height: 0.92;
-  letter-spacing: -0.035em;
+  font-weight: 900;
+  font-size: 3.1em;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  text-transform: lowercase;
+}
+.tpl-swiss .wa-meta {
+  font-size: 0.62em;
+  letter-spacing: 0.02em;
+}
+.tpl-swiss .wa-handle {
+  color: var(--card-accent);
 }
 .tpl-swiss .wa-avatar,
 .tpl-swiss .wa-avatar--initials {
   border-radius: 0;
-  border: 1px solid #0a0a0a;
+  border: 1px solid #111;
+  filter: grayscale(1) contrast(1.05);
 }
 .tpl-swiss .wa-avatar--initials {
-  background: var(--card-accent);
-  color: #fff;
+  font-weight: 900;
+  background: #111;
+  color: #f1ece2;
+  filter: none;
 }
 .tpl-swiss .wa-desc {
+  font-weight: 400;
   color: var(--ink);
-  border-top: 1px solid #0a0a0a;
-  padding-top: 0.5em;
+  border-top: 1px solid #111;
+  padding-top: 0.55em;
+  max-width: 30ch;
 }
 .tpl-swiss .wa-cat-title {
-  color: #0a0a0a;
-  border-top: 3px solid var(--card-accent);
+  color: #111;
+  border-top: 2px solid #111;
   border-bottom: 0;
-  padding-top: 0.4em;
-  padding-bottom: 0;
+  padding: 0.4em 0 0;
+  margin-bottom: 0.7em;
   letter-spacing: 0;
-  font-size: 0.8em;
+  text-transform: uppercase;
+  font-size: 0.74em;
+  font-weight: 700;
 }
+.tpl-swiss .wa-cat:nth-child(1) .wa-cat-title { border-top-color: var(--card-accent); }
 .tpl-swiss .wa-fav {
-  border-bottom: 1px solid #0a0a0a;
-  padding-bottom: 0.4em;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.25);
+  padding-bottom: 0.45em;
 }
 .tpl-swiss .wa-fav-rank {
   color: var(--card-accent);
-  font-weight: 700;
+  font-weight: 900;
 }
 .tpl-swiss .wa-fav img {
   border-radius: 0;
+  filter: grayscale(1) contrast(1.05);
 }
 
-/* ---------- GRAFITI (GRAFFITI) · muro y spray ---------- */
+/* ---------- GRAFITI (GRAFFITI) · muro, spray, cartel roto ---------- */
 .tpl-graffiti {
-  background-color: #23211f;
+  position: relative;
+  --ink: #f7f4ec;
+  --ink-soft: rgba(247, 244, 236, 0.62);
+  --hair: rgba(247, 244, 236, 0.26);
+  background-color: #3a2b26;
+  /* ladrillo: juntas de mortero + tono */
   background-image:
-    radial-gradient(color-mix(in srgb, var(--card-accent) 30%, transparent) 8%, transparent 9%),
-    radial-gradient(rgba(255, 255, 255, 0.04) 8%, transparent 9%);
-  background-size: 1.6em 1.6em, 1.1em 1.1em;
-  background-position: 0 0, 0.5em 0.7em;
-  --ink: #f6f4ef;
-  --ink-soft: rgba(246, 244, 239, 0.6);
-  --hair: rgba(246, 244, 239, 0.28);
+    linear-gradient(#00000055 0 0),
+    repeating-linear-gradient(0deg, transparent 0 2.1em, rgba(0, 0, 0, 0.45) 2.1em 2.3em),
+    repeating-linear-gradient(90deg, transparent 0 4.2em, rgba(0, 0, 0, 0.4) 4.2em 4.45em);
+  background-blend-mode: multiply, normal, normal;
+}
+/* salpicaduras neón en las esquinas */
+.tpl-graffiti::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(9em 9em at 4% 6%, #ff2d9580, transparent 70%),
+    radial-gradient(10em 10em at 98% 12%, #7dff4d70, transparent 70%),
+    radial-gradient(11em 11em at 92% 96%, #ff8a1e70, transparent 70%),
+    radial-gradient(9em 9em at 6% 92%, #21c7ff70, transparent 70%);
+  pointer-events: none;
+}
+/* motas de spray */
+.tpl-graffiti::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(currentColor 1px, transparent 1.4px);
+  background-size: 1.3em 1.7em;
+  color: rgba(247, 244, 236, 0.14);
+  pointer-events: none;
 }
 .tpl-graffiti .wa-name {
-  font-family: "Fraunces", Georgia, serif;
-  font-weight: 700;
-  font-size: 2.7em;
-  letter-spacing: -0.02em;
+  font-family: "Permanent Marker", "Fraunces", cursive;
+  font-weight: 400;
+  font-size: 2.9em;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
   color: var(--card-accent);
-  -webkit-text-stroke: 1.5px #16130f;
-  transform: rotate(-2deg);
-  transform-origin: left;
+  -webkit-text-stroke: 0.05em #120f0c;
+  paint-order: stroke fill;
+  text-shadow:
+    0 0.06em 0 #120f0c,
+    0.14em 0.2em 0.02em rgba(0, 0, 0, 0.55);
+  transform: rotate(-3deg);
+  transform-origin: left center;
+}
+.tpl-graffiti .wa-meta {
+  font-family: "Permanent Marker", cursive;
+  letter-spacing: 0.03em;
+}
+.tpl-graffiti .wa-handle {
+  color: #7dff4d;
 }
 .tpl-graffiti .wa-avatar,
 .tpl-graffiti .wa-avatar--initials {
-  border: 3px solid #16130f;
-  box-shadow: 0.25em 0.25em 0 var(--card-accent);
+  border: 0.2em solid #f7f4ec;
+  border-radius: 0.1em;
+  box-shadow: 0.28em 0.32em 0 rgba(0, 0, 0, 0.5);
+  transform: rotate(-2deg);
 }
 .tpl-graffiti .wa-avatar--initials {
-  background: #16130f;
+  font-family: "Permanent Marker", cursive;
+  background: #120f0c;
   color: var(--card-accent);
 }
 .tpl-graffiti .wa-desc {
-  color: var(--ink);
-  background: rgba(0, 0, 0, 0.35);
-  padding: 0.55em 0.75em;
-  border-left: 4px solid var(--card-accent);
+  color: #1c1712;
+  background: #e9dfca;
+  padding: 0.6em 0.85em;
+  border: 0;
+  box-shadow: 0.2em 0.24em 0 rgba(0, 0, 0, 0.45);
+  transform: rotate(-0.6deg);
 }
 .tpl-graffiti .wa-cat-title {
   display: inline-block;
-  color: var(--card-accent);
+  font-family: "Permanent Marker", cursive;
+  color: #f7f4ec;
   border: 0;
-  font-weight: 700;
-  font-size: 0.9em;
+  font-weight: 400;
+  font-size: 1em;
   letter-spacing: 0.02em;
-  -webkit-text-stroke: 0.6px #16130f;
-  transform: rotate(-1.5deg);
+  -webkit-text-stroke: 0.05em #120f0c;
+  paint-order: stroke fill;
+  transform: rotate(-2deg);
 }
+.tpl-graffiti .wa-cat:nth-child(1) .wa-cat-title { color: #ff2d95; }
+.tpl-graffiti .wa-cat:nth-child(2) .wa-cat-title { color: #7dff4d; transform: rotate(1.5deg); }
+.tpl-graffiti .wa-cat:nth-child(3) .wa-cat-title { color: #ffd23e; }
+.tpl-graffiti .wa-cat:nth-child(4) .wa-cat-title { color: #21c7ff; transform: rotate(2deg); }
 .tpl-graffiti .wa-fav {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 0.25em 0.5em;
-  border-left: 2px solid var(--card-accent);
+  background: rgba(18, 15, 12, 0.55);
+  padding: 0.26em 0.55em;
+  border-left: 0.22em solid var(--card-accent);
 }
 .tpl-graffiti .wa-fav-rank {
-  color: var(--card-accent);
-  font-weight: 700;
+  font-family: "Permanent Marker", cursive;
+  color: #f7f4ec;
 }
 .tpl-graffiti .wa-fav img {
-  border: 2px solid #16130f;
+  border: 0.14em solid #f7f4ec;
   border-radius: 0;
 }

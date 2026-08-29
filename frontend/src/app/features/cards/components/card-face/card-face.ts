@@ -47,11 +47,18 @@ export class CardFaceComponent {
 
   private static readonly KNOWN_TEMPLATES = new Set([
     'DARK', 'LIGHT', 'MINIMAL', 'PRESS', 'COMIC', 'FUTURE', 'VINTAGE',
-    'GLASS', 'VECTOR', 'RETRO', 'PIXEL', 'Y2K', 'SWISS', 'GRAFFITI'
+    'GLASS', 'RETRO', 'PIXEL', 'Y2K', 'SWISS', 'GRAFFITI'
   ])
 
+  // "Vector" se fusionó con "Cómic": misma plantilla.
+  private static readonly TEMPLATE_ALIASES: Record<string, string> = {
+    VECTOR: 'COMIC',
+    NEON: 'LIGHT'
+  }
+
   template = computed(() => {
-    const t = this._card()?.template ?? 'DARK'
+    const raw = this._card()?.template ?? 'DARK'
+    const t = CardFaceComponent.TEMPLATE_ALIASES[raw] ?? raw
     return CardFaceComponent.KNOWN_TEMPLATES.has(t) ? t : 'LIGHT'
   })
   layoutClass = computed(() => `layout-${this.layout().toLowerCase()}`)

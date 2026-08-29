@@ -7,14 +7,13 @@ export const CARD_TEMPLATES: { value: CardTemplate; label: string; hint: string 
   { value: 'MINIMAL', label: 'Minimalista', hint: 'nombre grande, aire' },
   { value: 'PRESS', label: 'Periódico', hint: 'portada de diario' },
   { value: 'VINTAGE', label: 'Antiguo', hint: 'documento envejecido' },
-  { value: 'COMIC', label: 'Cómic', hint: 'viñeta, bordes gruesos' },
-  { value: 'GRAFFITI', label: 'Grafiti', hint: 'muro, spray, contorno' },
+  { value: 'COMIC', label: 'Cómic', hint: 'pop-art, ben-day, tinta' },
+  { value: 'GRAFFITI', label: 'Grafiti', hint: 'muro, spray, marcador' },
   { value: 'FUTURE', label: 'Futurista', hint: 'interfaz, HUD, tu color' },
   { value: 'GLASS', label: 'Glassmorphism', hint: 'cristal, blur, degradado' },
-  { value: 'Y2K', label: 'Y2K', hint: 'cromo, burbujas, 2000s' },
-  { value: 'VECTOR', label: 'Vector', hint: 'plano, geométrico, sólido' },
-  { value: 'RETRO', label: 'Retro', hint: '70s, atardecer, cálido' },
-  { value: 'PIXEL', label: 'Pixel art', hint: 'bloques, dither, 8-bit' }
+  { value: 'Y2K', label: 'Y2K', hint: 'cromo, holo, 2000s' },
+  { value: 'RETRO', label: 'Retro', hint: '70s, papel, arcoíris' },
+  { value: 'PIXEL', label: 'Pixel art', hint: 'arcade, 8-bit, neón' }
 ]
 
 export const TEMPLATE_LABEL: Record<CardTemplate, string> = {
@@ -26,7 +25,7 @@ export const TEMPLATE_LABEL: Record<CardTemplate, string> = {
   FUTURE: 'Futurista',
   VINTAGE: 'Antiguo',
   GLASS: 'Glassmorphism',
-  VECTOR: 'Vector',
+  VECTOR: 'Cómic',
   RETRO: 'Retro',
   PIXEL: 'Pixel art',
   Y2K: 'Y2K',
