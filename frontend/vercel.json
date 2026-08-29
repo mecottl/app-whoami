@@ -5,7 +5,7 @@
   "buildCommand": "bun run build",
   "outputDirectory": "dist/frontend/browser",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://whoami-api.onrender.com/$1" },
+    { "source": "/api/(.*)", "destination": "https://whoami-api-si5i.onrender.com/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

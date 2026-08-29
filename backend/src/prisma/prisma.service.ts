@@ -14,15 +14,22 @@ export class PrismaService
     super({
       adapter: new PrismaPg({
         connectionString: url,
-        // Los poolers gestionados (Supabase, Neon…) exigen TLS pero presentan
-        // un certificado que no valida contra las CA del sistema.
-        ssl: isLocal ? undefined : { rejectUnauthorized: false },
+        // Poolers gestionados (Supabase, Neon…) exigen TLS con un certificado
+        // que no valida contra las CA del sistema. En local no se toca.
+        ...(isLocal ? {} : { ssl: { rejectUnauthorized: false } }),
       }),
     })
   }
 
   async onModuleInit() {
-    await this.$connect()
+    try {
+      await this.$connect()
+      await this.$queryRaw`SELECT 1`
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[PrismaService] no se pudo conectar a la base:', err)
+      throw err
+    }
   }
 
   async onModuleDestroy() {
