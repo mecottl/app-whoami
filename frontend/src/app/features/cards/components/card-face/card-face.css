@@ -126,11 +126,12 @@
   color: var(--card-accent);
 }
 .wa-fav img {
-  width: 2.2em;
-  height: 2.2em;
+  width: 2.7em;
+  height: 2.7em;
   border-radius: 0.15em;
   object-fit: cover;
   flex-shrink: 0;
+  background: var(--hair);
 }
 .wa-fav-title {
   overflow: hidden;
@@ -160,8 +161,8 @@
   background: rgba(255, 255, 255, 0.16);
 }
 .wa-chip img {
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.7em;
+  height: 1.7em;
   border-radius: 999px;
   object-fit: cover;
 }
@@ -260,16 +261,13 @@
 .tpl-dark .wa-fav {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.82em;
-  align-items: baseline;
-  gap: 0.6em;
+  align-items: center;
+  gap: 0.7em;
 }
 .tpl-dark .wa-fav img {
-  display: none;
-}
-.tpl-dark .wa-fav-rank::after {
-  content: "·";
-  margin-left: 0.5em;
-  opacity: 0.4;
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 0;
 }
 .tpl-dark .wa-fav-title {
   white-space: nowrap;
@@ -308,11 +306,12 @@
   color: var(--ink-soft);
 }
 .tpl-light .wa-fav {
-  gap: 0.85em;
+  gap: 0.9em;
 }
 .tpl-light .wa-fav img {
-  width: 3em;
-  height: 3em;
+  width: 3.4em;
+  height: 3.4em;
+  border-radius: 0.1em;
 }
 .tpl-light .wa-fav-title {
   font-family: "Fraunces", serif;
@@ -368,13 +367,16 @@
   color: var(--ink-soft);
 }
 .tpl-minimal .wa-favs {
-  gap: 0.2em;
+  gap: 0.35em;
 }
 .tpl-minimal .wa-fav {
   font-size: 0.82em;
+  gap: 0.55em;
 }
 .tpl-minimal .wa-fav img {
-  display: none;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 0.1em;
 }
 .tpl-minimal .wa-fav-rank {
   color: var(--ink-soft);
