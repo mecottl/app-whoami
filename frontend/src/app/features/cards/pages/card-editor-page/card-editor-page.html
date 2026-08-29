@@ -93,9 +93,9 @@
 
           <label>
             <span>Layout</span>
-            <select [value]="c.layout" (change)="onInput('layout', $event)">
+            <select (change)="onInput('layout', $event)">
               @for (l of layouts; track l.value) {
-                <option [value]="l.value">{{ l.label }}</option>
+                <option [value]="l.value" [selected]="l.value === c.layout">{{ l.label }}</option>
               }
             </select>
           </label>
@@ -152,6 +152,26 @@
 
       <!-- ============================ CANVAS ============================ -->
       <div class="canvas" [class.tab-hidden]="tab() !== 'preview'">
+        <!-- controles rápidos (solo móvil, en la pestaña Preview) -->
+        <div class="preview-controls">
+          <label class="pc-field">
+            <span>Layout</span>
+            <select (change)="onInput('layout', $event)">
+              @for (l of layouts; track l.value) {
+                <option [value]="l.value" [selected]="l.value === c.layout">{{ l.label }}</option>
+              }
+            </select>
+          </label>
+          <label class="pc-field">
+            <span>Plantilla</span>
+            <select (change)="onInput('template', $event)">
+              @for (t of templates; track t.value) {
+                <option [value]="t.value" [selected]="t.value === c.template">{{ t.label }}</option>
+              }
+            </select>
+          </label>
+        </div>
+
         <div class="canvas-inner">
           <app-card-preview [card]="c" [categories]="categories()" [age]="age()" />
         </div>
